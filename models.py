@@ -1,58 +1,66 @@
-from ctypes import addressof
-from unicodedata import name
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+"""models.py (2)
+
+Python class which gets translated into actual DB ttables
+
+Terms:
+- Base: Indicate a table
+- __tablename__: Name of the table that will be created
+
+"""
+
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from database import Base
 
-# Pet can belong to 1 owner
-# Owner can have many pets
 
-# Pets can belong to many trainer
-# Trainers can train many pets
-
+# Association Table (Pet and Trainer Many-to-Many relationship)
+# Done as association object because for future additional data expandability
 class PetTrainerAssociation(Base):
     __tablename__ = 'pet_trainer_association'
-    pet_id = Column(Integer, ForeignKey('Pet.id'), primary_key=True)
-    trainer_id = Column(String, ForeignKey('Trrainer.trainer_id'), primary_key=True)
 
+    # Foreign Keys in Association table
+    pet_id = Column(ForeignKey('pet.id'), primary_key=True)
+    trainer_id = Column(ForeignKey('trainer.trainer_id'), primary_key=True)
+
+# Owner Table
 class Owner(Base):
     __tablename__ = "pet_owner"
 
-    id = Column(Integer, primary_key = True, index = True)
+    # Owner Fields
+    id = Column(Integer, primary_key = True, index=True)
     name = Column(String, unique = True)
     email = Column(String)
     password = Column(String)
     home_address = Column(String)
     
-    pets = relationship("Pet", backref="parent")
+    # Pet relation (One-to-Many)
+    pets = relationship("Pet", backref="owner")
 
-
+# Pet Table
 class Pet(Base):
     __tablename__ = "pet"
 
-    id = Column(Integer, primary_key = True, index = True)
+    # Pet Fields
+    id = Column(Integer, primary_key = True, index=True)
     name = Column(String, unique = True)
     age = Column(Integer)
 
-    owner_id =Column(Integer, ForeignKey("owner.id"))
+    # Owner id (Many-to-One)
+    owner_id = Column(Integer, ForeignKey("pet_owner.id"))
 
-    trainers = relationship('Trainer',
-                                secondary='pet_trainer_association',
-                                primaryjoin=id==PetTrainerAssociation.pet_id,
-                                secondaryjoin=id==PetTrainerAssociation.trainer_id,
-                                backref='trainers')
+    # Trainer List (Many-to-Many with association object as link table)
+    trainers = relationship("Trainer", secondary="pet_trainer_association", back_populates='pets')
     
 class Trainer(Base):
     __tablename__ = "trainer"
 
-    trainer_id = Column(String, primary_key = True, index = True)
+    # Pet Fields
+    # Trainer ID is string
+    trainer_id = Column(String, primary_key = True, index=True)
     name = Column(String)
     phone_no = Column(Integer)
     email = Column(String)
 
-    pets = relationship('Pet',
-                            secondary='pet_trainer_association',
-                            primaryjoin=id==PetTrainerAssociation.trainer_id,
-                            secondaryjoin=id==PetTrainerAssociation.pet_id,
-                            backref='pets')
+    # Pets List (Many-to-Many with association object as link table)
+    pets = relationship("Pet", secondary="pet_trainer_association", back_populates='trainers')
