@@ -39,6 +39,13 @@ def get_db():
     finally:
         db.close()
 
+# ======== ROOT ENDPOINT ========
+# Not necessary but good indication that connection been made
+
+@app.get("/")
+def root():
+    return {"connection": True}
+
 
 # ======== OWNER CRUD ENDPOINTS ========
 
