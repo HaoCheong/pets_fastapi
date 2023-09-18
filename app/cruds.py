@@ -19,14 +19,15 @@ All the functions which directly manipulate the database. Access via main.py
 """
 
 from sqlalchemy.orm import Session
-import models, schemas
+import app.models as models
+import app.schemas as schemas
 
 # ======== OWNER CRUD ========
+
 
 def create_owner(db: Session, owner: schemas.OwnerCreate):
     fake_hashed_password = owner.password + "thisisahash"
     db_owner = models.Owner(
-        id=owner.id,
         email=owner.email,
         name=owner.name,
         home_address=owner.home_address,
@@ -38,11 +39,14 @@ def create_owner(db: Session, owner: schemas.OwnerCreate):
     db.refresh(db_owner)
     return db_owner
 
+
 def get_all_owners(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Owner).offset(skip).limit(limit).all()
 
-def get_owner_by_id(db: Session, id:str):
+
+def get_owner_by_id(db: Session, id: str):
     return db.query(models.Owner).filter(models.Owner.id == id).first()
+
 
 def update_owner_by_id(db: Session, id: int, new_owner: schemas.OwnerUpdate):
     db_owner = db.query(models.Owner).filter(models.Owner.id == id).first()
@@ -59,6 +63,7 @@ def update_owner_by_id(db: Session, id: int, new_owner: schemas.OwnerUpdate):
     db.refresh(db_owner)
     return db_owner
 
+
 def delete_owner_by_id(db: Session, id: int):
     db_owner = db.query(models.Owner).filter(models.Owner.id == id).first()
 
@@ -71,7 +76,6 @@ def delete_owner_by_id(db: Session, id: int):
 
 def create_pet(db: Session, pet: schemas.PetCreate):
     db_pet = models.Pet(
-        id=pet.id,
         name=pet.name,
         age=pet.age,
     )
@@ -81,11 +85,14 @@ def create_pet(db: Session, pet: schemas.PetCreate):
     db.refresh(db_pet)
     return db_pet
 
+
 def get_all_pets(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Pet).offset(skip).limit(limit).all()
 
+
 def get_pet_by_id(db: Session, id: int):
     return db.query(models.Pet).filter(models.Pet.id == id).first()
+
 
 def update_pet_by_id(db: Session, id: int, new_pet: schemas.PetUpdate):
     db_pet = db.query(models.Pet).filter(models.Pet.id == id).first()
@@ -102,6 +109,7 @@ def update_pet_by_id(db: Session, id: int, new_pet: schemas.PetUpdate):
     db.refresh(db_pet)
     return db_pet
 
+
 def delete_pet_by_id(db: Session, id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == id).first()
 
@@ -110,6 +118,7 @@ def delete_pet_by_id(db: Session, id: int):
     return {"Success": True}
 
 # ========= TRAINER CRUD ========
+
 
 def create_trainer(db: Session, trainer: schemas.TrainerCreate):
     db_trainer = models.Trainer(
@@ -124,14 +133,18 @@ def create_trainer(db: Session, trainer: schemas.TrainerCreate):
     db.refresh(db_trainer)
     return db_trainer
 
+
 def get_all_trainers(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Trainer).offset(skip).limit(limit).all()
+
 
 def get_trainer_by_id(db: Session, trainer_id: str):
     return db.query(models.Trainer).filter(models.Trainer.trainer_id == trainer_id).first()
 
+
 def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.TrainerUpdate):
-    db_trainer = db.query(models.Trainer).filter(models.Trainer.trainer_id == trainer_id).first()
+    db_trainer = db.query(models.Trainer).filter(
+        models.Trainer.trainer_id == trainer_id).first()
 
     # Converts new_trainer from model.object to dictionary
     update_trainer = new_trainer.dict(exclude_unset=True)
@@ -145,8 +158,10 @@ def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.Trai
     db.refresh(db_trainer)
     return db_trainer
 
+
 def delete_trainer_by_id(db: Session, trainer_id: str):
-    db_trainer = db.query(models.Trainer).filter(models.Trainer.trainer_id == trainer_id).first()
+    db_trainer = db.query(models.Trainer).filter(
+        models.Trainer.trainer_id == trainer_id).first()
 
     db.delete(db_trainer)
     db.commit()
@@ -155,9 +170,12 @@ def delete_trainer_by_id(db: Session, trainer_id: str):
 # ======== PET OWNER ASSIGNMENT ========
 
 # Assign pet to owner
+
+
 def assignToOwner(db: Session, pet_id: int, owner_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
-    db_owner = db.query(models.Owner).filter(models.Owner.id == owner_id).first()
+    db_owner = db.query(models.Owner).filter(
+        models.Owner.id == owner_id).first()
 
     # Treat adding relation like adding to pet owner's pets list
     db_owner.pets.append(db_pet)
@@ -167,9 +185,12 @@ def assignToOwner(db: Session, pet_id: int, owner_id: int):
     return {"Success", True}
 
 # Unassign pet from owner
+
+
 def unassignFromOwner(db: Session, pet_id: int, owner_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
-    db_owner = db.query(models.Owner).filter(models.Owner.id == owner_id).first()
+    db_owner = db.query(models.Owner).filter(
+        models.Owner.id == owner_id).first()
 
     # Treat removing relation like removing from pet owner's pets list
     db_owner.pets.remove(db_pet)
@@ -181,9 +202,12 @@ def unassignFromOwner(db: Session, pet_id: int, owner_id: int):
 # ======== PET TRAINER ASSIGNMENT ========
 
 # Assign pet to trainer
+
+
 def assignToTrainer(db: Session, pet_id: int, trainer_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
-    db_trainer = db.query(models.Trainer).filter(models.Trainer.trainer_id == trainer_id).first()
+    db_trainer = db.query(models.Trainer).filter(
+        models.Trainer.trainer_id == trainer_id).first()
 
     # Treat adding relation like adding to pet trainers's pets list
     # This can be done the other way with adding trainer to pet's trainer list
@@ -194,9 +218,12 @@ def assignToTrainer(db: Session, pet_id: int, trainer_id: int):
     return {"Success", True}
 
 # Unassign pet to trainer
+
+
 def unassignFromTrainer(db: Session, pet_id: int, trainer_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
-    db_trainer = db.query(models.Trainer).filter(models.Trainer.trainer_id == trainer_id).first()
+    db_trainer = db.query(models.Trainer).filter(
+        models.Trainer.trainer_id == trainer_id).first()
 
     # Treat removing relation like removing to pet trainers's pets list
     # This can be done the other way with removing trainer to pet's trainer list

@@ -15,16 +15,20 @@ from pydantic import BaseModel
 # Schema containing information that will be expected to all other schema
 
 # Owner Base Schema
+
+
 class OwnerBase(BaseModel):
     name: str
     email: str
     home_address: str
-   
+
    # Allow for Object Relational Mapping (Treating relation like nested objects)
     class Config:
         orm_mode = True
 
 # Pet Base Schema
+
+
 class PetBase(BaseModel):
     name: str
     age: int
@@ -33,6 +37,8 @@ class PetBase(BaseModel):
         orm_mode = True
 
 # Trainer Base Schema
+
+
 class TrainerBase(BaseModel):
     name: str
     phone_no: int
@@ -44,12 +50,14 @@ class TrainerBase(BaseModel):
 # ======== CREATE SCHEMA ========
 # Schema inherit Base schemas, for when new instance of object is created
 
+
 class OwnerCreate(OwnerBase):
-    id: int
-    password: str # Password on for creation, means no accidental leak by other schemas
+    password: str  # Password on for creation, means no accidental leak by other schemas
+
 
 class PetCreate(PetBase):
-    id: int
+    pass
+
 
 class TrainerCreate(TrainerBase):
     trainer_id: str
@@ -57,12 +65,15 @@ class TrainerCreate(TrainerBase):
 # ======== READ NO RELATION ========
 # Schema inherit Base schemas, for reading object data WITHOUT relational information
 
+
 class TrainerReadNR(TrainerBase):
     trainer_id: str
+
 
 class PetReadNR(PetBase):
     id: int
     owner_id: Optional[int]
+
 
 class OwnerReadNR(OwnerBase):
     id: int
@@ -70,12 +81,15 @@ class OwnerReadNR(OwnerBase):
 # ======== READ WITH RELATION ========
 # Schema inherit No Relation schemas, for reading object data WITH relational information
 
+
 class TrainerReadWR(TrainerReadNR):
     pets: List[PetReadNR]
+
 
 class PetReadWR(PetReadNR):
     # Returns list with schema with NO RELATION to prevent infinite loop for Many-to-Many
     trainers: List[TrainerReadNR]
+
 
 class OwnerReadWR(OwnerReadNR):
     # Returns list with schema with NO RELATION to prevent infinite loop for Many-to-Many
@@ -85,18 +99,21 @@ class OwnerReadWR(OwnerReadNR):
 # Schema inherit Base schema, for updating existing information
 # On update, any field not included will not be updated
 
+
 class OwnerUpdate(OwnerBase):
     name: Optional[str]
     email: Optional[str]
     home_address: Optional[str]
 
+
 class PetUpdate(PetBase):
     name: Optional[str]
     age: Optional[int]
 
+
 class TrainerUpdate(TrainerBase):
 
-    #Trainer ID in this case is updatable, Pet and Owner cannot update their ID
+    # Trainer ID in this case is updatable, Pet and Owner cannot update their ID
     trainer_id: Optional[str]
     name: Optional[str]
     phone_no: Optional[int]
