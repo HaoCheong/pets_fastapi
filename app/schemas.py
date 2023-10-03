@@ -10,6 +10,7 @@ The expected structure/schema of a input or output value
 
 from typing import List, Union, Optional
 from pydantic import BaseModel
+from datetime import datetime
 
 # ======== BASE SCHEMAS ========
 # Schema containing information that will be expected to all other schema
@@ -41,8 +42,24 @@ class PetBase(BaseModel):
 
 class TrainerBase(BaseModel):
     name: str
+    description: str
     phone_no: int
     email: str
+    date_started: datetime
+
+    class Config:
+        orm_mode = True
+
+class MealBase(BaseModel):
+    protein: str
+    carb: str
+    fibre: str
+
+class NutritionPlanBase(BaseModel):
+    name: str
+    description: str
+    meal: MealBase
+    starting_date: datetime
 
     class Config:
         orm_mode = True
@@ -62,21 +79,26 @@ class PetCreate(PetBase):
 class TrainerCreate(TrainerBase):
     trainer_id: str
 
+class NutritionPlanCreate(NutritionPlanBase):
+    pass
+
 # ======== READ NO RELATION ========
 # Schema inherit Base schemas, for reading object data WITHOUT relational information
-
 
 class TrainerReadNR(TrainerBase):
     trainer_id: str
 
+class OwnerReadNR(OwnerBase):
+    id: int
+
+class NutritionPlanReadNR(NutritionPlanBase):
+    id: int
 
 class PetReadNR(PetBase):
     id: int
-    owner_id: Optional[int]
 
 
-class OwnerReadNR(OwnerBase):
-    id: int
+
 
 # ======== READ WITH RELATION ========
 # Schema inherit No Relation schemas, for reading object data WITH relational information
@@ -89,11 +111,17 @@ class TrainerReadWR(TrainerReadNR):
 class PetReadWR(PetReadNR):
     # Returns list with schema with NO RELATION to prevent infinite loop for Many-to-Many
     trainers: List[TrainerReadNR]
+    nutrition_plan: NutritionPlanReadNR
+    owner: OwnerReadNR
 
 
 class OwnerReadWR(OwnerReadNR):
     # Returns list with schema with NO RELATION to prevent infinite loop for Many-to-Many
     pets: List[PetReadNR]
+
+class NutritionPlanReadWR(NutritionPlanReadNR):
+    # Returns list with schema with NO RELATION to prevent infinite loop for Many-to-Many
+    pet: PetReadNR
 
 # ======== UPDATE SCHEMA ========
 # Schema inherit Base schema, for updating existing information
@@ -116,5 +144,12 @@ class TrainerUpdate(TrainerBase):
     # Trainer ID in this case is updatable, Pet and Owner cannot update their ID
     trainer_id: Optional[str]
     name: Optional[str]
+    description: Optional[str]
     phone_no: Optional[int]
     email: Optional[str]
+
+class NutritionPlanUpdate(NutritionPlanBase):
+
+    name: Optional[str]
+    description: Optional[str]
+    meal: Optional[MealBase]
