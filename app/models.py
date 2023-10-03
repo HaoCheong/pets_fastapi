@@ -65,8 +65,10 @@ class Trainer(Base):
     # Trainer ID is string
     trainer_id = Column(String, primary_key=True, index=True)
     name = Column(String)
+    description = Column(String)
     phone_no = Column(Integer)
     email = Column(String)
+    date_started = Column(DateTime)
 
     # Pets List (Many-to-Many with association object as link table)
     pets = relationship(
