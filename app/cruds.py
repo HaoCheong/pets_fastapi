@@ -297,13 +297,8 @@ def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: in
 def unassign_pet_from_nutrition_plan(db: Session, pet_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_nutrition_plan = db.query(models.NutritionPlan).filter(models.NutritionPlan.id == db_pet.nutrition_plan.id).first()
-    print("PRE DB PET", db_pet)
-    print("PRE DB NP", db_nutrition_plan)
     db_pet.nutrition_plan = None
     db_nutrition_plan.pet = None
-
-    print("POST DB PET", db_pet)
-    print("POST DB NP", db_nutrition_plan)
     db.add(db_pet)
     db.add(db_nutrition_plan)
     db.commit()
