@@ -101,7 +101,7 @@ def create_pet(pet: schemas.PetCreate, db: Session = Depends(get_db)):
     return cruds.create_pet(db=db, pet=pet)
 
 
-@app.get("/pet", response_model=List[schemas.PetReadNR], tags=["Pets"])
+@app.get("/pets", response_model=List[schemas.PetReadNR], tags=["Pets"])
 def get_all_pets(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_pets = cruds.get_all_pets(db, skip, limit)
     return db_pets
@@ -145,7 +145,7 @@ def create_trainer(trainer: schemas.TrainerCreate, db: Session = Depends(get_db)
     return cruds.create_trainer(db=db, trainer=trainer)
 
 
-@app.get("/trainer", response_model=List[schemas.TrainerReadNR], tags=["Trainers"])
+@app.get("/trainers", response_model=List[schemas.TrainerReadNR], tags=["Trainers"])
 def get_all_trainers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_trainers = cruds.get_all_trainers(db, skip, limit)
     return db_trainers
@@ -238,7 +238,7 @@ def assign_pet_to_owner(pet_id: int, owner_id: int, db: Session = Depends(get_db
     return cruds.assign_pet_to_owner(db, pet_id=pet_id, owner_id=owner_id)
 
 
-@app.post("/unassignToOwner/{pet_id}/{owner_id}", tags=["Item Assignments"])
+@app.post("/unassignFromOwner/{pet_id}/{owner_id}", tags=["Item Assignments"])
 def unassign_pet_from_owner(pet_id: int, owner_id: int, db: Session = Depends(get_db)):
     db_owner = cruds.get_owner_by_id(db, id=owner_id)
     db_pet = cruds.get_pet_by_id(db, id=pet_id)
@@ -280,7 +280,7 @@ def assign_pet_to_trainer(pet_id: int, trainer_id: str, db: Session = Depends(ge
     return cruds.assign_pet_to_trainer(db, pet_id=pet_id, trainer_id=trainer_id)
 
 
-@app.post("/unassignToTrainer/{pet_id}/{trainer_id}", tags=["Item Assignments"])
+@app.post("/unassignFromTrainer/{pet_id}/{trainer_id}", tags=["Item Assignments"])
 def unassign_pet_from_trainer(pet_id: int, trainer_id: str, db: Session = Depends(get_db)):
     db_trainer = cruds.get_trainer_by_id(db, trainer_id=trainer_id)
     db_pet = cruds.get_pet_by_id(db, id=pet_id)
@@ -314,7 +314,7 @@ def assign_pet_to_nutrition_plan(pet_id: int, nutrition_plan_id: int, db: Sessio
     
     return cruds.assign_pet_to_nutrition_plan(db, pet_id=pet_id, nutrition_plan_id=nutrition_plan_id)
 
-@app.post("/unassignToNutritionPlan/{pet_id}", tags=["Item Assignments"])
+@app.post("/unassignFromNutritionPlan/{pet_id}", tags=["Item Assignments"])
 def unassign_pet_from_nutrition_plan(pet_id: int, nutrition_plan_id: int, db: Session = Depends(get_db)):
     db_pet = cruds.get_pet_by_id(db, id=pet_id)
 
