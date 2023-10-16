@@ -308,6 +308,9 @@ def assign_pet_to_nutrition_plan(pet_id: int, nutrition_plan_id: int, db: Sessio
     if not db_pet:
         raise HTTPException(status_code=400, detail="Pet does not exist")
     
+    if len(db_pet.trainers) == 0:
+        raise HTTPException(status_code=400, detail="Pets has not been assigned to trainer")
+    
     if  db_pet.nutrition_plan is not None:
         raise HTTPException(
             status_code=400, detail="Pet already assigned to nutritional plan")
@@ -315,7 +318,7 @@ def assign_pet_to_nutrition_plan(pet_id: int, nutrition_plan_id: int, db: Sessio
     return cruds.assign_pet_to_nutrition_plan(db, pet_id=pet_id, nutrition_plan_id=nutrition_plan_id)
 
 @app.post("/unassignFromNutritionPlan/{pet_id}", tags=["Item Assignments"])
-def unassign_pet_from_nutrition_plan(pet_id: int, nutrition_plan_id: int, db: Session = Depends(get_db)):
+def unassign_pet_from_nutrition_plan(pet_id: int, db: Session = Depends(get_db)):
     db_pet = cruds.get_pet_by_id(db, id=pet_id)
 
     if not db_pet:
