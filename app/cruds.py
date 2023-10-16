@@ -21,6 +21,7 @@ All the functions which directly manipulate the database. Access via main.py
 from sqlalchemy.orm import Session
 import app.models as models
 import app.schemas as schemas
+from fastapi.encoders import jsonable_encoder
 
 # ======== OWNER CRUD ========
 
@@ -124,8 +125,10 @@ def create_trainer(db: Session, trainer: schemas.TrainerCreate):
     db_trainer = models.Trainer(
         trainer_id=trainer.trainer_id,
         name=trainer.name,
+        description=trainer.description,
         phone_no=trainer.phone_no,
         email=trainer.email,
+        date_started=trainer.date_started
     )
 
     db.add(db_trainer)
@@ -167,12 +170,59 @@ def delete_trainer_by_id(db: Session, trainer_id: str):
     db.commit()
     return {"Success": True}
 
+# ========= NUTRITION PLAN CRUD ========
+
+def create_nutrition_plan(db: Session, nutrition_plan: schemas.NutritionPlanCreate):
+    print("NP", nutrition_plan)
+    print("NP meal", nutrition_plan.meal)
+    db_nutrition_plan = models.NutritionPlan(
+        name=nutrition_plan.name,
+        description=nutrition_plan.description,
+        meal=jsonable_encoder(nutrition_plan.meal),
+        starting_date=nutrition_plan.starting_date,
+    )
+
+    db.add(db_nutrition_plan)
+    db.commit()
+    db.refresh(db_nutrition_plan)
+    return db_nutrition_plan
+
+def get_all_nutrition_plans(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.NutritionPlan).offset(skip).limit(limit).all()
+
+def get_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
+     return db.query(models.NutritionPlan).filter(models.NutritionPlan.id == nutrition_plan_id).first()
+
+def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: str, new_nutrition_plan: schemas.NutritionPlanUpdate):
+    db_nutrition_plan = db.query(models.NutritionPlan).filter(
+        models.NutritionPlan.id == nutrition_plan_id).first()
+
+    # Converts new_trainer from model.object to dictionary
+    update_nutrition_plan = new_nutrition_plan.dict(exclude_unset=True)
+
+    # Loops through dictionary and update db_trainer
+    for key, value in update_nutrition_plan.items():
+        setattr(db_nutrition_plan, key, value)
+
+    db.add(db_nutrition_plan)
+    db.commit()
+    db.refresh(db_nutrition_plan)
+    return db_nutrition_plan
+
+def delete_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
+    db_nutrition_plan = db.query(models.NutritionPlan).filter(
+        models.NutritionPlan.id == nutrition_plan_id).first()
+
+    db.delete(db_nutrition_plan)
+    db.commit()
+    return {"Success": True}
+
 # ======== PET OWNER ASSIGNMENT ========
 
 # Assign pet to owner
 
 
-def assignToOwner(db: Session, pet_id: int, owner_id: int):
+def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_owner = db.query(models.Owner).filter(
         models.Owner.id == owner_id).first()
@@ -187,7 +237,7 @@ def assignToOwner(db: Session, pet_id: int, owner_id: int):
 # Unassign pet from owner
 
 
-def unassignFromOwner(db: Session, pet_id: int, owner_id: int):
+def unassign_pet_from_owner(db: Session, pet_id: int, owner_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_owner = db.query(models.Owner).filter(
         models.Owner.id == owner_id).first()
@@ -204,7 +254,7 @@ def unassignFromOwner(db: Session, pet_id: int, owner_id: int):
 # Assign pet to trainer
 
 
-def assignToTrainer(db: Session, pet_id: int, trainer_id: int):
+def assign_pet_to_trainer(db: Session, pet_id: int, trainer_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_trainer = db.query(models.Trainer).filter(
         models.Trainer.trainer_id == trainer_id).first()
@@ -220,7 +270,7 @@ def assignToTrainer(db: Session, pet_id: int, trainer_id: int):
 # Unassign pet to trainer
 
 
-def unassignFromTrainer(db: Session, pet_id: int, trainer_id: int):
+def unassign_pet_from_trainer(db: Session, pet_id: int, trainer_id: int):
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_trainer = db.query(models.Trainer).filter(
         models.Trainer.trainer_id == trainer_id).first()
@@ -231,4 +281,21 @@ def unassignFromTrainer(db: Session, pet_id: int, trainer_id: int):
     db.add(db_trainer)
     db.commit()
 
+    return {"Success", True}
+
+# ======== PET NUTRITIONAL PLAN ASSIGNMENT ========
+
+def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: int):
+    db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
+    db_nutrition_plan = db.query(models.NutritionPlan).filter(models.NutritionPlan.id == nutrition_plan_id).first()
+    db_pet.nutrition_plan = db_nutrition_plan
+    db.add(db_pet)
+    db.commit()
+    return {"Success", True}
+
+def unassign_pet_from_nutrition_plan(db: Session, pet_id: int):
+    db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
+    db_pet.nutrition_plan = None
+    db.add(db_pet)
+    db.commit()
     return {"Success", True}
