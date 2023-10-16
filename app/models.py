@@ -34,7 +34,7 @@ class Owner(Base):
     home_address = Column(String)
 
     # Pet relation (One-to-Many)
-    pets = relationship("Pet", backref="owner")
+    pets = relationship("Pet", back_populates="owner")
 
 # Pet Table
 class Pet(Base):
@@ -66,7 +66,7 @@ class Trainer(Base):
     trainer_id = Column(String, primary_key=True, index=True)
     name = Column(String)
     description = Column(String)
-    phone_no = Column(Integer)
+    phone_no = Column(String)
     email = Column(String)
     date_started = Column(DateTime)
 

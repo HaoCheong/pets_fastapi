@@ -43,7 +43,7 @@ class PetBase(BaseModel):
 class TrainerBase(BaseModel):
     name: str
     description: str
-    phone_no: int
+    phone_no: str
     email: str
     date_started: datetime
 
@@ -111,8 +111,8 @@ class TrainerReadWR(TrainerReadNR):
 class PetReadWR(PetReadNR):
     # Returns list with schema with NO RELATION to prevent infinite loop for Many-to-Many
     trainers: List[TrainerReadNR]
-    nutrition_plan: NutritionPlanReadNR
-    owner: OwnerReadNR
+    nutrition_plan: Union[NutritionPlanReadNR, None]
+    owner: Union[OwnerReadNR, None]
 
 
 class OwnerReadWR(OwnerReadNR):
@@ -121,7 +121,7 @@ class OwnerReadWR(OwnerReadNR):
 
 class NutritionPlanReadWR(NutritionPlanReadNR):
     # Returns list with schema with NO RELATION to prevent infinite loop for Many-to-Many
-    pet: PetReadNR
+    pet: Union[PetReadNR, None]
 
 # ======== UPDATE SCHEMA ========
 # Schema inherit Base schema, for updating existing information
@@ -145,11 +145,10 @@ class TrainerUpdate(TrainerBase):
     trainer_id: Optional[str]
     name: Optional[str]
     description: Optional[str]
-    phone_no: Optional[int]
+    phone_no: Optional[str]
     email: Optional[str]
 
 class NutritionPlanUpdate(NutritionPlanBase):
-
     name: Optional[str]
     description: Optional[str]
     meal: Optional[MealBase]
