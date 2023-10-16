@@ -143,5 +143,5 @@ def assign_pet_to_nutrition_plan(pet_id, nutrition_plan_id):
     return client.post(f'/assignToNutritionPlan/{pet_id}/{nutrition_plan_id}')
 
 @unpack
-def unassign_pet_from_nutrition_plan(pet_id, nutrition_plan_id):
-    return client.post(f'/unassignFromNutritionPlan/{pet_id}/{nutrition_plan_id}')
+def unassign_pet_from_nutrition_plan(pet_id):
+    return client.post(f'/unassignFromNutritionPlan/{pet_id}')
