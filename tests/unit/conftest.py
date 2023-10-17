@@ -1,3 +1,11 @@
+'''conftest.py
+
+Contains helpers, test client and pytest fixtures to be reused in automated unit testing
+
+- Fixtures can be thought of reusable functions for unit testing
+- Test client is a fake client used to emulate the client in production without affecting production data
+'''
+
 from app.database import Base
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
@@ -6,14 +14,10 @@ from fastapi.testclient import TestClient
 import pytest
 from app.main import get_db
 from app.main import app
-import os
-import sys
-from datetime import datetime
 
 import pathlib
  
-
-
+# Creates an initial engine that does point to production
 ABS_PATH = pathlib.Path().resolve()
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{ABS_PATH}/app/db/pets.db"
 
@@ -27,7 +31,7 @@ TestingSessionLocal = sessionmaker(
 
 Base.metadata.create_all(bind=engine)
 
-
+# Overiddes the database with a testing database
 def override_get_db():
     try:
         db = TestingSessionLocal()
@@ -35,7 +39,7 @@ def override_get_db():
     finally:
         db.close()
 
-
+# Overiddes a dependency function with another function
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
@@ -46,12 +50,14 @@ ERROR = 400
 
 @ pytest.fixture
 def reset_db():
+    ''' Resets the database via dropping '''
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
 
 @ pytest.fixture
 def owners_data():
+    ''' Return test owner data '''
     return [
         {
             "name": "Alice",
@@ -69,6 +75,7 @@ def owners_data():
 
 @ pytest.fixture
 def trainers_data():
+    ''' Return test trainer data '''
     return [
         {
             "name": "Eddie Bark",
@@ -90,6 +97,7 @@ def trainers_data():
 
 @ pytest.fixture
 def pets_data():
+    ''' Return test pets data '''
     return [
         {
             "name":"Pickles",
@@ -111,6 +119,7 @@ def pets_data():
 
 @ pytest.fixture
 def nutrition_plans_data():
+    ''' Return test nutrition plan data '''
     return [
         {
             "name": "Pickles Meal Deal",

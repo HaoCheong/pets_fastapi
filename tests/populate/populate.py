@@ -1,4 +1,11 @@
-# Stand in to auto populate with fake data
+'''populate.py
+
+Auto-populates a database with test data.
+
+- Great for debugging especially when the data structure is known
+- Easy control over the database data
+- Used separately to unit test, populate is used when you want to do manual testing instead
+'''
 
 import requests
 BACKEND_URL = "http://127.0.0.1:8000"
@@ -91,6 +98,7 @@ NUTRITION_PLANS = [
 ]
 
 def populate_pets():
+    ''' Populates database with pets data '''
     print("========== ADDING PETS ==========")
     for pet in PETS:
         try:
@@ -103,6 +111,7 @@ def populate_pets():
             print("Failed to add PETS - %s" % pet)
 
 def populate_owners():
+    ''' Populates database with owner data '''
     print("========== ADDING OWNERS ==========")
     for owner in OWNERS:
         try:
@@ -115,6 +124,7 @@ def populate_owners():
             print("Failed to add OWNER - %s" % owner)
 
 def populate_trainers():
+    ''' Populates database with trainer data '''
     print("========== ADDING TRAINERS ==========")
     for trainer in TRAINERS:
         try:
@@ -127,6 +137,7 @@ def populate_trainers():
             print("Failed to add TRAINER - %s" % trainer)
 
 def populate_nutrition_plans():
+    ''' Populates database with nutrition plan data '''
     print("========== ADDING NUTRITIONAL PLAN ==========")
     for n_plan in NUTRITION_PLANS:
         try:
@@ -139,6 +150,7 @@ def populate_nutrition_plans():
             print("Failed to add NUTRITION PLAN - %s" % n_plan)
 
 def assigning_pets_to_owner():
+    ''' Handles assignment of pets to owners '''
     print("========== ASSIGNING PETS TO OWNER ==========")
 
     print("Assigning Pickles to Alice")
@@ -154,6 +166,7 @@ def assigning_pets_to_owner():
     res = requests.post(f"{BACKEND_URL}/assignToOwner/4/2")
 
 def assigning_pets_to_trainer():
+    ''' Handles assignment of pets to trainers '''
     print("========== ASSIGNING PETS TO TRAINER ==========")
 
     print("Assigning Pickles to Eddie Bark")
@@ -169,6 +182,7 @@ def assigning_pets_to_trainer():
     res = requests.post(f"{BACKEND_URL}/assignToTrainer/4/TR-013")
 
 def assigning_pets_to_nutrition_plan():
+    ''' Handles assignment of pets to nutritional plan '''
     print("========== ASSIGNING PETS TO NUTRITION PLAN ==========")
 
     print("Assigning Pickles to Pickles Meal Deal")
@@ -181,6 +195,7 @@ def assigning_pets_to_nutrition_plan():
     res = requests.post(f"{BACKEND_URL}/assignToNutritionPlan/4/3")
 
 if __name__ == "__main__":
+
     populate_owners()
     populate_pets()
     populate_trainers()
