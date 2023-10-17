@@ -1,3 +1,10 @@
+'''metadata.py
+
+Contains metadata details. Typically for developers and not production users
+
+'''
+
+# The tags for the FastAPI OpenAPI auto documenter
 tags_metadata = [
     {
         "name": "Owners",

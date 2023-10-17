@@ -1,6 +1,7 @@
 """models.py (2)
 
-Python class which gets translated into actual DB ttables
+Python class which gets translated into actual DB tables
+Can be thought of how the application understands the database structure
 
 Terms:
 - Base: Indicate a table
@@ -12,10 +13,11 @@ from sqlalchemy import Column, ForeignKey, Integer, String, JSON, DateTime
 from sqlalchemy.orm import relationship
 from app.database import Base
 
-
-# Association Table (Pet and Trainer Many-to-Many relationship)
-# Done as association object because for future additional data expandability
 class PetTrainerAssociation(Base):
+    '''
+    Association Table (Pet and Trainer Many-to-Many relationship)
+    Done as association object because for future additional data expandability
+    '''
     __tablename__ = 'pet_trainer_association'
 
     # Foreign Keys in Association table
@@ -24,6 +26,7 @@ class PetTrainerAssociation(Base):
 
 # Owner Table
 class Owner(Base):
+    ''' Owner model '''
     __tablename__ = "pet_owner"
 
     # Owner Fields
@@ -36,8 +39,8 @@ class Owner(Base):
     # Pet relation (One-to-Many)
     pets = relationship("Pet", back_populates="owner")
 
-# Pet Table
 class Pet(Base):
+    ''' Pet model '''
     __tablename__ = "pet"
 
     # Pet Fields
@@ -57,12 +60,13 @@ class Pet(Base):
     nutrition_plan_id = Column(Integer, ForeignKey("nutrition_plan.id"))
     nutrition_plan = relationship("NutritionPlan", back_populates="pet", uselist=False)
 
-# Trainer Table
+
 class Trainer(Base):
+    ''' Trainer model '''
     __tablename__ = "trainer"
 
     # Trainer Fields
-    # Trainer ID is string
+    # Trainer ID is string, thus not auto-generated
     trainer_id = Column(String, primary_key=True, index=True)
     name = Column(String)
     description = Column(String)
@@ -75,11 +79,12 @@ class Trainer(Base):
         "Pet", secondary="pet_trainer_association", back_populates='trainers')
 
 
-# Nutrition Plan
+
 class NutritionPlan(Base):
+    ''' Nutrition plan model '''
     __tablename__ = "nutrition_plan"
 
-    # Nutrition PLan
+    # Nutrition Plan fields
     id = Column(Integer, primary_key=True, index=True)
     
     name = Column(String)
