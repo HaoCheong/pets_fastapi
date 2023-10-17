@@ -23,10 +23,10 @@ import app.models as models
 import app.schemas as schemas
 from fastapi.encoders import jsonable_encoder
 
-# ======== OWNER CRUD ========
-
+# ======================= OWNER CRUD =======================
 
 def create_owner(db: Session, owner: schemas.OwnerCreate):
+    ''' Creating an new pet owner '''
     fake_hashed_password = owner.password + "thisisahash"
     db_owner = models.Owner(
         email=owner.email,
@@ -42,17 +42,20 @@ def create_owner(db: Session, owner: schemas.OwnerCreate):
 
 
 def get_all_owners(db: Session, skip: int = 0, limit: int = 100):
+    ''' Get every instance of pet owner, using offset pagination '''
     return db.query(models.Owner).offset(skip).limit(limit).all()
 
 
 def get_owner_by_id(db: Session, id: str):
+    ''' Get specific instance of owner based on provided owner ID '''
     return db.query(models.Owner).filter(models.Owner.id == id).first()
 
 
 def update_owner_by_id(db: Session, id: int, new_owner: schemas.OwnerUpdate):
+    ''' Update specific fields of specified instance of owner on provided owner ID '''
     db_owner = db.query(models.Owner).filter(models.Owner.id == id).first()
 
-    # Converts new_owner from model.object to dictionary
+    # Converts new_owner from model object to dictionary
     update_owner = new_owner.dict(exclude_unset=True)
 
     # Loops through dictionary and update db_owner
@@ -66,6 +69,7 @@ def update_owner_by_id(db: Session, id: int, new_owner: schemas.OwnerUpdate):
 
 
 def delete_owner_by_id(db: Session, id: int):
+    ''' Delete specified instance of owner on provided owner ID '''
     db_owner = db.query(models.Owner).filter(models.Owner.id == id).first()
 
     db.delete(db_owner)
@@ -73,9 +77,10 @@ def delete_owner_by_id(db: Session, id: int):
     return {"Success": True}
 
 
-# ======== PET CRUD ========
+# ======================= PET CRUD =======================
 
 def create_pet(db: Session, pet: schemas.PetCreate):
+    ''' Creating an new pet '''
     db_pet = models.Pet(
         name=pet.name,
         age=pet.age,
@@ -88,14 +93,17 @@ def create_pet(db: Session, pet: schemas.PetCreate):
 
 
 def get_all_pets(db: Session, skip: int = 0, limit: int = 100):
+    ''' Get every instance of pet, using offset pagination '''
     return db.query(models.Pet).offset(skip).limit(limit).all()
 
 
 def get_pet_by_id(db: Session, id: int):
+    ''' Get specific instance of pet based on provided pet ID '''
     return db.query(models.Pet).filter(models.Pet.id == id).first()
 
 
 def update_pet_by_id(db: Session, id: int, new_pet: schemas.PetUpdate):
+    ''' Update specific fields of specified instance of pet on provided pet ID '''
     db_pet = db.query(models.Pet).filter(models.Pet.id == id).first()
 
     # Converts new_pet from model.object to dictionary
@@ -112,16 +120,18 @@ def update_pet_by_id(db: Session, id: int, new_pet: schemas.PetUpdate):
 
 
 def delete_pet_by_id(db: Session, id: int):
+    ''' Delete specified instance of pet on provided pet ID '''
     db_pet = db.query(models.Pet).filter(models.Pet.id == id).first()
 
     db.delete(db_pet)
     db.commit()
     return {"Success": True}
 
-# ========= TRAINER CRUD ========
+# ================ TRAINER CRUD ================
 
 
 def create_trainer(db: Session, trainer: schemas.TrainerCreate):
+    ''' Creating an new pet trainer '''
     db_trainer = models.Trainer(
         trainer_id=trainer.trainer_id,
         name=trainer.name,
@@ -138,14 +148,17 @@ def create_trainer(db: Session, trainer: schemas.TrainerCreate):
 
 
 def get_all_trainers(db: Session, skip: int = 0, limit: int = 100):
+    ''' Get every instance of pet trainer, using offset pagination '''
     return db.query(models.Trainer).offset(skip).limit(limit).all()
 
 
 def get_trainer_by_id(db: Session, trainer_id: str):
+    ''' Get specific instance of pet trainer based on provided trainer ID '''
     return db.query(models.Trainer).filter(models.Trainer.trainer_id == trainer_id).first()
 
 
 def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.TrainerUpdate):
+    ''' Update specific fields of specified instance of pet trainer on provided trainer ID '''
     db_trainer = db.query(models.Trainer).filter(
         models.Trainer.trainer_id == trainer_id).first()
 
@@ -163,6 +176,7 @@ def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.Trai
 
 
 def delete_trainer_by_id(db: Session, trainer_id: str):
+    ''' Delete specified instance of pet trainer on provided trainer ID '''
     db_trainer = db.query(models.Trainer).filter(
         models.Trainer.trainer_id == trainer_id).first()
 
@@ -170,11 +184,10 @@ def delete_trainer_by_id(db: Session, trainer_id: str):
     db.commit()
     return {"Success": True}
 
-# ========= NUTRITION PLAN CRUD ========
+# ================ NUTRITION PLAN CRUD ================
 
 def create_nutrition_plan(db: Session, nutrition_plan: schemas.NutritionPlanCreate):
-    print("NP", nutrition_plan)
-    print("NP meal", nutrition_plan.meal)
+    ''' Creating an new nutrition plan '''
     db_nutrition_plan = models.NutritionPlan(
         name=nutrition_plan.name,
         description=nutrition_plan.description,
@@ -188,28 +201,34 @@ def create_nutrition_plan(db: Session, nutrition_plan: schemas.NutritionPlanCrea
     return db_nutrition_plan
 
 def get_all_nutrition_plans(db: Session, skip: int = 0, limit: int = 100):
+    ''' Get every instance of nutrition plan, using offset pagination '''
     return db.query(models.NutritionPlan).offset(skip).limit(limit).all()
 
 def get_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
+     ''' Get specific instance of nutrition plan based on provided nutrition plan ID '''
      return db.query(models.NutritionPlan).filter(models.NutritionPlan.id == nutrition_plan_id).first()
 
 def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: str, new_nutrition_plan: schemas.NutritionPlanUpdate):
+    ''' Update specific fields of specified instance of nutrition plan on provided nutrition plan ID '''
     db_nutrition_plan = db.query(models.NutritionPlan).filter(
         models.NutritionPlan.id == nutrition_plan_id).first()
 
-    # Converts new_trainer from model.object to dictionary
+    # Converts new_nutrition_plan from model.object to dictionary
     update_nutrition_plan = new_nutrition_plan.dict(exclude_unset=True)
 
-    # Loops through dictionary and update db_trainer
+    # Loops through dictionary and update db_nutrition_plan
     for key, value in update_nutrition_plan.items():
         setattr(db_nutrition_plan, key, value)
 
+    # Update them on the DB side, and commit transaction to the database
     db.add(db_nutrition_plan)
     db.commit()
     db.refresh(db_nutrition_plan)
+    
     return db_nutrition_plan
 
 def delete_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
+    ''' Delete specified instance of nutrition plan on provided nutrition plan ID '''
     db_nutrition_plan = db.query(models.NutritionPlan).filter(
         models.NutritionPlan.id == nutrition_plan_id).first()
 
@@ -217,44 +236,53 @@ def delete_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
     db.commit()
     return {"Success": True}
 
-# ======== PET OWNER ASSIGNMENT ========
-
-# Assign pet to owner
-
+# ======== PET OWNER ASSIGNMENT ================
 
 def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
+    ''' Assign instance of pet to an owner. Many to One Relationship '''
+
+    # Getting both instance of Pet and Owner
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_owner = db.query(models.Owner).filter(
         models.Owner.id == owner_id).first()
 
     # Treat adding relation like adding to pet owner's pets list
     db_owner.pets.append(db_pet)
+
+    # Update them on the DB side, and commit transaction to the database
     db.add(db_owner)
     db.commit()
 
     return {"Success", True}
 
-# Unassign pet from owner
 
 
 def unassign_pet_from_owner(db: Session, pet_id: int, owner_id: int):
+    ''' Unassign instance of pet to an owner '''
+
+    # Getting both instance of Pet and Owner
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_owner = db.query(models.Owner).filter(
         models.Owner.id == owner_id).first()
 
     # Treat removing relation like removing from pet owner's pets list
     db_owner.pets.remove(db_pet)
+
+    # Update them on the DB side, and commit transaction to the database
     db.add(db_owner)
     db.commit()
 
     return {"Success", True}
 
-# ======== PET TRAINER ASSIGNMENT ========
+# ======== PET TRAINER ASSIGNMENT ================
 
 # Assign pet to trainer
 
 
 def assign_pet_to_trainer(db: Session, pet_id: int, trainer_id: int):
+    ''' Assign instance of pet to an trainer. Many to Many Relationship '''
+
+    # Getting both instance of Pet and Trainer
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_trainer = db.query(models.Trainer).filter(
         models.Trainer.trainer_id == trainer_id).first()
@@ -262,6 +290,8 @@ def assign_pet_to_trainer(db: Session, pet_id: int, trainer_id: int):
     # Treat adding relation like adding to pet trainers's pets list
     # This can be done the other way with adding trainer to pet's trainer list
     db_trainer.pets.append(db_pet)
+
+    # Update them on the DB side, and commit transaction to the database
     db.add(db_trainer)
     db.commit()
 
@@ -271,6 +301,9 @@ def assign_pet_to_trainer(db: Session, pet_id: int, trainer_id: int):
 
 
 def unassign_pet_from_trainer(db: Session, pet_id: int, trainer_id: int):
+    ''' Unassign instance of pet to an trainer '''
+
+    # Getting both instance of Pet and Trainer
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_trainer = db.query(models.Trainer).filter(
         models.Trainer.trainer_id == trainer_id).first()
@@ -278,28 +311,44 @@ def unassign_pet_from_trainer(db: Session, pet_id: int, trainer_id: int):
     # Treat removing relation like removing to pet trainers's pets list
     # This can be done the other way with removing trainer to pet's trainer list
     db_trainer.pets.remove(db_pet)
+
+    # Update them on the DB side, and commit transaction to the database
     db.add(db_trainer)
     db.commit()
 
     return {"Success", True}
 
-# ======== PET NUTRITIONAL PLAN ASSIGNMENT ========
+# ======== PET NUTRITIONAL PLAN ASSIGNMENT ================
 
 def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: int):
+    ''' Assign instance of pet to an nutrition plan. One to One Relationship '''
+    # Getting both instance of Pet and Nutrition Plan
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_nutrition_plan = db.query(models.NutritionPlan).filter(models.NutritionPlan.id == nutrition_plan_id).first()
+
+    # Establish the relationship
     db_pet.nutrition_plan = db_nutrition_plan
+
+    # Update them on the DB side, and commit transaction to the database
     db.add(db_pet)
     db.commit()
     return {"Success", True}
 
 # Needs review
 def unassign_pet_from_nutrition_plan(db: Session, pet_id: int):
+    ''' Unassign instance of pet to an nutrition plan '''
+
+    # Getting both instance of Pet and Nutrition Plan
     db_pet = db.query(models.Pet).filter(models.Pet.id == pet_id).first()
     db_nutrition_plan = db.query(models.NutritionPlan).filter(models.NutritionPlan.id == db_pet.nutrition_plan.id).first()
+
+    # Clear their relationship
     db_pet.nutrition_plan = None
     db_nutrition_plan.pet = None
+
+    # Update them on the DB side, and commit transaction to the database
     db.add(db_pet)
     db.add(db_nutrition_plan)
     db.commit()
+
     return {"Success", True}
