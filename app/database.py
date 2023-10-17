@@ -13,6 +13,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+# Grabs the absolute path of this files location
+# Thus making this code agnostic to whatever file structure you are on
 ABS_PATH = pathlib.Path().resolve()
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{ABS_PATH}/app/db/pets.db"
 
