@@ -1,5 +1,12 @@
 '''pet_assignment_test.py
 
+Test the assignment of pets to various other models. Cover testing for all relationships
+
+Pets Assignments also have dependencies in what order things are assigned to it
+1. Pets -> Owner
+2. Pets -> Trainer
+3. Pets -> Nutrition Plan
+
 Most endpoints consists of two tests:
  - Valid Test: Test case of success scenarios
  - Invalid test: Test cases of failing scenarios. Catches every expected error.
@@ -8,9 +15,9 @@ Most endpoints consists of two tests:
 from unit.conftest import client, SUCCESS, ERROR
 from unit import wrappers
 
-# ========= ASSIGNING TESTS =========
 
-# ===== PET TO OWNER =====
+''' ========== PETS TO OWNER TESTS ========== '''
+
 def test_valid_owner_assign(reset_db, pets_data, owners_data):
     pet = wrappers.create_pet(pets_data[0])['data']
     owner = wrappers.create_owner(owners_data[0])['data']
@@ -92,7 +99,7 @@ def test_invalid_owner_unassign(reset_db, pets_data, owners_data):
     assert pet not in owner_full['pets']
     
 
-# ===== PET TO TRAINER =====
+''' ========== PET TO TRAINER TESTS ========== '''
 
 def test_valid_trainer_assign(reset_db, pets_data, trainers_data, owners_data):
 
@@ -191,7 +198,7 @@ def test_invalid_trainer_unassign(reset_db, pets_data, trainers_data, owners_dat
     assert pet in trainer_full['pets']
 
 
-# ===== PET TO NUTRITION =====
+''' ========== PET TO NUTRITION PLAN TESTS ========== '''
 
 def test_valid_nutrition_assign(reset_db, pets_data, trainers_data, nutrition_plans_data, owners_data):
     pet = wrappers.create_pet(pets_data[0])['data']
