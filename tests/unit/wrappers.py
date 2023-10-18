@@ -1,8 +1,14 @@
+'''wrappers.py
+
+Contains functions that emulate a request to the client without actually needed create a request.
+
+'''
+
 from unit.conftest import client, SUCCESS
 import json
 
 def unpack(function):
-    ''' Wrapper to unpack the json values into parsable dictionary easier for testing '''
+    ''' Wrapper to unpack the json values into parsable dictionary. Easier for testing '''
     def get_data(*args):
         resp = function(*args)
         if resp.status_code != SUCCESS:
@@ -72,9 +78,6 @@ def update_pet_by_pet_id(pet_id, pet_dict):
     ''' Wrapper to emulate updating specified pet '''
     return client.patch(f'/pet/{pet_id}', json=pet_dict)
 
-
-
-
 ''' ========== TRAINERS WRAPPERS ========== '''
 
 @unpack
@@ -106,7 +109,7 @@ def update_trainer_by_trainer_id(trainer_id, trainer_dict):
     ''' Wrapper to emulate updating specified trainer '''
     return client.patch(f'/trainer/{trainer_id}', json=trainer_dict)
 
-# ============ NUTRITION PLAN ============
+''' ============ NUTRITION PLAN WRAPPERS ============ '''
 
 @unpack
 def create_nutrition_plan(nutrition_plan_data):
@@ -137,7 +140,7 @@ def update_nutrition_plan_by_nutrition_plan_id(nutrition_plan_id, nutrition_plan
     ''' Wrapper to emulate updating specified trainer '''
     return client.patch(f'/nutrition_plan/{nutrition_plan_id}', json=nutrition_plan_dict)
 
-# ======== ASSIGNMENT ========
+''' ============ ASSIGNMENT WRAPPERS ============ '''
 
 @unpack
 def assign_pet_to_owner(pet_id, owner_id):
