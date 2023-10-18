@@ -1,3 +1,10 @@
+'''pet_assignment_test.py
+
+Most endpoints consists of two tests:
+ - Valid Test: Test case of success scenarios
+ - Invalid test: Test cases of failing scenarios. Catches every expected error.
+'''
+
 from unit.conftest import client, SUCCESS, ERROR
 from unit import wrappers
 
