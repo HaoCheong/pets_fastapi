@@ -146,31 +146,32 @@ class NutritionPlanReadWR(NutritionPlanReadNR):
 Schema inherit Base schema, for updating existing information
 On update, any optional field not included will not be updated
 Typically a carbon copy of the base field with everything overwritten with the Optional typing
+The "= None" is a default you initialise which allows for you to not require inputting the field in the body of the request
 '''
 
 class OwnerUpdate(OwnerBase):
     ''' Owner update schema '''
-    name: Optional[str]
-    email: Optional[str]
-    home_address: Optional[str]
+    name: Optional[str] = None
+    email: Optional[str] = None
+    home_address: Optional[str] = None
 
 
 class PetUpdate(PetBase):
     ''' Pet update schema '''
-    name: Optional[str]
-    age: Optional[int]
+    name: Optional[str] = None
+    age: Optional[int] = None
 
 
 class TrainerUpdate(TrainerBase):
     ''' Trainer update schema '''
-    trainer_id: Optional[str] # Trainer ID in this case is updatable, Pet and Owner cannot update their ID
-    name: Optional[str]
-    description: Optional[str]
-    phone_no: Optional[str]
-    email: Optional[str]
+    trainer_id: Optional[str] = None # Trainer ID in this case is updatable, Pet and Owner cannot update their ID
+    name: Optional[str] = None
+    description: Optional[str] = None
+    phone_no: Optional[str] = None
+    email: Optional[str] = None
 
 class NutritionPlanUpdate(NutritionPlanBase):
     ''' Nutrition Plan update schema '''
-    name: Optional[str]
-    description: Optional[str]
-    meal: Optional[MealBase]
+    name: Optional[str] = None
+    description: Optional[str] = None
+    meal: Optional[MealBase] = None
