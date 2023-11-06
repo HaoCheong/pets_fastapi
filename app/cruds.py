@@ -19,7 +19,7 @@ All the functions which directly manipulate the database. Access via main.py
 """
 
 from sqlalchemy.orm import Session
-import app.models as models
+import app.model as models
 import app.schemas as schemas
 from fastapi.encoders import jsonable_encoder
 
