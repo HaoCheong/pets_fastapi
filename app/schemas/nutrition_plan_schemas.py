@@ -2,7 +2,7 @@ from typing import List, Union, Optional
 from pydantic import BaseModel
 from datetime import datetime
 
-from pets_schemas import PetReadNR
+from app.schemas.pet_schemas import PetReadNR
 
 '''
 ======== BASE SCHEMAS ========
