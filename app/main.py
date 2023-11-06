@@ -13,7 +13,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
 import app.cruds as cruds
-import app.models as models
+import app.model as models
 import app.schemas as schemas
 import app.metadata as metadata
 
