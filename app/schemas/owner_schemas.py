@@ -1,18 +1,8 @@
-"""schemas.py (3)
-
-The expected structure/schema of a input or output value
-
-- For type safety during DB manipulation
-- Technically optionally, but necessary for auto-documentation
-- Can be thought of as the JSON the database expect to receive and/or return
-
-"""
-
 from typing import List, Union, Optional
 from pydantic import BaseModel
 from datetime import datetime
 
-from pets_schemas import PetReadNR
+# from pet_schemas import PetReadNR
 
 '''
 ======== BASE SCHEMAS ========
@@ -63,7 +53,8 @@ Schema inherit No Relation schemas, for reading object data WITH relational info
 
 class OwnerReadWR(OwnerReadNR):
     ''' Owner Read w/ relation Schema '''
-    pets: List[PetReadNR]
+    # pets: List[PetReadNR]
+    pass
 
 '''
 ======== UPDATE SCHEMA ========
