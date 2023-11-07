@@ -5,6 +5,9 @@ from fastapi import Depends, FastAPI, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
 
+import app.schemas.nutrition_plan_schemas as schemas
+import app.cruds.nutrition_plan_cruds as cruds
+
 router = APIRouter()
 
 @router.post("/nutrition_plan", response_model=schemas.NutritionPlanReadNR, tags=["Nutrition Plans"])

@@ -58,6 +58,7 @@ Schema inherit No Relation schemas, for reading object data WITH relational info
 class TrainerReadWR(TrainerReadNR):
     ''' Trainer Read w/ relation Schema '''
     pets: List[PetReadNR]
+    pass
 
 '''
 ======== UPDATE SCHEMA ========

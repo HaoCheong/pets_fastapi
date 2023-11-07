@@ -2,7 +2,7 @@ from typing import List, Union, Optional
 from pydantic import BaseModel
 from datetime import datetime
 
-# from pet_schemas import PetReadNR
+from app.schemas.pet_schemas import PetReadNR
 
 '''
 ======== BASE SCHEMAS ========
@@ -53,7 +53,7 @@ Schema inherit No Relation schemas, for reading object data WITH relational info
 
 class OwnerReadWR(OwnerReadNR):
     ''' Owner Read w/ relation Schema '''
-    # pets: List[PetReadNR]
+    pets: List[PetReadNR]
     pass
 
 '''

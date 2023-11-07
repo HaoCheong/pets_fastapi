@@ -5,6 +5,9 @@ from fastapi import Depends, FastAPI, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
 
+import app.schemas.trainer_schemas as schemas
+import app.cruds.trainer_cruds as cruds
+
 router = APIRouter()
 
 @router.post("/trainer", response_model=schemas.TrainerReadNR, tags=["Trainers"])
