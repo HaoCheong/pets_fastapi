@@ -5,6 +5,9 @@ from fastapi import Depends, FastAPI, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
 
+import schemas.owner_schemas as schemas
+import cruds.owner_cruds as cruds
+
 router = APIRouter()
 
 @router.post("/owner", response_model=schemas.OwnerReadNR, tags=["Owners"])

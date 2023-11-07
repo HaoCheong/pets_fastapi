@@ -1,7 +1,11 @@
 from sqlalchemy.orm import Session
-import app.model as models
-import app.schemas as schemas
 from fastapi.encoders import jsonable_encoder
+
+# import models.owner_model as models
+# import schemas.owner_schemas as schemas
+
+from models.owner_model import  as models
+from schemas.owner_schemas import * as schemas
 
 def create_owner(db: Session, owner: schemas.OwnerCreate):
     ''' Creating an new pet owner '''

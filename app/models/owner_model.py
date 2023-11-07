@@ -15,4 +15,4 @@ class Owner(Base):
     home_address = Column(String)
 
     # Pet relation (One-to-Many)
-    pets = relationship("Pet", back_populates="owner")
+    # pets = relationship("Pet", back_populates="owner")
