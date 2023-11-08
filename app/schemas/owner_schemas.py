@@ -2,8 +2,6 @@ from typing import List, Union, Optional
 from pydantic import BaseModel
 from datetime import datetime
 
-from app.schemas.pet_schemas import PetReadNR
-
 '''
 ======== BASE SCHEMAS ========
 Schema containing information that will be expected to all other schema
@@ -53,8 +51,8 @@ Schema inherit No Relation schemas, for reading object data WITH relational info
 
 class OwnerReadWR(OwnerReadNR):
     ''' Owner Read w/ relation Schema '''
+    from app.schemas.pet_schemas import PetReadNR
     pets: List[PetReadNR]
-    pass
 
 '''
 ======== UPDATE SCHEMA ========
@@ -69,3 +67,4 @@ class OwnerUpdate(OwnerBase):
     name: Optional[str] = None
     email: Optional[str] = None
     home_address: Optional[str] = None
+

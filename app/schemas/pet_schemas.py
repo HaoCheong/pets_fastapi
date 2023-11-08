@@ -2,11 +2,9 @@ from typing import List, Union, Optional
 from pydantic import BaseModel
 from datetime import datetime
 
-# from app.schemas.owner_schemas import OwnerReadNR
-# from app.schemas.trainer_schemas import TrainerReadNR
-# from app.schemas.nutrition_plan_schemas import NutritionPlanReadNR
+import app.schemas.owner_schemas as owner_schemas
 
-# import app.schemas.owner_schemas
+
 
 '''
 ======== BASE SCHEMAS ========
@@ -56,10 +54,12 @@ Schema inherit No Relation schemas, for reading object data WITH relational info
 
 class PetReadWR(PetReadNR):
     ''' Pet Read w/ relation Schema '''
-    # trainers: List[TrainerReadNR]
-    # nutrition_plan: Union[NutritionPlanReadNR, None]
-    # owner: Union[OwnerReadNR, None]
-    pass
+    from app.schemas.owner_schemas import OwnerReadNR
+    from app.schemas.trainer_schemas import TrainerReadNR
+    from app.schemas.nutrition_plan_schemas import NutritionPlanReadNR
+    trainers: List[TrainerReadNR]
+    nutrition_plan: Union[NutritionPlanReadNR, None]
+    owner: Union[OwnerReadNR, None]
 
 '''
 ======== UPDATE SCHEMA ========
@@ -72,4 +72,5 @@ The "= None" is a default you initialise which allows for you to not require inp
 class PetUpdate(PetBase):
     ''' Pet update schema '''
     name: Optional[str] = None
-    age: Optional[int] = None
+
+PetBase.update_forward_refs()
