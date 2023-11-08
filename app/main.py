@@ -51,5 +51,5 @@ def root():
 app.include_router(owner_endpoints.router)
 app.include_router(trainer_endpoints.router)
 app.include_router(pet_endpoints.router)
-# app.include_router(pet_assignment_endpoints.router)
+app.include_router(pet_assignment_endpoints.router)
 app.include_router(nutrition_plan_endpoints.router)
