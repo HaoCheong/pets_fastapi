@@ -30,6 +30,7 @@ def test_valid_owner_assign(reset_db, pets_data, owners_data):
     owner_full = wrappers.get_owner_by_owner_id(owner['id'])['data']
 
     # Check pet start with null owner
+    print("AHH",owner_full)
     assert len(owner_full['pets']) == 0
     assert pet_full['owner'] == None
     
