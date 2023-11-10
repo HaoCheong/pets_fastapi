@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from fastapi.testclient import TestClient
 import pytest
-from app.main import get_db
+from app.helpers import get_db
 from app.main import app
 
 import pathlib
