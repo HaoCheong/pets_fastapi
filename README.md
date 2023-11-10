@@ -38,17 +38,17 @@ Depending on what you want to learn, certain files and directories can be ignore
 Each significant directory and file have be annotated as well as the order of which to lean
 
 ### Basics of RestAPI Developement
-1. database.py
-2. /models
-3. /schemas
-4. /cruds
-5. /endpoints
-6. main.py
+1. `app/database.py`
+2. `app/models`
+3. `app/schemas`
+4. `app/cruds`
+5. `app/endpoints`
+6. `app/main.py`
 
 ### Basics of PyTest writing
-1. conftest.py
-2. wrappers.py
-3. *_test.py
+1. `tests/unit/conftest.py`
+2. `tests/unit/wrappers.py`
+3. `tests/unit/*_test.py`
 
 ## Setting Up
 
