@@ -10,12 +10,11 @@ COPY ./app/requirements.txt /app/
 # Install all the backend dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-# Install extra fastapi dependencies
-RUN pip3 install 'fastapi[all]' SQLalchemy
-
+# Set working directory of the docker container
 WORKDIR /
+
+# Debugging entrypoint, keeps container alive to debug
 # ENTRYPOINT ["tail", "-f", "/dev/null"]
 
-# Run the thing
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the container
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
