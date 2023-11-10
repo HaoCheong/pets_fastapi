@@ -5,4 +5,4 @@ This produces a structured system with expected data allowing hands on testing w
 Also provides an early set of smoke tests.
 
 The structure generated in this example matches the following image:
-![Test data structure layout](image.png)
+![Test data structure layout](../../image.png)
