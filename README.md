@@ -34,14 +34,16 @@ There are also dependencies in the order of which pets are assigned.
 
 ## Learning order
 
-Depending on what you want to learn, certain files can be ignored
+Depending on what you want to learn, certain files and directories can be ignored
+Each significant directory and file have be annotated as well as the order of which to lean
 
 ### Basics of RestAPI Developement
 1. database.py
-2. models.py
-3. schemas.py
-4. cruds.py
-5. main.py
+2. /models
+3. /schemas
+4. /cruds
+5. /endpoints
+6. main.py
 
 ### Basics of PyTest writing
 1. conftest.py
@@ -49,21 +51,6 @@ Depending on what you want to learn, certain files can be ignored
 3. *_test.py
 
 ## Setting Up
-
-If you have not installed fastapi:
-```
-pip3 install "fastapi[all]"
-```
-
-If you have not installed SQLITE3 before:
-```
-pip3 install sqlite3
-```
-
-If you have not installed SQLAlchemy before:
-```
-pip3 install SQLAlchemy
-```
 
 If you want to auto-install all of the dependencies:
 ```
@@ -78,7 +65,7 @@ python3 -m uvicorn main:app --reload
 ```
 or if you want to specify a port
 ```
-uvicorn main:app --reload --port 8001
+uvicorn main:app --reload --port 8000
 ```
 
 Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to view Swagger Docs
