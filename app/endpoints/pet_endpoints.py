@@ -1,9 +1,8 @@
 from typing import List
 
 from app.helpers import get_db
-from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.orm import Session
-from fastapi.encoders import jsonable_encoder
 
 import app.schemas.pet_schemas as schemas
 import app.cruds.pet_cruds as cruds

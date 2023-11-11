@@ -1,6 +1,5 @@
-from typing import List, Union, Optional
+from typing import List, Optional
 from pydantic import BaseModel
-from datetime import datetime
 
 '''
 ======== BASE SCHEMAS ========

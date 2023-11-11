@@ -5,8 +5,6 @@ import app.models.owner_model as owner_models
 import app.models.trainer_model as trainer_models
 import app.models.nutrition_plan_model as nutrition_plan_models
 
-from fastapi.encoders import jsonable_encoder
-
 def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
     ''' Assign instance of pet to an owner. Many to One Relationship '''
 
