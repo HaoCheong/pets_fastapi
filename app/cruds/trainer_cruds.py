@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from fastapi.encoders import jsonable_encoder
 
 import app.models.trainer_model as model
 import app.schemas.trainer_schemas as schemas

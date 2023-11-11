@@ -1,11 +1,4 @@
 from sqlalchemy.orm import Session
-from fastapi.encoders import jsonable_encoder
-
-# import owner_model as models
-# import owner_schemas as schemas
-
-# from app.models.owner_model import Owner
-# from app.schemas.owner_schemas import OwnerCreate, OwnerUpdate
 
 import app.models.owner_model as model
 import app.schemas.owner_schemas as schemas

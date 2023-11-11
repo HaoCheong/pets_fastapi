@@ -1,10 +1,5 @@
 from typing import List, Union, Optional
 from pydantic import BaseModel
-from datetime import datetime
-
-import app.schemas.owner_schemas as owner_schemas
-
-
 
 '''
 ======== BASE SCHEMAS ========

@@ -7,15 +7,12 @@ Where the endpoints are instantiated and functions are called
 
 """
 
-from typing import List
-
-from fastapi import Depends, FastAPI, HTTPException
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
 import app.database as database
 import app.metadata as metadata
 
-from app.database import SessionLocal, engine
+from app.database import engine
 from fastapi.middleware.cors import CORSMiddleware
 
 import app.endpoints.owner_endpoints as owner_endpoints
@@ -23,7 +20,6 @@ import app.endpoints.trainer_endpoints as trainer_endpoints
 import app.endpoints.pet_endpoints as pet_endpoints
 import app.endpoints.pet_assignment_endpoints as pet_assignment_endpoints
 import app.endpoints.nutrition_plan_endpoints as nutrition_plan_endpoints
-
 
 database.Base.metadata.create_all(bind=engine)
 
@@ -42,7 +38,6 @@ app.add_middleware(
 
 # ======== ROOT ENDPOINT ========
 # Not necessary but good indication that connection been made
-
 
 @app.get("/")
 def root():

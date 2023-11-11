@@ -1,7 +1,5 @@
 from sqlalchemy.orm import Session
 
-from fastapi.encoders import jsonable_encoder
-
 import app.models.pet_model as model
 import app.schemas.pet_schemas as schemas
 

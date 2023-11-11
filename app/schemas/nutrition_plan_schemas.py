@@ -1,8 +1,6 @@
-from typing import List, Union, Optional
+from typing import Union, Optional
 from pydantic import BaseModel
 from datetime import datetime
-
-# from app.schemas.all_schemas import PetReadNR
 
 '''
 ======== BASE SCHEMAS ========
