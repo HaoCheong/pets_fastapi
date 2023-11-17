@@ -1,8 +1,8 @@
-# Run Container on first run, rerun container on subsequent
-
 #!/bin/bash
 
-ABS_PATH=$("pwd")
+# Run Container on first run, rerun container on subsequent
+
+ABS_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 BE_NAME="Pets FastAPI"
 BE_DOCKER_PATH="${ABS_PATH}/app/"
 BE_IMAGE="pets_fastapi_img"
