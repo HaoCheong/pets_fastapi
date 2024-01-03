@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Union, Optional, ClassVar
 from pydantic import BaseModel
 
 '''
@@ -6,13 +6,12 @@ from pydantic import BaseModel
 Schema containing information that will be expected to all other schema
 '''
 
-class OwnerBase(BaseModel):
+class PetBase(BaseModel):
     ''' Owners Base Schema '''
     name: str
-    email: str
-    home_address: str
+    age: int
 
-   # Allow for Object Relational Mapping (Treating relation like nested objects)
+    # Allow for Object Relational Mapping (Treating relation like nested objects)
     class Config:
         from_attributes = True
 
@@ -23,9 +22,9 @@ Schema inherit Base schemas, for when new instance of object is created
  - Sometimes used to prevent sensitive data from leaking into the other API.
 '''
 
-class OwnerCreate(OwnerBase):
-    ''' Owner Create Schema '''
-    password: str  # Password on for creation, means no accidental leak by other schemas
+class PetCreate(PetBase):
+    ''' Pet Create Schema, no difference. Kept for potential future expansion '''
+    pass
 
 '''
 ======== READ NO RELATION ========
@@ -36,8 +35,8 @@ Schema inherit Base schemas, for reading object data WITHOUT relational informat
  - Used when data are self-referential, self referential data could result in a recursive loop as it expands repeatedly
 '''
 
-class OwnerReadNR(OwnerBase):
-    ''' Owner Read w/o relation Schema '''
+class PetReadNR(PetBase):
+    ''' Pet Read w/o relation Schema '''
     id: int
 
 '''
@@ -48,10 +47,14 @@ Schema inherit No Relation schemas, for reading object data WITH relational info
  - Pulled data uses non-relational read to prevent heavy network load
 '''
 
-class OwnerReadWR(OwnerReadNR):
-    ''' Owner Read w/ relation Schema '''
-    from app.schemas.pet_schemas import PetReadNR
-    pets: List[PetReadNR]
+class PetReadWR(PetReadNR):
+    ''' Pet Read w/ relation Schema '''
+    from new_app.schemas.owner_schemas import OwnerReadNR
+    # from app.schemas.trainer_schemas import TrainerReadNR
+    # from app.schemas.nutrition_plan_schemas import NutritionPlanReadNR
+    # trainers: List[TrainerReadNR]
+    # nutrition_plan: Union[NutritionPlanReadNR, None]
+    owner: Union[OwnerReadNR, None]
 
 '''
 ======== UPDATE SCHEMA ========
@@ -61,9 +64,8 @@ Typically a carbon copy of the base field with everything overwritten with the O
 The "= None" is a default you initialise which allows for you to not require inputting the field in the body of the request
 '''
 
-class OwnerUpdate(OwnerBase):
-    ''' Owner update schema '''
+class PetUpdate(PetBase):
+    ''' Pet update schema '''
     name: Optional[str] = None
-    email: Optional[str] = None
-    home_address: Optional[str] = None
 
+PetBase.update_forward_refs()

@@ -9,7 +9,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import relationship
 from sqlalchemy import String
 
-from app.database import Base
+from new_app.database import Base
 
 # Owner Table
 class Owner(Base):

@@ -6,20 +6,20 @@ Contains helpers, test client and pytest fixtures to be reused in automated unit
 - Test client is a fake client used to emulate the client in production without affecting production data
 '''
 
-from app.database import Base
+from new_app.database import Base
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from fastapi.testclient import TestClient
 import pytest
-from app.helpers import get_db
-from app.main import app
+from new_app.helpers import get_db
+from new_app.main import app
 
 import pathlib
  
 # Creates an initial engine that does point to production
 ABS_PATH = pathlib.Path().resolve()
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{ABS_PATH}/app/db/pets.db"
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{ABS_PATH}/new_app/db/pets_2.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,

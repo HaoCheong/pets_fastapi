@@ -1,5 +1,5 @@
-from typing import List, Optional
-from pydantic import BaseModel
+from typing import List, Optional, ClassVar
+from pydantic import BaseModel, Field
 
 '''
 ======== BASE SCHEMAS ========
@@ -50,7 +50,7 @@ Schema inherit No Relation schemas, for reading object data WITH relational info
 
 class OwnerReadWR(OwnerReadNR):
     ''' Owner Read w/ relation Schema '''
-    from app.schemas.pet_schemas import PetReadNR
+    from new_app.schemas.pet_schemas import PetReadNR
     pets: List[PetReadNR]
 
 '''
