@@ -27,3 +27,15 @@ tags_metadata = [
         "description": "Operations regarding item assignments",
     },
 ]
+
+swagger_ui_parameters = {
+    "syntaxHighlight": True
+}
+
+app_title = 'Pets Sample FastAPI'
+app_version = '0.0.1'
+app_desc = '''
+This is the FastAPI Sample Project. Designed to emulate a pets and trainer system.
+Primarily for teaching and learning FastAPI.
+Feel free to use a test webserver for basic sample data
+'''
