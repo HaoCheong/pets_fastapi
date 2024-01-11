@@ -24,7 +24,13 @@ import app.endpoints.nutrition_plan_endpoints as nutrition_plan_endpoints
 database.Base.metadata.create_all(bind=engine)
 
 # Initialising instance of the backend
-app = FastAPI(openapi_tags=metadata.tags_metadata)
+app = FastAPI(
+        openapi_tags=metadata.tags_metadata,
+        swagger_ui_parameters=metadata.swagger_ui_parameters,
+        title=metadata.app_title,
+        description=metadata.app_desc,
+        version=metadata.app_version,
+    )
 
 # Handles CORS, currently available to any origin. Need to be tweaked for security
 origins = ['*']
