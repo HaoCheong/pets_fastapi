@@ -14,7 +14,7 @@ def create_owner(owner: schemas.OwnerCreate, db: Session = Depends(get_db)):
     return cruds.create_owner(db=db, owner=owner)
 
 
-@router.get("/api/v1/owner", response_model=List[schemas.OwnerReadNR], tags=["Owners"])
+@router.get("/api/v1/owners", response_model=List[schemas.OwnerReadNR], tags=["Owners"])
 def get_all_owners(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_owners = cruds.get_all_owners(db, skip, limit)
     return db_owners

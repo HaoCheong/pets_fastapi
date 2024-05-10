@@ -31,8 +31,9 @@ def test_get_all_pet(reset_db, pets_data):
         assert pet["status"] == SUCCESS
 
     # Compare return list with input list
-    all_pets = wrappers.get_all_pets()['data']
-    assert len(pets) == len(all_pets)
+    all_pets = wrappers.get_all_pets()
+    assert len(pets) == len(all_pets['data'])
+    
 
 def test_get_pet_by_pet_id(reset_db, pets_data):
     ''' Testing the success case of getting specified pet '''
