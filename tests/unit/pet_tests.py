@@ -31,8 +31,8 @@ def test_get_all_pet(reset_db, pets_data):
         assert pet["status"] == SUCCESS
 
     # Compare return list with input list
-    all_pets = wrappers.get_all_pets()
-    assert len(pets) == len(all_pets['data'])
+    all_pets = wrappers.get_all_pets()['data']
+    assert len(pets) == len(all_pets)
     
 
 def test_get_pet_by_pet_id(reset_db, pets_data):
@@ -93,8 +93,12 @@ def test_update_pet_by_pet_id(reset_db, pets_data):
     update_pet = wrappers.update_pet_by_pet_id(pet['id'], new_pet)
     assert update_pet['status'] == SUCCESS
 
-    # Check the update values are correct
-    assert update_pet['data']['name'] == new_pet['name']
+    # Compare all the values in the update dict with the result's value
+    for key, value in new_pet.items():
+        if update_pet['data'][key] != value:
+            assert False
+
+    assert True
 
 def test_invalid_update_pet_by_pet_id(reset_db, pets_data):
     ''' Testing the fail case of updating pet '''
@@ -107,6 +111,12 @@ def test_invalid_update_pet_by_pet_id(reset_db, pets_data):
 
     # Checks that the current pet is untouched
     curr_pet = wrappers.get_pet_by_pet_id(pet['id'])
-    assert curr_pet['data']['name'] == pet['name']
+
+    for key, value in pet.items():
+        if curr_pet['data'][key] != value:
+            assert False
+
+    assert True
+    # assert curr_pet['data']['name'] == pet['name']
 
 
