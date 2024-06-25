@@ -7,7 +7,7 @@ Where the endpoints are instantiated and functions are called
 
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 import app.database as database
 import app.metadata as metadata
@@ -20,6 +20,7 @@ import app.endpoints.trainer_endpoints as trainer_endpoints
 import app.endpoints.pet_endpoints as pet_endpoints
 import app.endpoints.pet_assignment_endpoints as pet_assignment_endpoints
 import app.endpoints.nutrition_plan_endpoints as nutrition_plan_endpoints
+import time
 
 database.Base.metadata.create_all(bind=engine)
 
@@ -48,6 +49,17 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {"connection": True}
+
+@app.middleware("/owner")
+async def add_process_time_header(request: Request, call_next):
+    print("OWNER MIDDLEWARE!")
+    #start_time = time.time()
+    print("request", request, type(request))
+    response = await call_next(request)
+    #process_time = time.time() - start_time
+    #print("p time", process_time, type(process_time))
+    #response.headers["X-Process-Time"] = str(process_time)
+    return response
 
 app.include_router(owner_endpoints.router)
 app.include_router(trainer_endpoints.router)
