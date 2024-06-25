@@ -34,7 +34,7 @@ def test_valid_owner_assign(reset_db, pets_data, owners_data):
 
     # Check pet start with null owner
     assert len(owner_full['pets']) == 0
-    assert pet_full['owner'] == None
+    assert pet_full['owner'] is None
 
     # Check if assignment request response succeeded
     res = wrappers.assign_pet_to_owner(pet_full['id'], owner_full['id'])
@@ -61,7 +61,7 @@ def test_invalid_owner_assign(reset_db, pets_data, owners_data):
     owner_full = wrappers.get_owner_by_owner_id(owner['id'])['data']
 
     # Check pet start with null owner
-    assert pet_full['owner'] == None
+    assert pet_full['owner'] is None
 
     # Check if response fails, provided invalid pet ID
     res = wrappers.assign_pet_to_owner(pet_full['id'] + 200, owner_full['id'])
@@ -74,7 +74,7 @@ def test_invalid_owner_assign(reset_db, pets_data, owners_data):
     # Check if pets and owner are left unaffected
     curr_pet = wrappers.get_pet_by_pet_id(pet['id'])['data']
     curr_owner = wrappers.get_owner_by_owner_id(owner['id'])['data']
-    assert curr_pet['owner'] == None
+    assert curr_pet['owner'] is None
     assert pet not in curr_owner['pets']
 
 
@@ -101,7 +101,7 @@ def test_valid_owner_unassign(reset_db, pets_data, owners_data):
     # Check if unassignment is successful on the data side
     pet_full = wrappers.get_pet_by_pet_id(pet['id'])['data']
     owner_full = wrappers.get_owner_by_owner_id(owner['id'])['data']
-    assert pet_full['owner'] == None
+    assert pet_full['owner'] is None
     assert pet not in owner_full['pets']
 
 
@@ -117,7 +117,7 @@ def test_invalid_owner_unassign(reset_db, pets_data, owners_data):
     owner_full = wrappers.get_owner_by_owner_id(owner['id'])['data']
 
     # Check pet start with null owner
-    assert pet_full['owner'] == None
+    assert pet_full['owner'] is None
 
     # Assiging pets to owner
     wrappers.assign_pet_to_owner(pet_full['id'], owner_full['id'])
@@ -280,8 +280,8 @@ def test_valid_nutrition_assign(reset_db, pets_data, trainers_data, nutrition_pl
         nutrition_plan['id'])['data']
 
     # Check pet and nutrition start with null
-    assert nutrition_plan_full['pet'] == None
-    assert pet_full['nutrition_plan'] == None
+    assert nutrition_plan_full['pet'] is None
+    assert pet_full['nutrition_plan'] is None
 
     # Check if assignment request response succeeded
     wrappers.assign_pet_to_owner(pet_full['id'], owner['id'])
@@ -333,8 +333,8 @@ def test_invalid_nutrition_assign(reset_db, pets_data, trainers_data, nutrition_
     pet_full = wrappers.get_pet_by_pet_id(pet['id'])['data']
     nutrition_plan_full = wrappers.get_nutrition_plan_by_nutrition_plan_id(
         nutrition_plan['id'])['data']
-    assert nutrition_plan_full['pet'] == None
-    assert pet_full['nutrition_plan'] == None
+    assert nutrition_plan_full['pet'] is None
+    assert pet_full['nutrition_plan'] is None
 
 
 def test_valid_nutrition_unassign(reset_db, pets_data, trainers_data, nutrition_plans_data, owners_data):
@@ -352,11 +352,19 @@ def test_valid_nutrition_unassign(reset_db, pets_data, trainers_data, nutrition_
     nutrition_plan_full = wrappers.get_nutrition_plan_by_nutrition_plan_id(
         nutrition_plan['id'])['data']
 
-    # Assign Pet to Trainer
+    # Assign Pet to Trainer and Pet to Owner
     wrappers.assign_pet_to_owner(pet_full['id'], owner['id'])
     wrappers.assign_pet_to_trainer(pet_full['id'], trainer['trainer_id'])
     res = wrappers.assign_pet_to_nutrition_plan(
         pet_full['id'], nutrition_plan_full['id'])
+
+    # Check if assignment is successful on the data side
+    pet_full = wrappers.get_pet_by_pet_id(pet['id'])['data']
+    nutrition_plan_full = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+        nutrition_plan['id'])['data']
+
+    assert pet_full['nutrition_plan'] is not None
+    assert nutrition_plan_full['pet'] is not None
 
     # Check if unassignment execution is successful
     res = wrappers.unassign_pet_from_nutrition_plan(pet_full['id'])
@@ -366,8 +374,9 @@ def test_valid_nutrition_unassign(reset_db, pets_data, trainers_data, nutrition_
     pet_full = wrappers.get_pet_by_pet_id(pet['id'])['data']
     nutrition_plan_full = wrappers.get_nutrition_plan_by_nutrition_plan_id(
         nutrition_plan['id'])['data']
-    assert nutrition_plan_full['pet'] == None
-    assert pet_full['nutrition_plan'] == None
+
+    assert nutrition_plan_full['pet'] is None
+    assert pet_full['nutrition_plan'] is None
 
 
 def test_invalid_nutrition_unassign(reset_db, pets_data, trainers_data, nutrition_plans_data, owners_data):

@@ -5,11 +5,13 @@ import app.models.owner_model as owner_models
 import app.models.trainer_model as trainer_models
 import app.models.nutrition_plan_model as nutrition_plan_models
 
+
 def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
     ''' Assign instance of pet to an owner. Many to One Relationship '''
 
     # Getting both instance of Pet and Owner
-    db_pet = db.query(pet_models.Pet).filter(pet_models.Pet.id == pet_id).first()
+    db_pet = db.query(pet_models.Pet).filter(
+        pet_models.Pet.id == pet_id).first()
     db_owner = db.query(owner_models.Owner).filter(
         owner_models.Owner.id == owner_id).first()
 
@@ -23,12 +25,12 @@ def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
     return {"Success", True}
 
 
-
 def unassign_pet_from_owner(db: Session, pet_id: int, owner_id: int):
     ''' Unassign instance of pet to an owner '''
 
     # Getting both instance of Pet and Owner
-    db_pet = db.query(pet_models.Pet).filter(pet_models.Pet.id == pet_id).first()
+    db_pet = db.query(pet_models.Pet).filter(
+        pet_models.Pet.id == pet_id).first()
     db_owner = db.query(owner_models.Owner).filter(
         owner_models.Owner.id == owner_id).first()
 
@@ -50,7 +52,8 @@ def assign_pet_to_trainer(db: Session, pet_id: int, trainer_id: int):
     ''' Assign instance of pet to an trainer. Many to Many Relationship '''
 
     # Getting both instance of Pet and Trainer
-    db_pet = db.query(pet_models.Pet).filter(pet_models.Pet.id == pet_id).first()
+    db_pet = db.query(pet_models.Pet).filter(
+        pet_models.Pet.id == pet_id).first()
     db_trainer = db.query(trainer_models.Trainer).filter(
         trainer_models.Trainer.trainer_id == trainer_id).first()
 
@@ -71,7 +74,8 @@ def unassign_pet_from_trainer(db: Session, pet_id: int, trainer_id: int):
     ''' Unassign instance of pet to an trainer '''
 
     # Getting both instance of Pet and Trainer
-    db_pet = db.query(pet_models.Pet).filter(pet_models.Pet.id == pet_id).first()
+    db_pet = db.query(pet_models.Pet).filter(
+        pet_models.Pet.id == pet_id).first()
     db_trainer = db.query(trainer_models.Trainer).filter(
         trainer_models.Trainer.trainer_id == trainer_id).first()
 
@@ -87,11 +91,14 @@ def unassign_pet_from_trainer(db: Session, pet_id: int, trainer_id: int):
 
 # ======== PET NUTRITIONAL PLAN ASSIGNMENT ================
 
+
 def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: int):
     ''' Assign instance of pet to an nutrition plan. One to One Relationship '''
     # Getting both instance of Pet and Nutrition Plan
-    db_pet = db.query(pet_models.Pet).filter(pet_models.Pet.id == pet_id).first()
-    db_nutrition_plan = db.query(nutrition_plan_models.NutritionPlan).filter(nutrition_plan_models.NutritionPlan.id == nutrition_plan_id).first()
+    db_pet = db.query(pet_models.Pet).filter(
+        pet_models.Pet.id == pet_id).first()
+    db_nutrition_plan = db.query(nutrition_plan_models.NutritionPlan).filter(
+        nutrition_plan_models.NutritionPlan.id == nutrition_plan_id).first()
 
     # Establish the relationship
     db_pet.nutrition_plan = db_nutrition_plan
@@ -102,12 +109,16 @@ def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: in
     return {"Success", True}
 
 # Needs review
+
+
 def unassign_pet_from_nutrition_plan(db: Session, pet_id: int):
     ''' Unassign instance of pet to an nutrition plan '''
 
     # Getting both instance of Pet and Nutrition Plan
-    db_pet = db.query(pet_models.Pet).filter(pet_models.Pet.id == pet_id).first()
-    db_nutrition_plan = db.query(nutrition_plan_models.NutritionPlan).filter(nutrition_plan_models.NutritionPlan.id == db_pet.nutrition_plan.id).first()
+    db_pet = db.query(pet_models.Pet).filter(
+        pet_models.Pet.id == pet_id).first()
+    db_nutrition_plan = db.query(nutrition_plan_models.NutritionPlan).filter(
+        nutrition_plan_models.NutritionPlan.id == db_pet.nutrition_plan.id).first()
 
     # Clear their relationship
     db_pet.nutrition_plan = None

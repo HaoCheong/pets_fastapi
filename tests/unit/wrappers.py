@@ -192,4 +192,4 @@ def assign_pet_to_nutrition_plan(pet_id, nutrition_plan_id):
 @unpack
 def unassign_pet_from_nutrition_plan(pet_id):
     ''' Wrapper to emulate unassigning pet to nutritional plan '''
-    return client.post(f'/unassignFromNutritionPlan/{pet_id}')
+    return client.post(f'/api/v1/unassignFromNutritionPlan/{pet_id}')

@@ -26,12 +26,12 @@ database.Base.metadata.create_all(bind=engine)
 
 # Initialising instance of the backend
 app = FastAPI(
-        openapi_tags=metadata.tags_metadata,
-        swagger_ui_parameters=metadata.swagger_ui_parameters,
-        title=metadata.app_title,
-        description=metadata.app_desc,
-        version=metadata.app_version,
-    )
+    openapi_tags=metadata.tags_metadata,
+    swagger_ui_parameters=metadata.swagger_ui_parameters,
+    title=metadata.app_title,
+    description=metadata.app_desc,
+    version=metadata.app_version,
+)
 
 # Handles CORS, currently available to any origin. Need to be tweaked for security
 origins = ['*']
@@ -46,20 +46,11 @@ app.add_middleware(
 # ======== ROOT ENDPOINT ========
 # Not necessary but good indication that connection been made
 
+
 @app.get("/")
 def root():
     return {"connection": True}
 
-@app.middleware("/owner")
-async def add_process_time_header(request: Request, call_next):
-    print("OWNER MIDDLEWARE!")
-    #start_time = time.time()
-    print("request", request, type(request))
-    response = await call_next(request)
-    #process_time = time.time() - start_time
-    #print("p time", process_time, type(process_time))
-    #response.headers["X-Process-Time"] = str(process_time)
-    return response
 
 app.include_router(owner_endpoints.router)
 app.include_router(trainer_endpoints.router)
