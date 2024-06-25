@@ -12,8 +12,8 @@ Testing should always validate 2 things:
  - Validate the data correctness
 '''
 
-from unit.conftest import client, SUCCESS, ERROR
-from unit import wrappers
+from tests.client_fixture import client
+
 
 def test_root():
     ''' Test root endpoint '''

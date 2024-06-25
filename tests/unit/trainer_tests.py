@@ -12,12 +12,15 @@ Testing should always validate 2 things:
  - Validate the data correctness
 '''
 
-from unit.conftest import client, SUCCESS, ERROR
-from unit import wrappers
+from tests.client_fixture import client, SUCCESS, ERROR, reset_db
+from tests.data_fixtures import trainers_data
+from tests.unit import wrappers
+
 
 def test_create_trainer(reset_db, trainers_data):
     ''' Testing the success case of creating an trainer '''
     assert wrappers.create_trainer(trainers_data[0])['status'] == SUCCESS
+
 
 def test_get_all_trainer(reset_db, trainers_data):
     ''' Testing the success case of getting all trainers '''
@@ -30,11 +33,14 @@ def test_get_all_trainer(reset_db, trainers_data):
     all_trainers = wrappers.get_all_trainers()['data']
     assert len(trainers) == len(all_trainers)
 
+
 def test_get_trainer_by_trainer_id(reset_db, trainers_data):
     ''' Testing the success case of getting specified trainer '''
     trainer = wrappers.create_trainer(trainers_data[0])['data']
-    ret_trainer = wrappers.get_trainer_by_trainer_id(trainer['trainer_id'])['data']
+    ret_trainer = wrappers.get_trainer_by_trainer_id(
+        trainer['trainer_id'])['data']
     assert trainer["name"] == ret_trainer["name"]
+
 
 def test_invalid_get_trainer_by_trainer_id(reset_db, trainers_data):
     ''' Testing the failing case of getting specified trainer '''
@@ -42,10 +48,11 @@ def test_invalid_get_trainer_by_trainer_id(reset_db, trainers_data):
     ret_trainer = wrappers.get_trainer_by_trainer_id("TR-000")
     assert ret_trainer['status'] == ERROR
 
+
 def test_delete_trainer_by_trainer_id(reset_db, trainers_data):
     ''' Testing the success case of deleting trainer '''
     trainer = wrappers.create_trainer(trainers_data[0])['data']
-    
+
     # Check pre-delete statue
     pre_check_res = wrappers.get_trainer_by_trainer_id(trainer['trainer_id'])
     assert pre_check_res['status'] == SUCCESS
@@ -57,6 +64,7 @@ def test_delete_trainer_by_trainer_id(reset_db, trainers_data):
     # Check post-delete status
     post_check_res = wrappers.get_trainer_by_trainer_id(trainer['trainer_id'])
     assert post_check_res['status'] == ERROR
+
 
 def test_invalid_delete_trainer_by_trainer_id(reset_db, trainers_data):
     ''' Testing the fail case of deleting trainer '''
@@ -75,6 +83,7 @@ def test_invalid_delete_trainer_by_trainer_id(reset_db, trainers_data):
     post_check_res = wrappers.get_trainer_by_trainer_id(trainer['trainer_id'])
     assert post_check_res['status'] == SUCCESS
 
+
 def test_update_trainer_by_trainer_id(reset_db, trainers_data):
     ''' Testing the success case of updating trainer '''
 
@@ -85,11 +94,13 @@ def test_update_trainer_by_trainer_id(reset_db, trainers_data):
 
     # Checks update response status is correct
     new_trainer = trainers_data[1]
-    update_trainer = wrappers.update_trainer_by_trainer_id(trainer['trainer_id'], new_trainer)
+    update_trainer = wrappers.update_trainer_by_trainer_id(
+        trainer['trainer_id'], new_trainer)
     assert update_trainer['status'] == SUCCESS
 
     # Check the update values are correct
     assert update_trainer['data']['name'] == new_trainer['name']
+
 
 def test_invalid_update_trainer_by_trainer_id(reset_db, trainers_data):
     ''' Testing the fail case of updating trainer '''
@@ -97,7 +108,8 @@ def test_invalid_update_trainer_by_trainer_id(reset_db, trainers_data):
     # Checks update response status is invalid, from invalid ID provided
     trainer = wrappers.create_trainer(trainers_data[0])['data']
     new_trainer = trainers_data[1]
-    update_trainer = wrappers.update_trainer_by_trainer_id("TR-000", new_trainer)
+    update_trainer = wrappers.update_trainer_by_trainer_id(
+        "TR-000", new_trainer)
     assert update_trainer['status'] == ERROR
 
     # Checks that the current trainer is untouched

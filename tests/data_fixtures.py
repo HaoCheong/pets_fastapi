@@ -1,59 +1,10 @@
-'''conftest.py
+'''data_fixture.py
 
-Contains helpers, test client and pytest fixtures to be reused in automated unit testing
-
-- Fixtures can be thought of reusable functions for unit testing
-- Test client is a fake client used to emulate the client in production without affecting production data
+Contains all the necessary data fixtures for testing
 '''
 
-from app.database import Base
-from sqlalchemy.pool import StaticPool
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from fastapi.testclient import TestClient
 import pytest
-from app.helpers import get_db
-from app.main import app
 
-import pathlib
- 
-# Creates an initial engine that does point to production
-ABS_PATH = pathlib.Path().resolve()
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{ABS_PATH}/app/db/pets.db"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
-)
-TestingSessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=engine)
-
-Base.metadata.create_all(bind=engine)
-
-# Overiddes the database with a testing database
-def override_get_db():
-    try:
-        db = TestingSessionLocal()
-        yield db
-    finally:
-        db.close()
-
-# Overiddes a dependency function with another function
-app.dependency_overrides[get_db] = override_get_db
-
-client = TestClient(app)
-
-SUCCESS = 200
-ERROR = 400
-
-
-@ pytest.fixture
-def reset_db():
-    ''' Resets the database via dropping '''
-    Base.metadata.create_all(bind=engine)
-    yield
-    Base.metadata.drop_all(bind=engine)
 
 @ pytest.fixture
 def owners_data():
@@ -72,6 +23,7 @@ def owners_data():
             "password": "pattingGiver381"
         }
     ]
+
 
 @ pytest.fixture
 def trainers_data():
@@ -95,27 +47,29 @@ def trainers_data():
         }
     ]
 
+
 @ pytest.fixture
 def pets_data():
     ''' Return test pets data '''
     return [
         {
-            "name":"Pickles",
+            "name": "Pickles",
             "age": 2
         },
         {
-            "name":"Rosie",
+            "name": "Rosie",
             "age": 1
         },
         {
-            "name":"Abbie",
+            "name": "Abbie",
             "age": 4
         },
         {
-            "name":"Cooper",
+            "name": "Cooper",
             "age": 3
         }
     ]
+
 
 @ pytest.fixture
 def nutrition_plans_data():
@@ -153,4 +107,3 @@ def nutrition_plans_data():
         },
 
     ]
-
