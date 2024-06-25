@@ -100,8 +100,12 @@ def test_update_pet_by_pet_id(reset_db, pets_data):
     update_pet = wrappers.update_pet_by_pet_id(pet['id'], new_pet)
     assert update_pet['status'] == SUCCESS
 
-    # Check the update values are correct
-    assert update_pet['data']['name'] == new_pet['name']
+    # Compare all the values in the update dict with the result's value
+    for key, value in new_pet.items():
+        if update_pet['data'][key] != value:
+            assert False
+
+    assert True
 
 
 def test_invalid_update_pet_by_pet_id(reset_db, pets_data):

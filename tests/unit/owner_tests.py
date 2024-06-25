@@ -34,7 +34,7 @@ def test_get_all_owner(reset_db, owners_data):
         assert owner["status"] == SUCCESS
 
     # Compare return list with input list
-    all_owners = wrappers.get_all_owners()
+    all_owners = wrappers.get_all_owners()['data']
     assert len(owners) == len(all_owners)
 
 
@@ -42,14 +42,20 @@ def test_get_owner_by_owner_id(reset_db, owners_data):
     ''' Testing the success case of getting specified owner '''
     owner = wrappers.create_owner(owners_data[0])['data']
     ret_owner = wrappers.get_owner_by_owner_id(owner['id'])['data']
-    assert owner["email"] == ret_owner["email"]
+
+    # For every key value in owner, ret owner shares the same value
+    for key, value in owner.items():
+        if ret_owner[key] != value:
+            assert False, f'Return value does not match with given value'
+
+    assert True
 
 
 def test_invalid_get_owner_by_owner_id(reset_db, owners_data):
     ''' Testing the failing case of getting specified owner '''
     owner = wrappers.create_owner(owners_data[0])['data']
     ret_owner = wrappers.get_owner_by_owner_id(owner['id'] + 200)
-    assert ret_owner['status'] == ERROR
+    assert ret_owner['status'] == ERROR, f'Invalid ID did not return error status on get by ID'
 
 
 def test_delete_owner_by_owner_id(reset_db, owners_data):
@@ -66,7 +72,7 @@ def test_delete_owner_by_owner_id(reset_db, owners_data):
 
     # Check post-delete status
     post_check_res = wrappers.get_owner_by_owner_id(owner['id'])
-    assert post_check_res['status'] == ERROR
+    assert post_check_res['status'] == ERROR, f'Deleted item\'s ID still present in database'
 
 
 def test_invalid_delete_owner_by_owner_id(reset_db, owners_data):
@@ -80,7 +86,7 @@ def test_invalid_delete_owner_by_owner_id(reset_db, owners_data):
 
     # Check deletion request status, with invalid ID provided
     delete_res = wrappers.delete_owner_by_owner_id(owner['id'] + 200)
-    assert delete_res['status'] == ERROR
+    assert delete_res['status'] == ERROR, f'Invalid ID did not return error status on delete'
 
     # Check post-delete status
     post_check_res = wrappers.get_owner_by_owner_id(owner['id'])
