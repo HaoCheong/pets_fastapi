@@ -4,7 +4,6 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 import app.schemas.pets_schemas as schemas
-import app.models.pets_models as models
 
 def create_pet(db: Session, new_pet: schemas.PetCreate):
     
