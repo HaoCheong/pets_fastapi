@@ -1,6 +1,6 @@
 from sqlmodel import Field
 
-import app.models.pets_models as models
+import app.models.pet_models as models
 
 
 class Pet(models.PetBase, table=True):
