@@ -1,15 +1,20 @@
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Query
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from fastapi import Depends, FastAPI
+from sqlmodel import Session
 
-from app.database import create_db_and_tables
 import app.endpoints.pet_endpoints as pet_endpoints
+import app.metadata as metadata
 
-app = FastAPI()
+app = FastAPI(
+    openapi_tags=metadata.tags_metadata,
+    title=metadata.app_title,
+    description=metadata.app_desc,
+    version=metadata.app_version
+)
 
-@app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
+@app.get("/")
+def root():
+    return { "connection": True }
 
 app.include_router(pet_endpoints.router)

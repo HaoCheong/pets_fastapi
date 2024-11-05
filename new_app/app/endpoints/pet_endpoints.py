@@ -1,68 +1,52 @@
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Query, APIRouter
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from fastapi import APIRouter, HTTPException, Query
 
 import app.cruds.pet_cruds as cruds
-import app.models.pet_model as models
 import app.schemas.pet_schemas as schemas
-from app.database import get_session
-
-
-SessionDep = Annotated[Session, Depends(get_session)]
+from app.database.database import SessionDep, create_db_and_tables
 
 router = APIRouter()
 
-@router.post("/pet/", response_model=schemas.PetRead)
-def create_pet(pet: schemas.PetCreate, session: SessionDep):
 
-    db_pet = schemas.Pet.model_validate(pet)
+@router.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
-    session.add(db_pet)
-    session.commit()
-    session.refresh(db_pet)
 
+@router.post("/pet/", response_model=schemas.PetRead, tags=['Pets'])
+def create_pet(pet: schemas.PetCreate, db: SessionDep):
+    db_pet = cruds.create_pet(db=db, new_pet=pet)
     return db_pet
 
-@router.get("/pets/", response_model=list[schemas.PetRead])
-def read_pets(session: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100) -> list[schemas.Pet]:
-    pet = session.exec(select(schemas.Pet).offset(offset).limit(limit)).all()
-    return pet
+@router.get("/pets/", response_model=list[schemas.PetRead], tags=['Pets'])
+def get_all_pets(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100) -> list[schemas.Pet]:
+    db_pets = cruds.get_all_pets(db=db, offset=offset, limit=limit)
+    return db_pets
 
-@router.get("/pet/{pet_id}", response_model=list[schemas.PetRead])
-def read_pet(pet_id: int, session: SessionDep):
-
-    pet = session.get(schemas.Pet, pet_id)
-
-    if not pet:
-        raise HTTPException(status_code=404, detail="Pet not found")
+@router.get("/pet/{pet_id}", response_model=schemas.PetRead, tags=['Pets'])
+def get_pet_by_id(pet_id: int, db: SessionDep):
     
-    return pet
-
-@router.patch("/pet/{pet_id}", response_model=schemas.PetRead)
-def update_pet(pet_id: int, pet: schemas.PetUpdate, session: SessionDep):
-    pet_db = session.get(schemas.Pet, pet_id)
-    if not pet_db:
-        raise HTTPException(status_code=404, detail="Pet not found")
+    db_pet = cruds.get_pet_by_id(db=db, pet_id=pet_id)
+    if db_pet is None:
+        raise HTTPException(status_code=400, detail="Pet does not exist")
     
-    pet_data = pet.model_dump(exclude_unset=True)
-    pet_db.sqlmodel_update(pet_data)
+    return db_pet
 
-    session.add(pet_db)
-    session.commit()
-    session.refresh(pet_db)
+@router.patch("/pet/{pet_id}", response_model=schemas.PetRead, tags=['Pets'])
+def update_pet(pet_id: int, new_pet: schemas.PetUpdate, db: SessionDep):
 
-    return pet_db
-
-@router.delete("/pet/{pet_id}")
-def delete_pet(pet_id: int, session: SessionDep):
-
-    pet = session.get(schemas.Pet, pet_id)
-
-    if not pet:
-        raise HTTPException(status_code=404, detail="Pet not found")
+    db_pet = cruds.get_pet_by_id(db=db, pet_id=pet_id)
+    if db_pet is None:
+        raise HTTPException(status_code=400, detail="Pet does not exist")
     
-    session.delete(pet)
-    session.commit()
+    return cruds.update_pet_by_id(db=db, pet_id=pet_id, new_pet=new_pet)
 
-    return {"Success": True}
+@router.delete("/pet/{pet_id}", tags=['Pets'])
+def delete_pet(pet_id: int, db: SessionDep):
+    
+    db_pet = cruds.get_pet_by_id(db=db, pet_id=pet_id)
+    if db_pet is None:
+        raise HTTPException(status_code=400, detail="Pet does not exist")
+    
+    return cruds.delete_pet_by_id(db=db, pet_id=pet_id)
