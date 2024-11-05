@@ -1,13 +1,11 @@
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, Query, APIRouter
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from fastapi import APIRouter, HTTPException, Query
 
-import app.schemas.pets_schemas as schemas
 import app.cruds.pets_cruds as cruds
-from app.database import SessionDep
+import app.schemas.pets_schemas as schemas
+from app.database.database import SessionDep, create_db_and_tables
 
-from app.database import create_db_and_tables 
 router = APIRouter()
 
 

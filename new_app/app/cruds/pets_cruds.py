@@ -1,9 +1,8 @@
-from typing import Annotated
-
-from fastapi import Depends, FastAPI, HTTPException, Query
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from fastapi import HTTPException
+from sqlmodel import Session, select
 
 import app.schemas.pets_schemas as schemas
+
 
 def create_pet(db: Session, new_pet: schemas.PetCreate):
     

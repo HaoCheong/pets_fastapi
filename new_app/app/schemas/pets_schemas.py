@@ -2,6 +2,7 @@ from sqlmodel import Field
 
 import app.models.pets_models as models
 
+
 class Pet(models.PetBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     nickname: str
