@@ -1,19 +1,22 @@
 from sqlmodel import Field
 
-import app.models.pet_model as model
+import app.models.pet_models as models
 
-class Pet(model.PetBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+class Pet(models.PetBase, table=True):
+    id: int = Field(default=None, primary_key=True)
     nickname: str
 
-class PetRead(model.PetBase):
+class PetReadNR(models.PetBase):
     id: int
     nickname: str
 
-class PetCreate(model.PetBase):
+class PetReadWR(PetReadNR):
+    pass
+
+class PetCreate(models.PetBase):
     nickname: str
 
-class PetUpdate(model.PetBase):
+class PetUpdate(models.PetBase):
     name: str | None = None
     age: int | None = None
     nickname: str | None = None
