@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 from sqlmodel import Session, select
 
+import app.models.owner_models as models
 import app.schemas.owner_schemas as schemas
-
 
 def create_owner(db: Session, new_owner: schemas.OwnerCreate):
     
-    db_owner = schemas.Owner.model_validate(new_owner)
+    db_owner = models.Owner.model_validate(new_owner)
 
     db.add(db_owner)
     db.commit()
@@ -15,12 +15,12 @@ def create_owner(db: Session, new_owner: schemas.OwnerCreate):
     return db_owner
 
 def get_all_owners(db: Session, offset: int = 0, limit: int = 100):
-    owner = db.exec(select(schemas.Owner).offset(offset).limit(limit)).all()
+    owner = db.exec(select(models.Owner).offset(offset).limit(limit)).all()
     return owner
 
 def get_owner_by_id(db: Session, owner_id: int):
 
-    owner = db.get(schemas.Owner, owner_id)
+    owner = db.get(models.Owner, owner_id)
 
     if not owner:
         raise HTTPException(status_code=404, detail="Owner not found")
@@ -28,7 +28,7 @@ def get_owner_by_id(db: Session, owner_id: int):
     return owner
 
 def update_owner_by_id(db: Session, owner_id: int, new_owner: schemas.OwnerUpdate):
-    owner_db = db.get(schemas.Owner, owner_id)
+    owner_db = db.get(models.Owner, owner_id)
     
     if not owner_db:
         raise HTTPException(status_code=404, detail="Owner not found")
@@ -43,7 +43,7 @@ def update_owner_by_id(db: Session, owner_id: int, new_owner: schemas.OwnerUpdat
     return owner_db
 
 def delete_owner_by_id(db: Session, owner_id: int):
-    owner = db.get(schemas.Owner, owner_id)
+    owner = db.get(models.Owner, owner_id)
 
     if not owner:
         raise HTTPException(status_code=404, detail="Owner not found")

@@ -1,12 +1,13 @@
 from fastapi import HTTPException
 from sqlmodel import Session, select
 
+import app.models.trainer_models as models
 import app.schemas.trainer_schemas as schemas
 
 
 def create_trainer(db: Session, new_trainer: schemas.TrainerCreate):
     
-    db_trainer = schemas.Trainer.model_validate(new_trainer)
+    db_trainer = models.Trainer.model_validate(new_trainer)
 
     db.add(db_trainer)
     db.commit()
@@ -15,12 +16,12 @@ def create_trainer(db: Session, new_trainer: schemas.TrainerCreate):
     return db_trainer
 
 def get_all_trainers(db: Session, offset: int = 0, limit: int = 100):
-    trainer = db.exec(select(schemas.Trainer).offset(offset).limit(limit)).all()
+    trainer = db.exec(select(models.Trainer).offset(offset).limit(limit)).all()
     return trainer
 
 def get_trainer_by_id(db: Session, trainer_id: str):
 
-    trainer = db.get(schemas.Trainer, trainer_id)
+    trainer = db.get(models.Trainer, trainer_id)
 
     if not trainer:
         raise HTTPException(status_code=404, detail="Trainer not found")
@@ -28,7 +29,7 @@ def get_trainer_by_id(db: Session, trainer_id: str):
     return trainer
 
 def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.TrainerUpdate):
-    trainer_db = db.get(schemas.Trainer, trainer_id)
+    trainer_db = db.get(models.Trainer, trainer_id)
     
     if not trainer_db:
         raise HTTPException(status_code=404, detail="Trainer not found")
@@ -43,7 +44,7 @@ def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.Trai
     return trainer_db
 
 def delete_trainer_by_id(db: Session, trainer_id: str):
-    trainer = db.get(schemas.Trainer, trainer_id)
+    trainer = db.get(models.Trainer, trainer_id)
 
     if not trainer:
         raise HTTPException(status_code=404, detail="Trainer not found")

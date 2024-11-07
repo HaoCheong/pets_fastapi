@@ -4,8 +4,7 @@ from datetime import datetime
 
 import app.models.nutrition_plan_models as models
 
-class NutritionPlan(models.NutritionPlanBase, table=True):
-    id: int = Field(default=None, primary_key=True)
+
 
 class NutritionPlanReadNR(models.NutritionPlanBase):
     id: int

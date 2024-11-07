@@ -14,7 +14,7 @@ def create_pet(pet: schemas.PetCreate, db: SessionDep):
     return db_pet
 
 @router.get("/pets/", response_model=list[schemas.PetReadNR], tags=['Pets'])
-def get_all_pets(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100) -> list[schemas.Pet]:
+def get_all_pets(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     db_pets = cruds.get_all_pets(db=db, offset=offset, limit=limit)
     return db_pets
 

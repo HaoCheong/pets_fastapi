@@ -2,15 +2,14 @@ from sqlmodel import Field
 
 import app.models.owner_models as models
 
-class Owner(models.OwnerBase, table=True):
-    id: int = Field(default=None, primary_key=True)
-    password: str
 
 class OwnerReadNR(models.OwnerBase):
     id: int
 
 class OwnerReadWR(OwnerReadNR):
-    pass
+    from app.schemas.pet_schemas import PetReadNR
+    
+    pets: list["PetReadNR"] = []
 
 class OwnerCreate(models.OwnerBase):
     password: str

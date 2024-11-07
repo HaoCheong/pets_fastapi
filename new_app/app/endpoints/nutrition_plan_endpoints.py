@@ -14,7 +14,7 @@ def create_nutrition_plan(nutrition_plan: schemas.NutritionPlanCreate, db: Sessi
     return db_nutrition_plan
 
 @router.get("/nutrition_plans/", response_model=list[schemas.NutritionPlanReadNR], tags=['Nutrition Plans'])
-def get_all_nutrition_plans(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100) -> list[schemas.NutritionPlan]:
+def get_all_nutrition_plans(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     db_nutrition_plans = cruds.get_all_nutrition_plans(db=db, offset=offset, limit=limit)
     return db_nutrition_plans
 

@@ -8,3 +8,5 @@ class TrainerBase(SQLModel):
     email: str = Field(unique=True)
     date_started: datetime
     
+class Trainer(TrainerBase, table=True):
+    trainer_id: str = Field(unique=True, primary_key=True)

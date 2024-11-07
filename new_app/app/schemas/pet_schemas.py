@@ -1,17 +1,14 @@
 from sqlmodel import Field
-
+from typing import Optional
 import app.models.pet_models as models
-
-class Pet(models.PetBase, table=True):
-    id: int = Field(default=None, primary_key=True)
-    nickname: str
 
 class PetReadNR(models.PetBase):
     id: int
     nickname: str
 
 class PetReadWR(PetReadNR):
-    pass
+    from app.schemas.owner_schemas import OwnerReadNR
+    owner: Optional[OwnerReadNR] = None
 
 class PetCreate(models.PetBase):
     nickname: str

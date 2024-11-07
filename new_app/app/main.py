@@ -10,6 +10,8 @@ import app.endpoints.owner_endpoints as owner_endpoints
 import app.endpoints.trainer_endpoints as trainer_endpoints
 import app.endpoints.nutrition_plan_endpoints as nutrition_plan_endpoints
 
+import app.endpoints.pet_assignment_endpoints as pet_assignment_endpoints
+
 import app.metadata as metadata
 
 app = FastAPI(
@@ -31,3 +33,5 @@ app.include_router(pet_endpoints.router)
 app.include_router(owner_endpoints.router)
 app.include_router(trainer_endpoints.router)
 app.include_router(nutrition_plan_endpoints.router)
+
+app.include_router(pet_assignment_endpoints.router)

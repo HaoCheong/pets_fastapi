@@ -2,8 +2,7 @@ from sqlmodel import Field
 from datetime import datetime
 import app.models.trainer_models as models
 
-class Trainer(models.TrainerBase, table=True):
-    trainer_id: str = Field(unique=True, primary_key=True)
+
 
 class TrainerReadNR(models.TrainerBase):
     trainer_id: str

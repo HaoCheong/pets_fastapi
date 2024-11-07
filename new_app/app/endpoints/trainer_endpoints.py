@@ -14,7 +14,7 @@ def create_trainer(trainer: schemas.TrainerCreate, db: SessionDep):
     return db_trainer
 
 @router.get("/trainers/", response_model=list[schemas.TrainerReadNR], tags=['Trainers'])
-def get_all_trainers(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100) -> list[schemas.Trainer]:
+def get_all_trainers(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     db_trainers = cruds.get_all_trainers(db=db, offset=offset, limit=limit)
     return db_trainers
 

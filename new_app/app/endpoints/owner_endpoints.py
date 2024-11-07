@@ -14,7 +14,7 @@ def create_owner(owner: schemas.OwnerCreate, db: SessionDep):
     return db_owner
 
 @router.get("/owners/", response_model=list[schemas.OwnerReadNR], tags=['Owners'])
-def get_all_owners(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100) -> list[schemas.Owner]:
+def get_all_owners(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     db_owners = cruds.get_all_owners(db=db, offset=offset, limit=limit)
     return db_owners
 
