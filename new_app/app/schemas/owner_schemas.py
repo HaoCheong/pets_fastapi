@@ -1,15 +1,15 @@
 from sqlmodel import Field
-
+from typing import TYPE_CHECKING, Optional, List
 import app.models.owner_models as models
 
+if TYPE_CHECKING:
+    from app.schemas.pet_schemas import PetReadNR
 
 class OwnerReadNR(models.OwnerBase):
     id: int
 
 class OwnerReadWR(OwnerReadNR):
-    from app.schemas.pet_schemas import PetReadNR
-    
-    pets: list["PetReadNR"] = []
+    pets: Optional[List["PetReadNR"]] = []
 
 class OwnerCreate(models.OwnerBase):
     password: str

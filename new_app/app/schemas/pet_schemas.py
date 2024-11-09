@@ -1,14 +1,16 @@
 from sqlmodel import Field
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 import app.models.pet_models as models
+
+if TYPE_CHECKING:
+    from app.schemas.owner_schemas import OwnerReadNR
 
 class PetReadNR(models.PetBase):
     id: int
     nickname: str
 
 class PetReadWR(PetReadNR):
-    from app.schemas.owner_schemas import OwnerReadNR
-    owner: Optional[OwnerReadNR] = None
+    owner: Optional["OwnerReadNR"] = None
 
 class PetCreate(models.PetBase):
     nickname: str
