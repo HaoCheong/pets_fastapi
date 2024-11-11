@@ -9,7 +9,7 @@ class OwnerReadNR(models.OwnerBase):
     id: int
 
 class OwnerReadWR(OwnerReadNR):
-    pets: Optional[List["PetReadNR"]] = []
+    pets: list["PetReadNR"] = []
 
 class OwnerCreate(models.OwnerBase):
     password: str

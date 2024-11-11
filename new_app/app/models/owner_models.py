@@ -3,7 +3,7 @@ from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.models.pet_models import Pet
-
+    
 class OwnerBase(SQLModel):
     
     name: str = Field(index=True)
