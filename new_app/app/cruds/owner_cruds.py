@@ -3,6 +3,7 @@ from sqlmodel import Session, select
 
 import app.models.owner_models as models
 
+
 def create_owner(db: Session, new_owner: models.OwnerCreate):
     
     db_owner = models.Owner.model_validate(new_owner)

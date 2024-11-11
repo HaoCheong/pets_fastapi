@@ -1,5 +1,6 @@
-from typing import Optional, TYPE_CHECKING
-from sqlmodel import Field, SQLModel, Relationship
+from typing import TYPE_CHECKING, Optional
+
+from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.models.owner_models import Owner, OwnerReadNR
@@ -21,7 +22,8 @@ class PetReadNR(PetBase):
     nickname: str
 
 class PetReadWR(PetReadNR):
-    owner: "OwnerReadNR"
+    
+    owner: "OwnerReadNR" | None = None
 
 class PetCreate(PetBase):
     nickname: str

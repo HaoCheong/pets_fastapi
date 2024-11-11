@@ -1,5 +1,5 @@
-from sqlmodel import Field, SQLModel, Relationship
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING, List, Optional
+from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.models.pet_models import Pet, PetReadNR
@@ -22,6 +22,7 @@ class OwnerReadNR(OwnerBase):
     id: int
 
 class OwnerReadWR(OwnerReadNR):
+    
     pets: list["PetReadNR"] = []
 
 class OwnerCreate(OwnerBase):

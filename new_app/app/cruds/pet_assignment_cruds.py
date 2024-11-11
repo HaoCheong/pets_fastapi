@@ -1,7 +1,8 @@
 from sqlmodel import Session
 
-import app.models.pet_models as pet_models
 import app.models.owner_models as owner_models
+import app.models.pet_models as pet_models
+
 
 def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
     ''' Assign instance of pet to an owner. Many to One Relationship '''

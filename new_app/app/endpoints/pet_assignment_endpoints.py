@@ -1,12 +1,13 @@
-from app.database.database import get_session
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
+
+from app.database.database import get_session
 
 router = APIRouter()
 
 import app.cruds.owner_cruds as owner_cruds
-import app.cruds.pet_cruds as pet_cruds
 import app.cruds.pet_assignment_cruds as pet_assignment_cruds
+import app.cruds.pet_cruds as pet_cruds
 
 # ======== ASSIGNING PETS TO OWNER ========
 

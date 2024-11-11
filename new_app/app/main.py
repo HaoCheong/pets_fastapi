@@ -3,22 +3,13 @@ from typing import Annotated
 from fastapi import Depends, FastAPI
 from sqlmodel import Session
 
-from app.database.database import create_db_and_tables
-
-import app.endpoints.pet_endpoints as pet_endpoints
-import app.endpoints.owner_endpoints as owner_endpoints
-import app.endpoints.trainer_endpoints as trainer_endpoints
 import app.endpoints.nutrition_plan_endpoints as nutrition_plan_endpoints
-
-from app.models.owner_models import Owner
-from app.models.pet_models import Pet
-
-from app.schemas.owner_schemas import *
-from app.schemas.pet_schemas import *
-
+import app.endpoints.owner_endpoints as owner_endpoints
 import app.endpoints.pet_assignment_endpoints as pet_assignment_endpoints
-
+import app.endpoints.pet_endpoints as pet_endpoints
+import app.endpoints.trainer_endpoints as trainer_endpoints
 import app.metadata as metadata
+from app.database.database import create_db_and_tables
 
 app = FastAPI(
     openapi_tags=metadata.tags_metadata,

@@ -1,5 +1,7 @@
-from sqlmodel import Field, SQLModel
 from datetime import datetime
+
+from sqlmodel import Field, SQLModel
+
 
 class NutritionPlanBase(SQLModel):
     
