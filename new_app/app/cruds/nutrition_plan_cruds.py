@@ -2,10 +2,9 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 
 import app.models.nutrition_plan_models as models
-import app.schemas.nutrition_plan_schemas as schemas
 
 
-def create_nutrition_plan(db: Session, new_nutrition_plan: schemas.NutritionPlanCreate):
+def create_nutrition_plan(db: Session, new_nutrition_plan: models.NutritionPlanCreate):
     
     db_nutrition_plan = models.NutritionPlan.model_validate(new_nutrition_plan)
 
@@ -28,7 +27,7 @@ def get_nutrition_plan_by_id(db: Session, nutrition_plan_id: int):
     
     return nutrition_plan
 
-def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: int, new_nutrition_plan: schemas.NutritionPlanUpdate):
+def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: int, new_nutrition_plan: models.NutritionPlanUpdate):
     nutrition_plan_db = db.get(models.NutritionPlan, nutrition_plan_id)
     
     if not nutrition_plan_db:

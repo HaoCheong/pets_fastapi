@@ -2,8 +2,8 @@ from sqlmodel import Field, SQLModel, Relationship
 from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from app.models.pet_models import Pet
-    
+    from app.models.pet_models import Pet, PetReadNR
+
 class OwnerBase(SQLModel):
     
     name: str = Field(index=True)
@@ -17,3 +17,18 @@ class Owner(OwnerBase, table=True):
     password: str
 
     pets: list["Pet"] = Relationship(back_populates='owner')
+
+class OwnerReadNR(OwnerBase):
+    id: int
+
+class OwnerReadWR(OwnerReadNR):
+    pets: list["PetReadNR"] = []
+
+class OwnerCreate(OwnerBase):
+    password: str
+
+class OwnerUpdate(OwnerBase):
+    name: str | None = None
+    email: str | None = None
+    password: str | None = None
+    home_address: str | None = None

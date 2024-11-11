@@ -2,10 +2,9 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 
 import app.models.pet_models as models
-import app.schemas.pet_schemas as schemas
 
 
-def create_pet(db: Session, new_pet: schemas.PetCreate):
+def create_pet(db: Session, new_pet: models.PetCreate):
     
     db_pet = models.Pet.model_validate(new_pet)
 
@@ -28,7 +27,7 @@ def get_pet_by_id(db: Session, pet_id: int):
     
     return db_pet
 
-def update_pet_by_id(db: Session, pet_id: int, new_pet: schemas.PetUpdate):
+def update_pet_by_id(db: Session, pet_id: int, new_pet: models.PetUpdate):
     db_pet = db.get(models.Pet, pet_id)
     
     if not db_pet:

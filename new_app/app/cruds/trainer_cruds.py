@@ -2,10 +2,9 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 
 import app.models.trainer_models as models
-import app.schemas.trainer_schemas as schemas
 
 
-def create_trainer(db: Session, new_trainer: schemas.TrainerCreate):
+def create_trainer(db: Session, new_trainer: models.TrainerCreate):
     
     db_trainer = models.Trainer.model_validate(new_trainer)
 
@@ -28,7 +27,7 @@ def get_trainer_by_id(db: Session, trainer_id: str):
     
     return trainer
 
-def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.TrainerUpdate):
+def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: models.TrainerUpdate):
     trainer_db = db.get(models.Trainer, trainer_id)
     
     if not trainer_db:

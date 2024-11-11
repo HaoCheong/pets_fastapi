@@ -3,22 +3,22 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, Query
 
 import app.cruds.pet_cruds as cruds
-import app.schemas.pet_schemas as schemas
+import app.models.pet_models as models
 from app.database.database import SessionDep
 
 router = APIRouter()
 
-@router.post("/pet/", response_model=schemas.PetReadWR, tags=['Pets'])
-def create_pet(pet: schemas.PetCreate, db: SessionDep):
+@router.post("/pet/", response_model=models.PetReadWR, tags=['Pets'])
+def create_pet(pet: models.PetCreate, db: SessionDep):
     db_pet = cruds.create_pet(db=db, new_pet=pet)
     return db_pet
 
-@router.get("/pets/", response_model=list[schemas.PetReadNR], tags=['Pets'])
+@router.get("/pets/", response_model=list[models.PetReadNR], tags=['Pets'])
 def get_all_pets(db: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     db_pets = cruds.get_all_pets(db=db, offset=offset, limit=limit)
     return db_pets
 
-@router.get("/pet/{pet_id}", response_model=schemas.PetReadWR, tags=['Pets'])
+@router.get("/pet/{pet_id}", response_model=models.PetReadWR, tags=['Pets'])
 def get_pet_by_id(pet_id: int, db: SessionDep):
     
     db_pet = cruds.get_pet_by_id(db=db, pet_id=pet_id)
@@ -27,8 +27,8 @@ def get_pet_by_id(pet_id: int, db: SessionDep):
     
     return db_pet
 
-@router.patch("/pet/{pet_id}", response_model=schemas.PetReadWR, tags=['Pets'])
-def update_pet(pet_id: int, new_pet: schemas.PetUpdate, db: SessionDep):
+@router.patch("/pet/{pet_id}", response_model=models.PetReadWR, tags=['Pets'])
+def update_pet(pet_id: int, new_pet: models.PetUpdate, db: SessionDep):
 
     db_pet = cruds.get_pet_by_id(db=db, pet_id=pet_id)
     if db_pet is None:

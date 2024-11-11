@@ -2,9 +2,8 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 
 import app.models.owner_models as models
-import app.schemas.owner_schemas as schemas
 
-def create_owner(db: Session, new_owner: schemas.OwnerCreate):
+def create_owner(db: Session, new_owner: models.OwnerCreate):
     
     db_owner = models.Owner.model_validate(new_owner)
 
@@ -27,7 +26,7 @@ def get_owner_by_id(db: Session, owner_id: int):
     
     return owner
 
-def update_owner_by_id(db: Session, owner_id: int, new_owner: schemas.OwnerUpdate):
+def update_owner_by_id(db: Session, owner_id: int, new_owner: models.OwnerUpdate):
     owner_db = db.get(models.Owner, owner_id)
     
     if not owner_db:

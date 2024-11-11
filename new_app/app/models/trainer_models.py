@@ -10,3 +10,21 @@ class TrainerBase(SQLModel):
     
 class Trainer(TrainerBase, table=True):
     trainer_id: str = Field(unique=True, primary_key=True)
+
+class TrainerReadNR(TrainerBase):
+    trainer_id: str
+    date_started: datetime
+
+class TrainerReadWR(TrainerReadNR):
+    pass
+
+class TrainerCreate(TrainerBase):
+    trainer_id: str
+    date_started: datetime
+    
+class TrainerUpdate(TrainerBase):
+    trainer_id: str | None = None
+    name: str | None = None
+    description: str | None = None
+    phone_no: str | None = None
+    email: str | None = None
