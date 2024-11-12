@@ -23,7 +23,7 @@ class OwnerReadNR(OwnerBase):
 
 class OwnerReadWR(OwnerReadNR):
     
-    pets: list["PetReadNR"] = []
+    pets: List["PetReadNR"] = []
 
 class OwnerCreate(OwnerBase):
     password: str
@@ -33,3 +33,6 @@ class OwnerUpdate(OwnerBase):
     email: str | None = None
     password: str | None = None
     home_address: str | None = None
+
+from app.models.pet_models import PetReadNR
+OwnerReadWR.model_rebuild()

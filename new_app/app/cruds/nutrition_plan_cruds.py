@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, select
 
 import app.models.nutrition_plan_models as models
@@ -6,8 +7,11 @@ import app.models.nutrition_plan_models as models
 
 def create_nutrition_plan(db: Session, new_nutrition_plan: models.NutritionPlanCreate):
     
-    db_nutrition_plan = models.NutritionPlan.model_validate(new_nutrition_plan)
+    model_nutrition_plan = new_nutrition_plan
+    model_nutrition_plan.meal = jsonable_encoder(new_nutrition_plan.meal)
 
+    db_nutrition_plan = models.NutritionPlan.model_validate(model_nutrition_plan)
+    
     db.add(db_nutrition_plan)
     db.commit()
     db.refresh(db_nutrition_plan)
