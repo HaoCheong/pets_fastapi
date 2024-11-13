@@ -1,58 +1,54 @@
-from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from sqlmodel import Session, select
 
-import app.models.trainer_model as model
-import app.schemas.trainer_schemas as schemas
+import app.models.trainer_models as models
 
-def create_trainer(db: Session, trainer: schemas.TrainerCreate):
-    ''' Creating an new pet trainer '''
-    db_trainer = model.Trainer(
-        trainer_id=trainer.trainer_id,
-        name=trainer.name,
-        description=trainer.description,
-        phone_no=trainer.phone_no,
-        email=trainer.email,
-        date_started=trainer.date_started
-    )
+
+def create_trainer(db: Session, new_trainer: models.TrainerCreate):
+    
+    db_trainer = models.Trainer.model_validate(new_trainer)
 
     db.add(db_trainer)
     db.commit()
     db.refresh(db_trainer)
+
     return db_trainer
 
-
-def get_all_trainers(db: Session, skip: int = 0, limit: int = 100):
-    ''' Get every instance of pet trainer, using offset pagination '''
-    return db.query(model.Trainer).offset(skip).limit(limit).all()
-
+def get_all_trainers(db: Session, offset: int = 0, limit: int = 100):
+    trainer = db.exec(select(models.Trainer).offset(offset).limit(limit)).all()
+    return trainer
 
 def get_trainer_by_id(db: Session, trainer_id: str):
-    ''' Get specific instance of pet trainer based on provided trainer ID '''
-    return db.query(model.Trainer).filter(model.Trainer.trainer_id == trainer_id).first()
 
+    trainer = db.get(models.Trainer, trainer_id)
 
-def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.TrainerUpdate):
-    ''' Update specific fields of specified instance of pet trainer on provided trainer ID '''
-    db_trainer = db.query(model.Trainer).filter(
-        model.Trainer.trainer_id == trainer_id).first()
+    if not trainer:
+        raise HTTPException(status_code=404, detail="Trainer not found")
+    
+    return trainer
 
-    # Converts new_trainer from model.object to dictionary
-    update_trainer = new_trainer.dict(exclude_unset=True)
+def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: models.TrainerUpdate):
+    trainer_db = db.get(models.Trainer, trainer_id)
+    
+    if not trainer_db:
+        raise HTTPException(status_code=404, detail="Trainer not found")
+    
+    trainer_data = new_trainer.model_dump(exclude_unset=True)
+    trainer_db.sqlmodel_update(trainer_data)
 
-    # Loops through dictionary and update db_trainer
-    for key, value in update_trainer.items():
-        setattr(db_trainer, key, value)
-
-    db.add(db_trainer)
+    db.add(trainer_db)
     db.commit()
-    db.refresh(db_trainer)
-    return db_trainer
+    db.refresh(trainer_db)
 
+    return trainer_db
 
 def delete_trainer_by_id(db: Session, trainer_id: str):
-    ''' Delete specified instance of pet trainer on provided trainer ID '''
-    db_trainer = db.query(model.Trainer).filter(
-        model.Trainer.trainer_id == trainer_id).first()
+    trainer = db.get(models.Trainer, trainer_id)
 
-    db.delete(db_trainer)
+    if not trainer:
+        raise HTTPException(status_code=404, detail="Trainer not found")
+    
+    db.delete(trainer)
     db.commit()
+
     return {"Success": True}

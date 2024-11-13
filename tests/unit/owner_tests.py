@@ -12,9 +12,10 @@ Testing should always validate 2 things:
  - Validate the data correctness
 '''
 
-from tests.client_fixture import client, SUCCESS, ERROR, reset_db
-from tests.data_fixtures import owners_data
 from tests.unit import wrappers
+from tests.unit.client_fixture import (ERROR, NOT_FOUND, SUCCESS, client,
+                                       reset_db)
+from tests.unit.data_fixture import owners_data, pets_data
 
 
 def test_create_owner(reset_db, owners_data):
@@ -38,10 +39,10 @@ def test_get_all_owner(reset_db, owners_data):
     assert len(owners) == len(all_owners)
 
 
-def test_get_owner_by_owner_id(reset_db, owners_data):
+def test_get_owner_by_id(reset_db, owners_data):
     ''' Testing the success case of getting specified owner '''
     owner = wrappers.create_owner(owners_data[0])['data']
-    ret_owner = wrappers.get_owner_by_owner_id(owner['id'])['data']
+    ret_owner = wrappers.get_owner_by_id(owner['id'])['data']
 
     # For every key value in owner, ret owner shares the same value
     for key, value in owner.items():
@@ -51,11 +52,11 @@ def test_get_owner_by_owner_id(reset_db, owners_data):
     assert True
 
 
-def test_invalid_get_owner_by_owner_id(reset_db, owners_data):
+def test_invalid_get_owner_by_id(reset_db, owners_data):
     ''' Testing the failing case of getting specified owner '''
     owner = wrappers.create_owner(owners_data[0])['data']
-    ret_owner = wrappers.get_owner_by_owner_id(owner['id'] + 200)
-    assert ret_owner['status'] == ERROR, f'Invalid ID did not return error status on get by ID'
+    ret_owner = wrappers.get_owner_by_id(owner['id'] + 200)
+    assert ret_owner['status'] == NOT_FOUND, f'Invalid ID did not return error status on get by ID'
 
 
 def test_delete_owner_by_owner_id(reset_db, owners_data):
@@ -63,7 +64,7 @@ def test_delete_owner_by_owner_id(reset_db, owners_data):
     owner = wrappers.create_owner(owners_data[0])['data']
 
     # Check pre-delete status
-    pre_check_res = wrappers.get_owner_by_owner_id(owner['id'])
+    pre_check_res = wrappers.get_owner_by_id(owner['id'])
     assert pre_check_res['status'] == SUCCESS
 
     # Check deletion request status
@@ -71,8 +72,8 @@ def test_delete_owner_by_owner_id(reset_db, owners_data):
     assert delete_res['status'] == SUCCESS
 
     # Check post-delete status
-    post_check_res = wrappers.get_owner_by_owner_id(owner['id'])
-    assert post_check_res['status'] == ERROR, f'Deleted item\'s ID still present in database'
+    post_check_res = wrappers.get_owner_by_id(owner['id'])
+    assert post_check_res['status'] == NOT_FOUND, f'Deleted item\'s ID still present in database'
 
 
 def test_invalid_delete_owner_by_owner_id(reset_db, owners_data):
@@ -81,15 +82,15 @@ def test_invalid_delete_owner_by_owner_id(reset_db, owners_data):
     owner = wrappers.create_owner(owners_data[0])['data']
 
     # Check pre-delete status
-    pre_check_res = wrappers.get_owner_by_owner_id(owner['id'])
+    pre_check_res = wrappers.get_owner_by_id(owner['id'])
     assert pre_check_res['status'] == SUCCESS
 
     # Check deletion request status, with invalid ID provided
     delete_res = wrappers.delete_owner_by_owner_id(owner['id'] + 200)
-    assert delete_res['status'] == ERROR, f'Invalid ID did not return error status on delete'
+    assert delete_res['status'] == NOT_FOUND, f'Invalid ID did not return error status on delete'
 
     # Check post-delete status
-    post_check_res = wrappers.get_owner_by_owner_id(owner['id'])
+    post_check_res = wrappers.get_owner_by_id(owner['id'])
     assert post_check_res['status'] == SUCCESS
 
 
@@ -118,8 +119,8 @@ def test_invalid_update_owner_by_owner_id(reset_db, owners_data):
     new_owner = owners_data[1]
     update_owner = wrappers.update_owner_by_owner_id(
         owner['id'] + 200, new_owner)
-    assert update_owner['status'] == ERROR
+    assert update_owner['status'] == NOT_FOUND
 
     # Checks that the current owner is untouched
-    curr_owner = wrappers.get_owner_by_owner_id(owner['id'])
+    curr_owner = wrappers.get_owner_by_id(owner['id'])
     assert curr_owner['data']['name'] == owner['name']

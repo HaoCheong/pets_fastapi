@@ -8,24 +8,29 @@ Auto-populates a database with test data.
 '''
 
 import requests
-BACKEND_URL = "http://127.0.0.1:9991"
+
+BACKEND_URL = "http://127.0.0.1:8000"
 
 PETS = [
     {
         "name":"Pickles",
-        "age": 2
+        "age": 2,
+        "nickname": "The Gremlin"
     },
     {
         "name":"Rosie",
-        "age": 1
+        "age": 1,
+        "nickname": "The Sassy"
     },
     {
         "name":"Abbie",
-        "age": 4
+        "age": 4,
+        "nickname": "The Dancer"
     },
     {
         "name":"Cooper",
-        "age": 3
+        "age": 3,
+        "nickname": "The Biter"
     }
 ]
 
@@ -200,7 +205,7 @@ if __name__ == "__main__":
     populate_pets()
     populate_trainers()
     populate_nutrition_plans()
-
+# 
     assigning_pets_to_owner()
     assigning_pets_to_trainer()
     assigning_pets_to_nutrition_plan()

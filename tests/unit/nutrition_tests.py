@@ -12,9 +12,10 @@ Testing should always validate 2 things:
  - Validate the data correctness
 '''
 
-from tests.client_fixture import client, SUCCESS, ERROR, reset_db
-from tests.data_fixtures import nutrition_plans_data
 from tests.unit import wrappers
+from tests.unit.client_fixture import (ERROR, NOT_FOUND, SUCCESS, client,
+                                       reset_db)
+from tests.unit.data_fixture import nutrition_plans_data
 
 
 def test_create_nutrition_plan(reset_db, nutrition_plans_data):
@@ -39,22 +40,22 @@ def test_get_all_nutrition_plan(reset_db, nutrition_plans_data):
     assert len(nutrition_plans) == len(all_nutrition_plans)
 
 
-def test_get_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_plans_data):
+def test_get_nutrition_plan_by_id(reset_db, nutrition_plans_data):
     ''' Testing the success case of getting specified nutrition plan '''
     nutrition_plan = wrappers.create_nutrition_plan(
         nutrition_plans_data[0])['data']
-    ret_nutrition_plan = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+    ret_nutrition_plan = wrappers.get_nutrition_plan_by_id(
         nutrition_plan['id'])['data']
     assert nutrition_plan["name"] == ret_nutrition_plan["name"]
 
 
-def test_invalid_get_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_plans_data):
+def test_invalid_get_nutrition_plan_by_id(reset_db, nutrition_plans_data):
     ''' Testing the failing case of getting specified nutrition plan '''
     nutrition_plan = wrappers.create_nutrition_plan(
         nutrition_plans_data[0])['data']
-    ret_nutrition_plan = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+    ret_nutrition_plan = wrappers.get_nutrition_plan_by_id(
         nutrition_plan['id'] + 200)
-    assert ret_nutrition_plan['status'] == ERROR
+    assert ret_nutrition_plan['status'] == NOT_FOUND
 
 
 def test_delete_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_plans_data):
@@ -63,7 +64,7 @@ def test_delete_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_plans_da
         nutrition_plans_data[0])['data']
 
     # Check pre-delete status
-    pre_check_res = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+    pre_check_res = wrappers.get_nutrition_plan_by_id(
         nutrition_plan['id'])
     assert pre_check_res['status'] == SUCCESS
 
@@ -73,9 +74,9 @@ def test_delete_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_plans_da
     assert delete_res['status'] == SUCCESS
 
     # Check post-delete status
-    post_check_res = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+    post_check_res = wrappers.get_nutrition_plan_by_id(
         nutrition_plan['id'])
-    assert post_check_res['status'] == ERROR
+    assert post_check_res['status'] == NOT_FOUND
 
 
 def test_invalid_delete_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_plans_data):
@@ -85,17 +86,17 @@ def test_invalid_delete_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_
         nutrition_plans_data[0])['data']
 
     # Check pre-delete status
-    pre_check_res = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+    pre_check_res = wrappers.get_nutrition_plan_by_id(
         nutrition_plan['id'])
     assert pre_check_res['status'] == SUCCESS
 
     # Check deletion request status, with invalid ID provided
     delete_res = wrappers.delete_nutrition_plan_by_nutrition_plan_id(
         nutrition_plan['id'] + 200)
-    assert delete_res['status'] == ERROR
+    assert delete_res['status'] == NOT_FOUND
 
     # Check post-delete status
-    post_check_res = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+    post_check_res = wrappers.get_nutrition_plan_by_id(
         nutrition_plan['id'])
     assert post_check_res['status'] == SUCCESS
 
@@ -128,9 +129,9 @@ def test_invalid_update_nutrition_plan_by_nutrition_plan_id(reset_db, nutrition_
     new_nutrition_plan = nutrition_plans_data[1]
     update_nutrition_plan = wrappers.update_nutrition_plan_by_nutrition_plan_id(
         nutrition_plan['id'] + 200, new_nutrition_plan)
-    assert update_nutrition_plan['status'] == ERROR
+    assert update_nutrition_plan['status'] == NOT_FOUND
 
     # Checks that the current nutrition plan is untouched
-    curr_nutrition_plan = wrappers.get_nutrition_plan_by_nutrition_plan_id(
+    curr_nutrition_plan = wrappers.get_nutrition_plan_by_id(
         nutrition_plan['id'])
     assert curr_nutrition_plan['data']['name'] == nutrition_plan['name']

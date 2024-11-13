@@ -1,12 +1,12 @@
 '''data_fixture.py
 
-Contains all the necessary data fixtures for testing
+Contains all the necessary data for testing. All wrapped in Pytest Fixtures
 '''
 
 import pytest
 
 
-@ pytest.fixture
+@pytest.fixture
 def owners_data():
     ''' Return test owner data '''
     return [
@@ -25,7 +25,7 @@ def owners_data():
     ]
 
 
-@ pytest.fixture
+@pytest.fixture
 def trainers_data():
     ''' Return test trainer data '''
     return [
@@ -48,30 +48,34 @@ def trainers_data():
     ]
 
 
-@ pytest.fixture
+@pytest.fixture
 def pets_data():
     ''' Return test pets data '''
     return [
         {
-            "name": "Pickles",
-            "age": 2
+            "name":"Pickles",
+            "age": 2,
+            "nickname": "The Gremlin"
         },
         {
-            "name": "Rosie",
-            "age": 1
+            "name":"Rosie",
+            "age": 1,
+            "nickname": "The Sassy"
         },
         {
-            "name": "Abbie",
-            "age": 4
+            "name":"Abbie",
+            "age": 4,
+            "nickname": "The Dancer"
         },
         {
-            "name": "Cooper",
-            "age": 3
+            "name":"Cooper",
+            "age": 3,
+            "nickname": "The Biter"
         }
     ]
 
 
-@ pytest.fixture
+@pytest.fixture
 def nutrition_plans_data():
     ''' Return test nutrition plan data '''
     return [
@@ -105,5 +109,4 @@ def nutrition_plans_data():
             },
             "starting_date": "2021-03-03T00:00:00.000Z",
         },
-
     ]

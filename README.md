@@ -1,4 +1,4 @@
-# PET FITNESS - A FastAPI Reference Backend
+# PET FITNESS - A FastAPI Reference Backend (Version 1.1)
 
 This is a tutorial backend for those trying to understand and learn FastAPI as well as a reference project
 It contains the basics to start creating a full fledge FastAPI backend as well as understanding the fundamentals of Pytest!
@@ -38,12 +38,11 @@ Depending on what you want to learn, certain files and directories can be ignore
 Each significant directory and file have be annotated as well as the order of which to lean
 
 ### Basics of RestAPI Developement
-1. `app/database.py`
+1. `app/database/database.py`
 2. `app/models`
-3. `app/schemas`
-4. `app/cruds`
-5. `app/endpoints`
-6. `app/main.py`
+3. `app/cruds`
+4. `app/endpoints`
+5. `app/main.py`
 
 ### Basics of PyTest writing
 1. `tests/unit/conftest.py`
@@ -52,23 +51,48 @@ Each significant directory and file have be annotated as well as the order of wh
 
 ## Setting Up
 
+### Local
+
 If you want to auto-install all of the dependencies:
 ```
 pip3 install -r requirements.txt
 ```
 
+### Building Docker Container
+
+You can build an image of the app as a docker container. Assuming you have docker install. Run the following script:
+
+```
+./build_containers.sh
+```
+
+
 ## Start up
 
-To start the server, while in the root folder for this project `/pets_fastapi`, run:
+### Run locally
+
+To start the server, after installing all the dependencies while in the root folder for this project `/pets_fastapi`, run:
 ```
-python3 -m uvicorn main:app --reload
-```
-or if you want to specify a port
-```
-uvicorn main:app --reload --port 8000
+//To run in development mode (with hot reload)
+fastapi dev app/main.py
+
+//To run in production mode
+fastapi run app/main.py
 ```
 
 Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to view Swagger Docs
+
+### Running Container
+
+> [!warning]
+> Docker container uses port number 9991 where as by default, running locally uses port number 8000
+
+After building the docker container image, run the following script to run the container
+
+```
+./run_containers.sh
+```
+Visit [http://127.0.0.1:9991/docs](http://127.0.0.1:9991/docs) to view Swagger Docs
 
 ## Testing
 
@@ -80,7 +104,7 @@ There are testing functions that have been provided.
 To run the data populator, first start the webserver (see Start Up Section) and run following commands in the separate terminal in the root folder for this project `/pets_fastapi`:
 
 ```
-python3 tests/unit/populate.py
+//TO BE ADDED
 ```
 
 It will generate a data set that have the following relationship seen in the diagram below.
@@ -92,11 +116,11 @@ To run the unit test, run the following commands in the root folder for this pro
 
 To run every test
 ```
-python3 -m pytest tests/unit/*_test.py
+//TO BE ADDED
 ```
 
 To run specific tests
 ```
-python3 -m pytest tests/unit/<INSERT_TEST_NAME>_test.py
+//TO BE ADDED
 ```
 

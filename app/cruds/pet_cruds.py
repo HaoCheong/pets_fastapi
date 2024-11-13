@@ -1,52 +1,54 @@
-from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from sqlmodel import Session, select
 
-import app.models.pet_model as model
-import app.schemas.pet_schemas as schemas
+import app.models.pet_models as models
 
-def create_pet(db: Session, pet: schemas.PetCreate):
-    ''' Creating an new pet '''
-    db_pet = model.Pet(
-        name=pet.name,
-        age=pet.age,
-    )
+
+def create_pet(db: Session, new_pet: models.PetCreate):
+    
+    db_pet = models.Pet.model_validate(new_pet)
 
     db.add(db_pet)
     db.commit()
     db.refresh(db_pet)
+
     return db_pet
 
+def get_all_pets(db: Session, offset: int = 0, limit: int = 100):
+    db_pet = db.exec(select(models.Pet).offset(offset).limit(limit)).all()
+    return db_pet
 
-def get_all_pets(db: Session, skip: int = 0, limit: int = 100):
-    ''' Get every instance of pet, using offset pagination '''
-    return db.query(model.Pet).offset(skip).limit(limit).all()
+def get_pet_by_id(db: Session, pet_id: int):
 
+    db_pet = db.get(models.Pet, pet_id)
 
-def get_pet_by_id(db: Session, id: int):
-    ''' Get specific instance of pet based on provided pet ID '''
-    return db.query(model.Pet).filter(model.Pet.id == id).first()
+    if not db_pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    
+    return db_pet
 
-
-def update_pet_by_id(db: Session, id: int, new_pet: schemas.PetUpdate):
-    ''' Update specific fields of specified instance of pet on provided pet ID '''
-    db_pet = db.query(model.Pet).filter(model.Pet.id == id).first()
-
-    # Converts new_pet from model.object to dictionary
-    update_pet = new_pet.dict(exclude_unset=True)
-
-    # Loops through dictionary and update db_pet
-    for key, value in update_pet.items():
-        setattr(db_pet, key, value)
+def update_pet_by_id(db: Session, pet_id: int, new_pet: models.PetUpdate):
+    db_pet = db.get(models.Pet, pet_id)
+    
+    if not db_pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    
+    pet_data = new_pet.model_dump(exclude_unset=True)
+    db_pet.sqlmodel_update(pet_data)
 
     db.add(db_pet)
     db.commit()
     db.refresh(db_pet)
+
     return db_pet
 
+def delete_pet_by_id(db: Session, pet_id: int):
+    db_pet = db.get(models.Pet, pet_id)
 
-def delete_pet_by_id(db: Session, id: int):
-    ''' Delete specified instance of pet on provided pet ID '''
-    db_pet = db.query(model.Pet).filter(model.Pet.id == id).first()
-
+    if not db_pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    
     db.delete(db_pet)
     db.commit()
+
     return {"Success": True}

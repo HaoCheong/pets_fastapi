@@ -12,9 +12,10 @@ Testing should always validate 2 things:
  - Validate the data correctness
 '''
 
-from tests.client_fixture import client, SUCCESS, ERROR, reset_db
-from tests.data_fixtures import pets_data
 from tests.unit import wrappers
+from tests.unit.client_fixture import (ERROR, NOT_FOUND, SUCCESS, client,
+                                       reset_db)
+from tests.unit.data_fixture import pets_data
 
 
 def test_create_pet(reset_db, pets_data):
@@ -38,18 +39,19 @@ def test_get_all_pet(reset_db, pets_data):
     assert len(pets) == len(all_pets)
 
 
-def test_get_pet_by_pet_id(reset_db, pets_data):
+def test_get_pet_by_id(reset_db, pets_data):
     ''' Testing the success case of getting specified pet '''
     pet = wrappers.create_pet(pets_data[0])['data']
-    ret_pet = wrappers.get_pet_by_pet_id(pet['id'])['data']
+    ret_pet = wrappers.get_pet_by_id(pet['id'])['data']
     assert pet["name"] == ret_pet["name"]
 
 
-def test_invalid_get_pet_by_pet_id(reset_db, pets_data):
+def test_invalid_get_pet_by_id(reset_db, pets_data):
     ''' Testing the failing case of getting specified pet '''
     pet = wrappers.create_pet(pets_data[0])['data']
-    ret_pet = wrappers.get_pet_by_pet_id(pet['id'] + 200)
-    assert ret_pet['status'] == ERROR
+    ret_pet = wrappers.get_pet_by_id(pet['id'] + 200)
+    print("RET_PET", ret_pet)
+    assert ret_pet['status'] == NOT_FOUND
 
 
 def test_delete_pet_by_pet_id(reset_db, pets_data):
@@ -58,7 +60,7 @@ def test_delete_pet_by_pet_id(reset_db, pets_data):
     pet = wrappers.create_pet(pets_data[0])['data']
 
     # Check pre-delete status
-    pre_check_res = wrappers.get_pet_by_pet_id(pet['id'])
+    pre_check_res = wrappers.get_pet_by_id(pet['id'])
     assert pre_check_res['status'] == SUCCESS
 
     # Check deletion request status
@@ -66,8 +68,8 @@ def test_delete_pet_by_pet_id(reset_db, pets_data):
     assert delete_res['status'] == SUCCESS
 
     # Check post-delete status
-    post_check_res = wrappers.get_pet_by_pet_id(pet['id'])
-    assert post_check_res['status'] == ERROR
+    post_check_res = wrappers.get_pet_by_id(pet['id'])
+    assert post_check_res['status'] == NOT_FOUND
 
 
 def test_invalid_delete_pet_by_pet_id(reset_db, pets_data):
@@ -75,15 +77,15 @@ def test_invalid_delete_pet_by_pet_id(reset_db, pets_data):
     pet = wrappers.create_pet(pets_data[0])['data']
 
     # Check pre-delete statue
-    pre_check_res = wrappers.get_pet_by_pet_id(pet['id'])
+    pre_check_res = wrappers.get_pet_by_id(pet['id'])
     assert pre_check_res['status'] == SUCCESS
 
     # Check deletion request status, with invalid ID provided
     delete_res = wrappers.delete_pet_by_pet_id(pet['id'] + 200)
-    assert delete_res['status'] == ERROR
+    assert delete_res['status'] == NOT_FOUND
 
     # Check post-delete status
-    post_check_res = wrappers.get_pet_by_pet_id(pet['id'])
+    post_check_res = wrappers.get_pet_by_id(pet['id'])
     assert post_check_res['status'] == SUCCESS
 
 
@@ -115,8 +117,8 @@ def test_invalid_update_pet_by_pet_id(reset_db, pets_data):
     pet = wrappers.create_pet(pets_data[0])['data']
     new_pet = pets_data[1]
     update_pet = wrappers.update_pet_by_pet_id(pet['id'] + 200, new_pet)
-    assert update_pet['status'] == ERROR
+    assert update_pet['status'] == NOT_FOUND
 
     # Checks that the current pet is untouched
-    curr_pet = wrappers.get_pet_by_pet_id(pet['id'])
+    curr_pet = wrappers.get_pet_by_id(pet['id'])
     assert curr_pet['data']['name'] == pet['name']

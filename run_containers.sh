@@ -4,7 +4,7 @@
 
 ABS_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 BE_NAME="Pets FastAPI"
-BE_DOCKER_PATH="${ABS_PATH}/app/"
+BE_DOCKER_PATH="${ABS_PATH}/app"
 BE_IMAGE="pets_fastapi_img"
 BE_CONT="pets_fastapi_cont"
 
@@ -20,6 +20,6 @@ if [ "$1" != "stop" ]; then
         docker run -p 9991:8000 \
         -d \
         --mount type=bind,source="${BE_DOCKER_PATH}",target=/app/ \
-        --mount type=bind,source="${BE_DOCKER_PATH}/db",target=/app/db/ \
+        --mount type=bind,source="${BE_DOCKER_PATH}/database",target=/app/database/ \
         --name ${BE_CONT} ${BE_IMAGE}
 fi

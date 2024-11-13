@@ -1,55 +1,58 @@
-from sqlalchemy.orm import Session
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
+from sqlmodel import Session, select
 
-import app.models.nutrition_plan_model as model
-import app.schemas.nutrition_plan_schemas as schemas
+import app.models.nutrition_plan_models as models
 
-def create_nutrition_plan(db: Session, nutrition_plan: schemas.NutritionPlanCreate):
-    ''' Creating an new nutrition plan '''
-    db_nutrition_plan = model.NutritionPlan(
-        name=nutrition_plan.name,
-        description=nutrition_plan.description,
-        meal=jsonable_encoder(nutrition_plan.meal),
-        starting_date=nutrition_plan.starting_date,
-    )
 
-    db.add(db_nutrition_plan)
-    db.commit()
-    db.refresh(db_nutrition_plan)
-    return db_nutrition_plan
-
-def get_all_nutrition_plans(db: Session, skip: int = 0, limit: int = 100):
-    ''' Get every instance of nutrition plan, using offset pagination '''
-    return db.query(model.NutritionPlan).offset(skip).limit(limit).all()
-
-def get_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
-     ''' Get specific instance of nutrition plan based on provided nutrition plan ID '''
-     return db.query(model.NutritionPlan).filter(model.NutritionPlan.id == nutrition_plan_id).first()
-
-def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: str, new_nutrition_plan: schemas.NutritionPlanUpdate):
-    ''' Update specific fields of specified instance of nutrition plan on provided nutrition plan ID '''
-    db_nutrition_plan = db.query(model.NutritionPlan).filter(
-        model.NutritionPlan.id == nutrition_plan_id).first()
-
-    # Converts new_nutrition_plan from model.object to dictionary
-    update_nutrition_plan = new_nutrition_plan.dict(exclude_unset=True)
-
-    # Loops through dictionary and update db_nutrition_plan
-    for key, value in update_nutrition_plan.items():
-        setattr(db_nutrition_plan, key, value)
-
-    # Update them on the DB side, and commit transaction to the database
-    db.add(db_nutrition_plan)
-    db.commit()
-    db.refresh(db_nutrition_plan)
+def create_nutrition_plan(db: Session, new_nutrition_plan: models.NutritionPlanCreate):
     
+    model_nutrition_plan = new_nutrition_plan
+    model_nutrition_plan.meal = jsonable_encoder(new_nutrition_plan.meal)
+
+    db_nutrition_plan = models.NutritionPlan.model_validate(model_nutrition_plan)
+    
+    db.add(db_nutrition_plan)
+    db.commit()
+    db.refresh(db_nutrition_plan)
+
     return db_nutrition_plan
 
-def delete_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
-    ''' Delete specified instance of nutrition plan on provided nutrition plan ID '''
-    db_nutrition_plan = db.query(model.NutritionPlan).filter(
-        model.NutritionPlan.id == nutrition_plan_id).first()
+def get_all_nutrition_plans(db: Session, offset: int = 0, limit: int = 100):
+    nutrition_plan = db.exec(select(models.NutritionPlan).offset(offset).limit(limit)).all()
+    return nutrition_plan
 
-    db.delete(db_nutrition_plan)
+def get_nutrition_plan_by_id(db: Session, nutrition_plan_id: int):
+
+    nutrition_plan = db.get(models.NutritionPlan, nutrition_plan_id)
+
+    if not nutrition_plan:
+        raise HTTPException(status_code=404, detail="NutritionPlan not found")
+    
+    return nutrition_plan
+
+def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: int, new_nutrition_plan: models.NutritionPlanUpdate):
+    nutrition_plan_db = db.get(models.NutritionPlan, nutrition_plan_id)
+    
+    if not nutrition_plan_db:
+        raise HTTPException(status_code=404, detail="NutritionPlan not found")
+    
+    nutrition_plan_data = new_nutrition_plan.model_dump(exclude_unset=True)
+    nutrition_plan_db.sqlmodel_update(nutrition_plan_data)
+
+    db.add(nutrition_plan_db)
     db.commit()
+    db.refresh(nutrition_plan_db)
+
+    return nutrition_plan_db
+
+def delete_nutrition_plan_by_id(db: Session, nutrition_plan_id: int):
+    nutrition_plan = db.get(models.NutritionPlan, nutrition_plan_id)
+
+    if not nutrition_plan:
+        raise HTTPException(status_code=404, detail="NutritionPlan not found")
+    
+    db.delete(nutrition_plan)
+    db.commit()
+
     return {"Success": True}
