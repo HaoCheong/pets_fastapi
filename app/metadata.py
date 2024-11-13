@@ -33,7 +33,7 @@ swagger_ui_parameters = {
 }
 
 app_title = 'Pets Sample FastAPI'
-app_version = '0.0.1'
+app_version = '1.1.0'
 app_desc = '''
 This is the FastAPI Sample Project. Designed to emulate a pets and trainer system.
 Primarily for teaching and learning FastAPI.
