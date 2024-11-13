@@ -84,12 +84,15 @@ Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to view Swagger D
 
 ### Running Container
 
+> [!warning]
+> Docker container uses port number 9991 where as by default, running locally uses port number 8000
+
 After building the docker container image, run the following script to run the container
 
 ```
 ./run_containers.sh
 ```
-
+Visit [http://127.0.0.1:9991/docs](http://127.0.0.1:9991/docs) to view Swagger Docs
 
 ## Testing
 
