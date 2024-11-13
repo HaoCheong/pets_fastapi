@@ -204,8 +204,8 @@ if __name__ == "__main__":
     populate_owners()
     populate_pets()
     # populate_trainers()
-    # populate_nutrition_plans()
+    populate_nutrition_plans()
 # 
     assigning_pets_to_owner()
     # assigning_pets_to_trainer()
-    # assigning_pets_to_nutrition_plan()
+    assigning_pets_to_nutrition_plan()

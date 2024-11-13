@@ -11,6 +11,7 @@ class TrainerBase(SQLModel):
     date_started: datetime
     
 class Trainer(TrainerBase, table=True):
+    __tablename__ = 'trainer'
     trainer_id: str = Field(unique=True, primary_key=True)
 
 class TrainerReadNR(TrainerBase):

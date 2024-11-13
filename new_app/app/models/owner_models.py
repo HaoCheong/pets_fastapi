@@ -13,6 +13,8 @@ class OwnerBase(SQLModel):
 
 class Owner(OwnerBase, table=True):
 
+    __tablename__ = 'owner'
+
     id: int = Field(default=None, primary_key=True)
     password: str
 
