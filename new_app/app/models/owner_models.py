@@ -25,7 +25,7 @@ class OwnerReadNR(OwnerBase):
 
 class OwnerReadWR(OwnerReadNR):
     
-    pets: List["PetReadNR"] = []
+    pets: list["PetReadNR"] = []
 
 class OwnerCreate(OwnerBase):
     password: str

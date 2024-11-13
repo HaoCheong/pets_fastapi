@@ -2,6 +2,7 @@ from sqlmodel import Session
 
 import app.models.owner_models as owner_models
 import app.models.pet_models as pet_models
+import app.models.trainer_models as trainer_models
 import app.models.nutrition_plan_models as nutrition_plan_models
 
 
@@ -69,6 +70,43 @@ def unassign_pet_from_nutrition_plan(db: Session, pet_id: int):
 
     # Update them on the DB side, and commit transaction to the database
     db.add(db_nutrition_plan)
+    db.commit()
+
+    return {"Success": True}
+
+def assign_pet_to_trainer(db: Session, pet_id: int, trainer_id: int):
+    ''' Assign instance of pet to an trainer. Many to Many Relationship '''
+
+    # Getting both instance of Pet and Trainer
+    db_pet = db.get(pet_models.Pet, pet_id)
+    db_trainer = db.get(trainer_models.Trainer, trainer_id)
+
+    # Treat adding relation like adding to pet trainers's pets list
+    # This can be done the other way with adding trainer to pet's trainer list
+    db_trainer.pets.append(db_pet)
+
+    # Update them on the DB side, and commit transaction to the database
+    db.add(db_trainer)
+    db.commit()
+
+    return {"Success": True}
+
+# Unassign pet to trainer
+
+
+def unassign_pet_from_trainer(db: Session, pet_id: int, trainer_id: int):
+    ''' Unassign instance of pet to an trainer '''
+
+    # Getting both instance of Pet and Trainer
+    db_pet = db.get(pet_models.Pet, pet_id)
+    db_trainer = db.get(trainer_models.Trainer, trainer_id)
+
+    # Treat removing relation like removing to pet trainers's pets list
+    # This can be done the other way with removing trainer to pet's trainer list
+    db_trainer.pets.remove(db_pet)
+
+    # Update them on the DB side, and commit transaction to the database
+    db.add(db_trainer)
     db.commit()
 
     return {"Success": True}

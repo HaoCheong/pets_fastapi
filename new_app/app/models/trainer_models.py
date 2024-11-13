@@ -1,7 +1,11 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
+from sqlmodel import Field, SQLModel, Relationship
 
-from sqlmodel import Field, SQLModel
+from app.models.pet_models import PetTrainerAssociation, PetReadNR
 
+if TYPE_CHECKING:
+    from app.models.pet_models import Pet
 
 class TrainerBase(SQLModel):
     name: str = Field(index=True)
@@ -13,13 +17,14 @@ class TrainerBase(SQLModel):
 class Trainer(TrainerBase, table=True):
     __tablename__ = 'trainer'
     trainer_id: str = Field(unique=True, primary_key=True)
+    pets: list["Pet"] = Relationship(back_populates="trainers", link_model=PetTrainerAssociation)
 
 class TrainerReadNR(TrainerBase):
     trainer_id: str
     date_started: datetime
 
 class TrainerReadWR(TrainerReadNR):
-    pass
+    pets: list["PetReadNR"] = []
 
 class TrainerCreate(TrainerBase):
     trainer_id: str

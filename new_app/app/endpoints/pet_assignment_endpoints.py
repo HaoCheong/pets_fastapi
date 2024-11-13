@@ -7,6 +7,7 @@ router = APIRouter()
 
 import app.cruds.owner_cruds as owner_cruds
 import app.cruds.nutrition_plan_cruds as nutrition_plan_cruds
+import app.cruds.trainer_cruds as trainer_cruds
 import app.cruds.pet_assignment_cruds as pet_assignment_cruds
 
 
@@ -82,3 +83,42 @@ def unassign_pet_from_nutrition_plan(pet_id: int, db: Session = Depends(get_sess
             status_code=400, detail="Pet not assigned to nutritional plan")
     
     return pet_assignment_cruds.unassign_pet_from_nutrition_plan(db, pet_id=pet_id)
+
+@router.post("/assignToTrainer/{pet_id}/{trainer_id}", tags=["Item Assignments"])
+def assign_pet_to_trainer(pet_id: int, trainer_id: str, db: Session = Depends(get_session)):
+    db_trainer = trainer_cruds.get_trainer_by_id(db, trainer_id=trainer_id)
+    db_pet = pet_cruds.get_pet_by_id(db, pet_id=pet_id)
+
+    if not db_trainer:
+        raise HTTPException(status_code=400, detail="Trainer does not exist")
+
+    if not db_pet:
+        raise HTTPException(status_code=400, detail="Pet does not exist")
+
+    if db_pet.owner_id == None:
+        raise HTTPException(
+            status_code=400, detail="Pet does not have an owner")
+
+    if db_pet in db_trainer.pets:
+        raise HTTPException(
+            status_code=400, detail="Pet already assigned to trainer")
+
+    return pet_assignment_cruds.assign_pet_to_trainer(db, pet_id=pet_id, trainer_id=trainer_id)
+
+
+@router.post("/unassignFromTrainer/{pet_id}/{trainer_id}", tags=["Item Assignments"])
+def unassign_pet_from_trainer(pet_id: int, trainer_id: str, db: Session = Depends(get_session)):
+    db_trainer = trainer_cruds.get_trainer_by_id(db, trainer_id=trainer_id)
+    db_pet = pet_cruds.get_pet_by_id(db, pet_id=pet_id)
+
+    if not db_trainer:
+        raise HTTPException(status_code=400, detail="Trainer does not exist")
+
+    if not db_pet:
+        raise HTTPException(status_code=400, detail="Pet does not exist")
+
+    if db_pet not in db_trainer.pets:
+        raise HTTPException(
+            status_code=400, detail="Pet not assigned to trainer")
+
+    return pet_assignment_cruds.unassign_pet_from_trainer(db, pet_id=pet_id, trainer_id=trainer_id)

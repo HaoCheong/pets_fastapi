@@ -22,7 +22,7 @@ def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
     db.add(db_owner)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
 
 
 def unassign_pet_from_owner(db: Session, pet_id: int, owner_id: int):
@@ -41,7 +41,7 @@ def unassign_pet_from_owner(db: Session, pet_id: int, owner_id: int):
     db.add(db_owner)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
 
 # ======== PET TRAINER ASSIGNMENT ================
 
@@ -65,7 +65,7 @@ def assign_pet_to_trainer(db: Session, pet_id: int, trainer_id: int):
     db.add(db_trainer)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
 
 # Unassign pet to trainer
 
@@ -87,7 +87,7 @@ def unassign_pet_from_trainer(db: Session, pet_id: int, trainer_id: int):
     db.add(db_trainer)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
 
 # ======== PET NUTRITIONAL PLAN ASSIGNMENT ================
 
@@ -106,7 +106,7 @@ def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: in
     # Update them on the DB side, and commit transaction to the database
     db.add(db_pet)
     db.commit()
-    return {"Success", True}
+    return {"Success": True}
 
 # Needs review
 
@@ -129,4 +129,4 @@ def unassign_pet_from_nutrition_plan(db: Session, pet_id: int):
     db.add(db_nutrition_plan)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
