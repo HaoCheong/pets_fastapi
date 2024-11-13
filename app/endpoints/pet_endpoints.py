@@ -8,7 +8,7 @@ from app.database.database import SessionDep
 
 router = APIRouter()
 
-@router.post("/pet/", response_model=models.PetReadWR, tags=['Pets'])
+@router.post("/pet/", response_model=models.PetReadNR, tags=['Pets'])
 def create_pet(pet: models.PetCreate, db: SessionDep):
     db_pet = cruds.create_pet(db=db, new_pet=pet)
     return db_pet

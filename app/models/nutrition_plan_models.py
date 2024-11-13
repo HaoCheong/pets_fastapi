@@ -42,7 +42,7 @@ class NutritionPlanCreate(NutritionPlanBase):
 class NutritionPlanUpdate(NutritionPlanBase):
     name: str | None = None
     description: str | None = None
-    meal: str | None = None
+    meal: Dict | None = None
     starting_date: datetime | None = None
 
 from app.models.pet_models import PetReadNR

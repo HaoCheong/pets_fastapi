@@ -8,7 +8,7 @@ from app.database.database import SessionDep
 
 router = APIRouter()
 
-@router.post("/trainer/", response_model=models.TrainerReadWR, tags=['Trainers'])
+@router.post("/trainer/", response_model=models.TrainerReadNR, tags=['Trainers'])
 def create_trainer(trainer: models.TrainerCreate, db: SessionDep):
     db_trainer = cruds.create_trainer(db=db, new_trainer=trainer)
     return db_trainer

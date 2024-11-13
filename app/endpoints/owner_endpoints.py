@@ -8,7 +8,7 @@ from app.database.database import SessionDep
 
 router = APIRouter()
 
-@router.post("/owner/", response_model=models.OwnerReadWR, tags=['Owners'])
+@router.post("/owner/", response_model=models.OwnerReadNR, tags=['Owners'])
 def create_owner(owner: models.OwnerCreate, db: SessionDep):
     db_owner = cruds.create_owner(db=db, new_owner=owner)
     return db_owner

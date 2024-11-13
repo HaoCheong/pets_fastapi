@@ -8,7 +8,7 @@ from app.database.database import SessionDep
 
 router = APIRouter()
 
-@router.post("/nutrition_plan/", response_model=models.NutritionPlanReadWR, tags=['Nutrition Plans'])
+@router.post("/nutrition_plan/", response_model=models.NutritionPlanReadNR, tags=['Nutrition Plans'])
 def create_nutrition_plan(nutrition_plan: models.NutritionPlanCreate, db: SessionDep):
     db_nutrition_plan = cruds.create_nutrition_plan(db=db, new_nutrition_plan=nutrition_plan)
     return db_nutrition_plan
