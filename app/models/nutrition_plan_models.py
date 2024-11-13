@@ -1,3 +1,19 @@
+''' Nutrition Plan Models
+
+Contains both Table Models and Data Models that are used for Nutrition Plan Operations.
+- Base SQLModel: Used for initialising base fields all models will use
+- Table Model: Inherited from SQL Model, includes other fields required for all other data models
+- Data Models: Inherited from the Table Model or other Data Model. Determines what data is returned from given requests
+
+Notes:
+- Optional Fields that are either optionally included in the input or optionally NULL on ther return
+- TYPE_CHECKING is to bypass the circular import generated from the required typing in various data models
+- Imports at the bottom are for data models imported. Also to bypass circular import
+
+Relationship:
+- Nutrition Plan: One Nutrition Plan to One Pet 
+'''
+
 from datetime import datetime
 from typing import TYPE_CHECKING, Dict, List, Optional
 
