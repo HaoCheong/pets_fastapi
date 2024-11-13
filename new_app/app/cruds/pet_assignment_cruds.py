@@ -19,7 +19,7 @@ def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):
     db.add(db_owner)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
 
 
 def unassign_pet_from_owner(db: Session, pet_id: int, owner_id: int):
@@ -36,7 +36,7 @@ def unassign_pet_from_owner(db: Session, pet_id: int, owner_id: int):
     db.add(db_owner)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
 
 
 def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: int):
@@ -51,17 +51,17 @@ def assign_pet_to_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: in
     # Update them on the DB side, and commit transaction to the database
     db.add(db_pet)
     db.commit()
-    return {"Success", True}
+    return {"Success": True}
 
 # Needs review
 
 
-def unassign_pet_from_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id: int):
+def unassign_pet_from_nutrition_plan(db: Session, pet_id: int):
     ''' Unassign instance of pet to an nutrition plan '''
 
     # Getting both instance of Pet and Nutrition Plan
     db_pet = db.get(pet_models.Pet, pet_id)
-    db_nutrition_plan = db.get(nutrition_plan_models.NutritionPlan, nutrition_plan_id)
+    db_nutrition_plan = db.get(nutrition_plan_models.NutritionPlan, db_pet.nutrition_plan_id)
 
     # Clear their relationship
     db_pet.nutrition_plan = None
@@ -71,4 +71,4 @@ def unassign_pet_from_nutrition_plan(db: Session, pet_id: int, nutrition_plan_id
     db.add(db_nutrition_plan)
     db.commit()
 
-    return {"Success", True}
+    return {"Success": True}
