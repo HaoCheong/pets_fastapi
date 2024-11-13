@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
-from sqlmodel import Field, SQLModel, Relationship
 
-from app.models.pet_models import PetTrainerAssociation, PetReadNR
+from sqlmodel import Field, Relationship, SQLModel
+
+from app.models.pet_models import PetReadNR, PetTrainerAssociation
 
 if TYPE_CHECKING:
     from app.models.pet_models import Pet

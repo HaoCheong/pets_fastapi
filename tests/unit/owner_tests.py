@@ -12,10 +12,10 @@ Testing should always validate 2 things:
  - Validate the data correctness
 '''
 
-from tests.unit.client_fixture import client, SUCCESS, ERROR, NOT_FOUND, reset_db
-from tests.unit.data_fixture import owners_data, pets_data
 from tests.unit import wrappers
-
+from tests.unit.client_fixture import (ERROR, NOT_FOUND, SUCCESS, client,
+                                       reset_db)
+from tests.unit.data_fixture import owners_data, pets_data
 
 
 def test_create_owner(reset_db, owners_data):

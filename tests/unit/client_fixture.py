@@ -1,18 +1,14 @@
 '''client_fixture.py
 
-Contains all the necessary processes to create a sqlalchemy compatible testing client
+Contains all the necessary processes to create a FastAPI compatible testing client
 '''
 
-from typing import Annotated
-
 import pytest
-
-from fastapi import Depends
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
-from app.main import app
-from app.database.database import get_session
 
+from app.database.database import get_session
+from app.main import app
 
 sqlite_file_name = "app/database/test_database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"

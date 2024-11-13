@@ -4,8 +4,9 @@ Contains functions that emulate a request to the client without actually needed 
 
 '''
 
-from tests.unit.client_fixture import client, SUCCESS
 import json
+
+from tests.unit.client_fixture import SUCCESS, client
 
 
 def unpack(function):

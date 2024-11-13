@@ -5,13 +5,11 @@ from app.database.database import get_session
 
 router = APIRouter()
 
-import app.cruds.owner_cruds as owner_cruds
 import app.cruds.nutrition_plan_cruds as nutrition_plan_cruds
-import app.cruds.trainer_cruds as trainer_cruds
+import app.cruds.owner_cruds as owner_cruds
 import app.cruds.pet_assignment_cruds as pet_assignment_cruds
-
-
 import app.cruds.pet_cruds as pet_cruds
+import app.cruds.trainer_cruds as trainer_cruds
 
 # ======== ASSIGNING PETS TO OWNER ========
 

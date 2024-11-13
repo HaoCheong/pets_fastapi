@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Dict, TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
 
-from sqlmodel import Field, SQLModel, JSON, Column, Relationship
+from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.models.pet_models import Pet
@@ -46,4 +46,5 @@ class NutritionPlanUpdate(NutritionPlanBase):
     starting_date: datetime | None = None
 
 from app.models.pet_models import PetReadNR
+
 NutritionPlanReadWR.model_rebuild()

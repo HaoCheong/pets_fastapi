@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, List, Optional
+
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -37,4 +38,5 @@ class OwnerUpdate(OwnerBase):
     home_address: str | None = None
 
 from app.models.pet_models import PetReadNR
+
 OwnerReadWR.model_rebuild()

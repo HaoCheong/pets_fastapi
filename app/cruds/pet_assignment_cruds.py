@@ -1,9 +1,9 @@
 from sqlmodel import Session
 
+import app.models.nutrition_plan_models as nutrition_plan_models
 import app.models.owner_models as owner_models
 import app.models.pet_models as pet_models
 import app.models.trainer_models as trainer_models
-import app.models.nutrition_plan_models as nutrition_plan_models
 
 
 def assign_pet_to_owner(db: Session, pet_id: int, owner_id: int):

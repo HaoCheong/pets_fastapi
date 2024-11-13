@@ -13,10 +13,11 @@ Most endpoints consists of two tests:
 '''
 
 
-from tests.unit.client_fixture import client, SUCCESS, ERROR, NOT_FOUND, reset_db
-from tests.unit.data_fixture import pets_data, owners_data, nutrition_plans_data, trainers_data
 from tests.unit import wrappers
-
+from tests.unit.client_fixture import (ERROR, NOT_FOUND, SUCCESS, client,
+                                       reset_db)
+from tests.unit.data_fixture import (nutrition_plans_data, owners_data,
+                                     pets_data, trainers_data)
 
 ''' ========== PETS TO OWNER TESTS ========== '''
 

@@ -3,8 +3,8 @@ from typing import TYPE_CHECKING, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from app.models.owner_models import Owner
     from app.models.nutrition_plan_models import NutritionPlan
+    from app.models.owner_models import Owner
     from app.models.trainer_models import Trainer
 
 class PetTrainerAssociation(SQLModel, table=True):
@@ -49,9 +49,10 @@ class PetUpdate(PetBase):
     age: int | None = None
     nickname: str | None = None
 
-from app.models.owner_models import OwnerReadNR
 from app.models.nutrition_plan_models import NutritionPlanReadNR
+from app.models.owner_models import OwnerReadNR
 from app.models.trainer_models import TrainerReadNR
+
 PetReadWR.model_rebuild()
 
 ## https://github.com/fastapi/sqlmodel/discussions/757
