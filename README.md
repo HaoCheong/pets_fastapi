@@ -1,4 +1,11 @@
-# PET FITNESS - A FastAPI Reference Backend
+# PET FITNESS - A FastAPI Reference Backend (Version 1.0)
+
+> Version 1.0 is not the most updated version.
+> FastAPI version 0.99.1
+> SQLAlchemy Version 1.4.41
+> pydantic Version 1.10.13
+>
+> See branch "Version 1.1" for the latest version
 
 This is a tutorial backend for those trying to understand and learn FastAPI as well as a reference project
 It contains the basics to start creating a full fledge FastAPI backend as well as understanding the fundamentals of Pytest!
