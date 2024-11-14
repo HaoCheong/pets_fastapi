@@ -1,4 +1,4 @@
-'''pet_assignment_test.py
+''' Pet Assignment Tests
 
 Test the assignment of pets to various other models. Cover testing for all relationships
 

@@ -1,3 +1,11 @@
+''' Database
+
+Contains all the configuration variables for creating an engine and a session
+- Engine: Establish what SQL DBMS the application is interfacing with
+- Session: A connection instance to the DBMS
+
+'''
+
 from typing import Annotated
 
 from fastapi import Depends

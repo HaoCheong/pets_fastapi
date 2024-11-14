@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Builds images on first run, rebuild on subsequent run
+# Builds containers images on first run, rebuild on subsequent run
 
 ABS_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 BE_DOCKER_PATH="${ABS_PATH}"

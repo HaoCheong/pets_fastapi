@@ -1,4 +1,4 @@
-'''trainer_test.py
+''' Trainer Tests
 
 Unit tests for each Trainer Crud Endpoint
 

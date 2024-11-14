@@ -1,3 +1,12 @@
+''' Pet Assignment Endpoints
+
+Contains all the function that subsequently call the pet assignment operations (see pet_assignment file)
+Split was done because it allowed for simplified data validation and db calling.
+- Endpoints: Takes in and validates input correctness
+- CRUD: Focused on the logic of formatting and manipulating data, under the assumption that the provided data was correct
+
+'''
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
