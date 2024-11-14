@@ -104,7 +104,7 @@ There are testing functions that have been provided.
 To run the data populator, first start the webserver (see Start Up Section) and run following commands in the separate terminal in the root folder for this project `/pets_fastapi`:
 
 ```
-//TO BE ADDED
+python3 tests/populate/populate.py
 ```
 
 It will generate a data set that have the following relationship seen in the diagram below.
@@ -112,15 +112,13 @@ It will generate a data set that have the following relationship seen in the dia
 ![Test data structure layout](image.png)
 
 ### Unit
-To run the unit test, run the following commands in the root folder for this project `/pets_fastapi`:
-
-To run every test
+To run every unit tests, run the following script:
 ```
-//TO BE ADDED
+./run_test.sh
 ```
 
-To run specific tests
+To run specific tests, run the following command
 ```
-//TO BE ADDED
+python3 -m pytest tests/unit/<test_file>.py -s -k <test_function_name>
 ```
 

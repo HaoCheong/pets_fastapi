@@ -1,4 +1,4 @@
-'''populate.py
+''' Populate
 
 Auto-populates a database with test data.
 
