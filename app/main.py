@@ -1,3 +1,10 @@
+''' Main File
+
+Calls and initialises the application.
+Endpoints and CRUDs are all split based on the associated SQL table.
+
+'''
+
 from typing import Annotated
 
 from fastapi import Depends, FastAPI

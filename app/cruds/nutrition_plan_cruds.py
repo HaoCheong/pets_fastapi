@@ -1,3 +1,15 @@
+''' Nutrition Plan CRUDs
+
+Contains all the base functionailities for reading and writing nutrition plan data into the database
+5 base functionality:
+- Create
+- Read All instance
+- Read an instance given an ID
+- Update an instance given an ID
+- Delete an instance given an ID
+
+'''
+
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, select

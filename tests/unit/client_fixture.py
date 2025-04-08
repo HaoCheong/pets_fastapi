@@ -1,4 +1,4 @@
-'''client_fixture.py
+''' Client Fixtures
 
 Contains all the necessary processes to create a FastAPI compatible testing client
 '''

@@ -45,34 +45,31 @@ Each significant directory and file have be annotated as well as the order of wh
 5. `app/main.py`
 
 ### Basics of PyTest writing
-1. `tests/unit/conftest.py`
-2. `tests/unit/wrappers.py`
-3. `tests/unit/*_test.py`
+1. `tests/unit/client_fixtures.py`
+2. `tests/unit/data_fixtures.py`
+3. `tests/unit/wrappers.py`
+4. `tests/unit/*_tests.py`
 
-## Setting Up
-
-### Local
+## Local - Setting Up and Running 
 
 If you want to auto-install all of the dependencies:
-```
+```bash
+# Setup a Virtual Environment
+python3 -v venv .venv
+
+# Activate the virtual environment
+source .venv/bin/activate
+
+# Install the all the necessary requirements
 pip3 install -r requirements.txt
+
+# After shutting down the server, deactivate the virtual environment
+source deactivate 
 ```
-
-### Building Docker Container
-
-You can build an image of the app as a docker container. Assuming you have docker install. Run the following script:
-
-```
-./build_containers.sh
-```
-
-
-## Start up
-
-### Run locally
 
 To start the server, after installing all the dependencies while in the root folder for this project `/pets_fastapi`, run:
-```
+
+```bash
 //To run in development mode (with hot reload)
 fastapi dev app/main.py
 
@@ -82,45 +79,113 @@ fastapi run app/main.py
 
 Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to view Swagger Docs
 
-### Running Container
+## Docker - Setting Up and Running
 
-> [!warning]
-> Docker container uses port number 9991 where as by default, running locally uses port number 8000
+Two scripts are provided to help testing and running the containers:
+- `run_demo.sh`: Contains all the necessary scripts to run demo instances of the containers as well as unit tests. Uses PostgreSQL docker instances for easy data testing and resetting
+- `run_live.sh`: Similar to demo but explicitly made to run live/production instances
 
-After building the docker container image, run the following script to run the container
+At the top of each script there are configurations that are to be set. Working example values have been provided for both demo and live versions
 
+```bash
+# vvvvvvvvvvvvvvvvvvvv CONFIGURATION vvvvvvvvvvvvvvvvvvvv
+
+PROJECT_NAME="Pets FastAPI Demo"
+LOCAL_PROJECT_PATH=/home/hcheong/Desktop/Other/pets_fastapi
+
+PETS_POSTGRES_DB_USER="demo_pets_user"
+PETS_POSTGRES_DB_PASS="demo_pets_pass"
+PETS_POSTGRES_DB_NAME="demo_pets_database"
+PETS_POSTGRES_DB_HOST="10.1.50.133"
+PETS_POSTGRES_DB_PORT="8581"
+PETS_SQL_DUMP_FILE_PATH="${LOCAL_PROJECT_PATH}/utils/test_pets_dump.sql"
+PETS_SQL_DUMP_SCHEMA_ONLY=0
+PETS_CONTAINER_NAME="pets_demo_database_cont"
+PETS_IMAGE_NAME="postgres:14.5"
+PETS_TIMEZONE="Australia/Sydney"
+
+BACKEND_PORT=8582
+BACKEND_APP_PATH="${LOCAL_PROJECT_PATH}"
+BACKEND_CONTAINER_URL="http://${PETS_POSTGRES_DB_HOST}:${BACKEND_PORT}"
+BACKEND_CONTAINER_NAME="pets_fastapi_demo_backend_cont"
+BACKEND_IMAGE_NAME="pets_fastapi_backend_img"
+BACKEND_TIMEZONE="Australia/Sydney"
+
+BACKEND_ENV="${LOCAL_PROJECT_PATH}/.venv"
+
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
-./run_containers.sh
+
+Once the configuration is set, you can run an a live instance using the following command:
+
+```bash
+./run_live.sh start
 ```
-Visit [http://127.0.0.1:9991/docs](http://127.0.0.1:9991/docs) to view Swagger Docs
+
+More commands are provided for you to better control the docker startup, see all the commands by running the following command:
+
+```bash
+./run_live.sh help
+```
+
+You can also run a demo instance using the following command:
+
+```bash
+./run_demo.sh demo
+```
+More commands are provided for you to better control the docker startup, see all the commands by running the following command:
+
+```bash
+./run_demo.sh help
+```
 
 ## Testing
 
-There are testing functions that have been provided.
-1. **Populate**: A simple function that populates a database when the webserver is running. Used to populate the database based on a following structure
-2. **Unit**: A set of unit tests to test each endpoint in the project. Built using the Pytest library.
+### Running a Demo
 
-### Populate
-To run the data populator, first start the webserver (see Start Up Section) and run following commands in the separate terminal in the root folder for this project `/pets_fastapi`:
+You can run a demo instance for testing.
 
+A test dump sql file has been provided in `utils/test_pets_dump.sql` containing test data to allow for easy demoing of the application.
+Prior to running the demo, these configurations can be changed to set up how the demo starts.
+
+To run an instance of the database with no tables (tables will be generated when the project start), set the following configurations as follows:
+
+```bash
+PETS_SQL_DUMP_FILE_PATH=""
+PETS_SQL_DUMP_SCHEMA_ONLY=0
 ```
-//TO BE ADDED
+
+To run an instance of the database with the tables but no test data, set the following configurations as follows:
+
+```bash
+PETS_SQL_DUMP_FILE_PATH="${LOCAL_PROJECT_PATH}/utils/test_pets_dump.sql"
+PETS_SQL_DUMP_SCHEMA_ONLY=1
+```
+
+To run an instance of the database with the test data, set the following configurations as follows
+
+```bash
+PETS_SQL_DUMP_FILE_PATH="${LOCAL_PROJECT_PATH}/utils/test_pets_dump.sql"
+PETS_SQL_DUMP_SCHEMA_ONLY=0
 ```
 
 It will generate a data set that have the following relationship seen in the diagram below.
 
 ![Test data structure layout](image.png)
 
+You are free to dump your own testing data yourself, just replace `test_pets_dump.sql` with your own .sql file dump
+
+To start the demo, run the following command
+
+```bash
+./run_demo.sh demo
+```
+
 ### Unit
-To run the unit test, run the following commands in the root folder for this project `/pets_fastapi`:
 
-To run every test
-```
-//TO BE ADDED
-```
+To run every unit tests, run the following script:
 
-To run specific tests
-```
-//TO BE ADDED
+```bash
+./run_demo.sh unit
 ```
 

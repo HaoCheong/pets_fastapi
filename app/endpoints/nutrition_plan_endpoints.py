@@ -1,3 +1,12 @@
+''' Nutrition Plan Endpoints
+
+Contains all the function that subsequently call the nutrition plan CRUD functions (see CRUD files)
+Split was done because it allowed for simplified data validation and db calling.
+- Endpoints: Takes in and validates input correctness
+- CRUD: Focused on the logic of formatting and manipulating data, under the assumption that the provided data was correct
+
+'''
+
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query

@@ -1,6 +1,7 @@
-'''metadata.py
+''' Metadata
 
-Contains metadata details. Typically for developers and not production users
+Contains metadata details. Typically for developers and not production users.
+Descriptions are reflected on the generated Doc page
 
 '''
 

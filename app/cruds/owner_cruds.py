@@ -1,3 +1,15 @@
+''' Owner CRUDs
+
+Contains all the base functionailities for reading and writing owner data into the database
+5 base functionality:
+- Create
+- Read All instance
+- Read an instance given an ID
+- Update an instance given an ID
+- Delete an instance given an ID
+
+'''
+
 from fastapi import HTTPException
 from sqlmodel import Session, select
 

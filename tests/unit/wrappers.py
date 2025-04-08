@@ -1,4 +1,4 @@
-'''wrappers.py
+''' Client Call Wrappers
 
 Contains functions that emulate a request to the client without actually needed create a request.
 
