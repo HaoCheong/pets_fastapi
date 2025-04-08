@@ -9,26 +9,26 @@ Auto-populates a database with test data.
 
 import requests
 
-BACKEND_URL = "http://127.0.0.1:8000"
+BACKEND_URL = "http://10.1.50.133:8502"
 
 PETS = [
     {
-        "name":"Pickles",
+        "name": "Pickles",
         "age": 2,
         "nickname": "The Gremlin"
     },
     {
-        "name":"Rosie",
+        "name": "Rosie",
         "age": 1,
         "nickname": "The Sassy"
     },
     {
-        "name":"Abbie",
+        "name": "Abbie",
         "age": 4,
         "nickname": "The Dancer"
     },
     {
-        "name":"Cooper",
+        "name": "Cooper",
         "age": 3,
         "nickname": "The Biter"
     }
@@ -102,6 +102,7 @@ NUTRITION_PLANS = [
 
 ]
 
+
 def populate_pets():
     ''' Populates database with pets data '''
     print("========== ADDING PETS ==========")
@@ -110,10 +111,11 @@ def populate_pets():
             res = requests.post(f"{BACKEND_URL}/pet", json=pet)
             if res.status_code != 200:
                 raise ValueError
-            
+
             print("Added PETS - %s" % pet)
         except ValueError:
             print("Failed to add PETS - %s" % pet)
+
 
 def populate_owners():
     ''' Populates database with owner data '''
@@ -123,10 +125,11 @@ def populate_owners():
             res = requests.post(f"{BACKEND_URL}/owner", json=owner)
             if res.status_code != 200:
                 raise ValueError
-            
+
             print("Added OWNER - %s" % owner)
         except ValueError:
             print("Failed to add OWNER - %s" % owner)
+
 
 def populate_trainers():
     ''' Populates database with trainer data '''
@@ -136,10 +139,11 @@ def populate_trainers():
             res = requests.post(f"{BACKEND_URL}/trainer", json=trainer)
             if res.status_code != 200:
                 raise ValueError
-            
+
             print("Added TRAINER - %s" % trainer)
         except ValueError:
             print("Failed to add TRAINER - %s" % trainer)
+
 
 def populate_nutrition_plans():
     ''' Populates database with nutrition plan data '''
@@ -149,10 +153,11 @@ def populate_nutrition_plans():
             res = requests.post(f"{BACKEND_URL}/nutrition_plan", json=n_plan)
             if res.status_code != 200:
                 raise ValueError
-            
+
             print("Added NUTRITION PLAN - %s" % n_plan)
         except ValueError:
             print("Failed to add NUTRITION PLAN - %s" % n_plan)
+
 
 def assigning_pets_to_owner():
     ''' Handles assignment of pets to owners '''
@@ -170,6 +175,7 @@ def assigning_pets_to_owner():
     print("Assigning Cooper to Bob")
     res = requests.post(f"{BACKEND_URL}/assignToOwner/4/2")
 
+
 def assigning_pets_to_trainer():
     ''' Handles assignment of pets to trainers '''
     print("========== ASSIGNING PETS TO TRAINER ==========")
@@ -186,6 +192,7 @@ def assigning_pets_to_trainer():
     print("Assigning Pickles to Eddie Bark")
     res = requests.post(f"{BACKEND_URL}/assignToTrainer/4/TR-013")
 
+
 def assigning_pets_to_nutrition_plan():
     ''' Handles assignment of pets to nutritional plan '''
     print("========== ASSIGNING PETS TO NUTRITION PLAN ==========")
@@ -199,13 +206,14 @@ def assigning_pets_to_nutrition_plan():
     print("Assigning Cooper to Cooper Card Load")
     res = requests.post(f"{BACKEND_URL}/assignToNutritionPlan/4/3")
 
+
 if __name__ == "__main__":
 
     populate_owners()
     populate_pets()
     populate_trainers()
     populate_nutrition_plans()
-# 
+#
     assigning_pets_to_owner()
     assigning_pets_to_trainer()
     assigning_pets_to_nutrition_plan()
