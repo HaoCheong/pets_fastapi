@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ####################################################################
-########## POSTGRESQK CONTAINER MANAGEMENT UTILITY SCRIPT ##########
+########## POSTGRESQL CONTAINER MANAGEMENT UTILITY SCRIPT ##########
 ####################################################################
 
 
