@@ -9,7 +9,7 @@ Auto-populates a database with test data.
 
 import requests
 
-BACKEND_URL = "http://10.1.50.133:8502"
+BACKEND_URL = "http://10.1.50.133:8582/api/v1"
 
 PETS = [
     {
