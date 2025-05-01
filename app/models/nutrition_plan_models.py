@@ -11,8 +11,9 @@ class NutritionPlan(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str] = mapped_column(String)
-    meal: Mapped[str] = mapped_column(String)
+    meal: Mapped[dict] = mapped_column(JSON)
     starting_date: Mapped[datetime] = mapped_column(DateTime)
 
     # Pet Relationship (One-to-one)
-    # pet = relationship("Pet", back_populates="nutrition_plan", uselist=False)
+    pet: Mapped["Pet"] = relationship(
+        "Pet", back_populates="nutrition_plan", uselist=False)

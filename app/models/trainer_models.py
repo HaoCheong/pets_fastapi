@@ -20,5 +20,5 @@ class Trainer(Base):
     date_started: Mapped[datetime] = mapped_column(DateTime)
 
     # Pets List (Many-to-Many with association object as link table)
-    # pets = relationship(
-    #     "Pet", secondary="pet_trainer_association", back_populates='trainers')
+    pets: Mapped[list["Pet"]] = relationship(
+        "Pet", secondary="pet_trainer_association", back_populates='trainers')

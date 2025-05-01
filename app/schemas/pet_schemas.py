@@ -29,10 +29,9 @@ class PetReadNR(PetBase):
 
 class PetReadWR(PetReadNR):
 
-    pass
-    # trainers: List["TrainerReadNR"]
-    # nutrition_plan: Union["NutritionPlanReadNR", None]
-    # owner: Union["OwnerReadNR", None]
+    trainers: List["TrainerReadNR"]
+    nutrition_plan: Union["NutritionPlanReadNR", None]
+    owner: Union["OwnerReadNR", None]
 
 
 class PetUpdate(PetBase):
@@ -40,7 +39,7 @@ class PetUpdate(PetBase):
     name: Optional[str] = None
 
 
-# from app.schemas.owner_schemas import OwnerReadNR
-# from app.schemas.trainer_schemas import TrainerReadNR
-# from app.schemas.nutrition_plan_schemas import NutritionPlanReadNR
+from app.schemas.owner_schemas import OwnerReadNR
+from app.schemas.trainer_schemas import TrainerReadNR
+from app.schemas.nutrition_plan_schemas import NutritionPlanReadNR
 PetReadWR.model_rebuild()

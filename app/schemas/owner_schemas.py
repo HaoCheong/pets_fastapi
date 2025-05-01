@@ -28,8 +28,8 @@ class OwnerReadNR(OwnerBase):
 class OwnerReadWR(OwnerReadNR):
 
     ''' Owner Read w/ relation Schema '''
-    pass
-    # pets: List["PetReadNR"]
+
+    pets: List["PetReadNR"]
 
 
 class OwnerUpdate(OwnerBase):
@@ -39,5 +39,5 @@ class OwnerUpdate(OwnerBase):
     home_address: Optional[str] = None
 
 
-# from app.schemas.pet_schemas import PetReadNR
+from app.schemas.pet_schemas import PetReadNR
 OwnerReadWR.model_rebuild()

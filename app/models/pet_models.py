@@ -11,8 +11,9 @@ class PetTrainerAssociation(Base):
     __tablename__ = 'pet_trainer_association'
 
     # Foreign Keys in Association table
-    pet_id = Column(ForeignKey('pet.id'), primary_key=True)
-    trainer_id = Column(ForeignKey('trainer.trainer_id'), primary_key=True)
+    pet_id: Mapped[int] = mapped_column(ForeignKey('pet.id'), primary_key=True)
+    trainer_id: Mapped[str] = mapped_column(
+        ForeignKey('trainer.trainer_id'), primary_key=True)
 
 
 class Pet(Base):
@@ -25,15 +26,18 @@ class Pet(Base):
     name: Mapped[str] = mapped_column(unique=True)
     age: Mapped[str] = mapped_column(Integer)
 
-    # # Owner id (Many-to-One)
-    # owner_id = Column(Integer, ForeignKey("pet_owner.id"))
-    # owner = relationship("Owner", back_populates="pets", uselist=False)
+    # Owner id (Many-to-One)
+    owner_id: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("pet_owner.id"), nullable=True)
+    owner: Mapped["Owner"] = relationship(
+        "Owner", back_populates="pets", uselist=False)
 
     # # Trainer List (Many-to-Many with association object as link table)
-    # trainers = relationship(
-    #     "Trainer", secondary="pet_trainer_association", back_populates='pets')
+    trainers: Mapped[list["Trainer"]] = relationship(
+        "Trainer", secondary="pet_trainer_association", back_populates='pets')
 
-    # # Nutrition Plan (One-To-One)
-    # nutrition_plan_id = Column(Integer, ForeignKey("nutrition_plan.id"))
-    # nutrition_plan = relationship(
-    #     "NutritionPlan", back_populates="pet", uselist=False)
+    # Nutrition Plan (One-To-One)
+    nutrition_plan_id: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("nutrition_plan.id"), nullable=True)
+    nutrition_plan: Mapped["NutritionPlan"] = relationship(
+        "NutritionPlan", back_populates="pet", uselist=False)
