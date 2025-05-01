@@ -30,8 +30,7 @@ class TrainerReadNR(TrainerBase):
 
 class TrainerReadWR(TrainerReadNR):
     ''' Trainer Read w/ relation Schema '''
-    pass
-    # pets: List["PetReadNR"]
+    pets: List["PetReadNR"]
 
 
 class TrainerUpdate(TrainerBase):
@@ -43,5 +42,5 @@ class TrainerUpdate(TrainerBase):
     email: Optional[str] = None
 
 
-# from app.schemas.pet_schemas import PetReadNR
+from app.schemas.pet_schemas import PetReadNR
 TrainerReadWR.model_rebuild()

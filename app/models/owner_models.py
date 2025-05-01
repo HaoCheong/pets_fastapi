@@ -31,4 +31,4 @@ class Owner(Base):
     home_address: Mapped[str] = mapped_column(String)
 
     # Pet relation (One-to-Many)
-    # pets = relationship("Pet", back_populates="owner")
+    pets: Mapped[list['Pet']] = relationship("Pet", back_populates="owner")
