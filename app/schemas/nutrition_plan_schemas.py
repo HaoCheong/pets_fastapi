@@ -36,8 +36,8 @@ class NutritionPlanReadNR(NutritionPlanBase):
 
 class NutritionPlanReadWR(NutritionPlanReadNR):
     ''' Nutrition Plan Read w/ relation Schema '''
-
-    pet: Union["PetReadNR", None]
+    pass
+    # pet: Union["PetReadNR", None]
 
 
 class NutritionPlanUpdate(NutritionPlanBase):
@@ -46,5 +46,6 @@ class NutritionPlanUpdate(NutritionPlanBase):
     description: Optional[str] = None
     meal: Optional[MealBase] = None
 
-from app.schemas.pet_schemas import PetReadNR
+
+# from app.schemas.pet_schemas import PetReadNR
 NutritionPlanReadWR.model_rebuild()

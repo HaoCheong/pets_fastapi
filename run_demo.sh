@@ -7,7 +7,7 @@
 # vvvvvvvvvvvvvvvvvvvv CONFIGURATION vvvvvvvvvvvvvvvvvvvv
 
 PROJECT_NAME="Pets FastAPI Demo"
-LOCAL_PROJECT_PATH=/home/hcheong/Desktop/Other/pets_fastapi/new
+LOCAL_PROJECT_PATH=/home/hcheong/Desktop/Other/pets_fastapi
 
 PETS_POSTGRES_DB_USER="demo_pets_user"
 PETS_POSTGRES_DB_PASS="demo_pets_pass"
