@@ -1,9 +1,6 @@
 ''' Pet Models
 
-Contains both Table Models and Data Models that are used for Pet Operations.
-- Base SQLModel: Used for initialising base fields all models will use
-- Table Model: Inherited from SQL Model, includes other fields required for all other data models
-- Data Models: Inherited from the Table Model or other Data Model. Determines what data is returned from given requests
+Declarative Base: Used for initialising base fields all models will use
 
 Notes:
 - Optional Fields that are either optionally included in the input or optionally NULL on ther return
