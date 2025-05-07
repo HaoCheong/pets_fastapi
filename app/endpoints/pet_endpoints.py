@@ -1,3 +1,12 @@
+''' Pet Endpoints
+
+Contains all the function that subsequently call the Pet CRUD functions (see CRUD files)
+Split was done because it allowed for simplified data validation and db calling.
+- Endpoints: Takes in and validates input correctness
+- CRUD: Focused on the logic of formatting and manipulating data, under the assumption that the provided data was correct
+
+'''
+
 from typing import List
 
 from app.helpers import get_db
@@ -32,6 +41,8 @@ def get_pet_by_id(pet_id: int, db: Session = Depends(get_db)):
 
 @router.patch("/api/v1/pet/{pet_id}", response_model=schemas.PetReadNR, tags=["Pets"])
 def update_pet_by_id(pet_id: int, new_pet: schemas.PetUpdate, db: Session = Depends(get_db)):
+
+    # Existance check for pet prior to update
     db_pet = cruds.get_pet_by_id(db, id=pet_id)
     if not db_pet:
         raise HTTPException(status_code=400, detail="Pet does not exist")
@@ -41,6 +52,8 @@ def update_pet_by_id(pet_id: int, new_pet: schemas.PetUpdate, db: Session = Depe
 
 @router.delete("/api/v1/pet/{pet_id}", tags=["Pets"])
 def delete_pet_by_id(pet_id: int, db: Session = Depends(get_db)):
+
+    # Existance check for pet prior to delete
     db_pet = cruds.get_pet_by_id(db, id=pet_id)
     if not db_pet:
         raise HTTPException(status_code=400, detail="Pet does not exist")

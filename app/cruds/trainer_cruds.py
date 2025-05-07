@@ -1,3 +1,15 @@
+''' Trainer CRUDs
+
+Contains all the base functionailities for reading and writing trainer data into the database
+5 base functionality:
+- Create
+- Read All instance
+- Read an instance given an ID
+- Update an instance given an ID
+- Delete an instance given an ID
+
+'''
+
 from sqlalchemy.orm import Session
 
 import app.models.trainer_models as model
@@ -6,6 +18,7 @@ import app.schemas.trainer_schemas as schemas
 
 def create_trainer(db: Session, trainer: schemas.TrainerCreate):
     ''' Creating an new pet trainer '''
+
     db_trainer = model.Trainer(
         trainer_id=trainer.trainer_id,
         name=trainer.name,
@@ -23,16 +36,19 @@ def create_trainer(db: Session, trainer: schemas.TrainerCreate):
 
 def get_all_trainers(db: Session, skip: int = 0, limit: int = 100):
     ''' Get every instance of pet trainer, using offset pagination '''
+
     return db.query(model.Trainer).offset(skip).limit(limit).all()
 
 
 def get_trainer_by_id(db: Session, trainer_id: str):
     ''' Get specific instance of pet trainer based on provided trainer ID '''
+
     return db.query(model.Trainer).filter(model.Trainer.trainer_id == trainer_id).first()
 
 
 def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.TrainerUpdate):
     ''' Update specific fields of specified instance of pet trainer on provided trainer ID '''
+
     db_trainer = db.query(model.Trainer).filter(
         model.Trainer.trainer_id == trainer_id).first()
 
@@ -51,6 +67,7 @@ def update_trainer_by_id(db: Session, trainer_id: str, new_trainer: schemas.Trai
 
 def delete_trainer_by_id(db: Session, trainer_id: str):
     ''' Delete specified instance of pet trainer on provided trainer ID '''
+
     db_trainer = db.query(model.Trainer).filter(
         model.Trainer.trainer_id == trainer_id).first()
 

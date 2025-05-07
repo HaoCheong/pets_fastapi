@@ -1,3 +1,15 @@
+
+''' Nutrition Plan Models
+
+Declarative Base: Used for initialising base fields all models will use
+
+Notes:
+- Optional Fields that are either optionally included in the input or optionally NULL on ther return
+
+Relationship:
+- Nutrition Plan: One Nutrition Plan to One Pet 
+'''
+
 from sqlalchemy import Column, Integer, String, JSON, DateTime
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from app.database.database import Base

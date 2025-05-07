@@ -1,3 +1,13 @@
+''' Nutrition Plan Endpoints
+
+Contains all the function that subsequently call the nutrition plan CRUD functions (see CRUD files)
+Split was done because it allowed for simplified data validation and db calling.
+- Endpoints: Takes in and validates input correctness
+- CRUD: Focused on the logic of formatting and manipulating data, under the assumption that the provided data was correct
+
+'''
+
+
 from typing import List
 
 from app.helpers import get_db
@@ -23,6 +33,7 @@ def get_all_nutrition_plans(skip: int = 0, limit: int = 100, db: Session = Depen
 
 @router.get("/api/v1/nutrition_plan/{nutrition_plan_id}", response_model=schemas.NutritionPlanReadWR, tags=["Nutrition Plans"])
 def get_nutrition_plan_by_id(nutrition_plan_id: str, db: Session = Depends(get_db)):
+
     db_nutrition_plan = cruds.get_nutrition_plan_by_id(
         db, nutrition_plan_id=nutrition_plan_id)
     if not db_nutrition_plan:
@@ -34,6 +45,8 @@ def get_nutrition_plan_by_id(nutrition_plan_id: str, db: Session = Depends(get_d
 
 @router.patch("/api/v1/nutrition_plan/{nutrition_plan_id}", response_model=schemas.NutritionPlanReadWR, tags=["Nutrition Plans"])
 def update_nutrition_plan_by_id(nutrition_plan_id: str, new_nutrition_plan: schemas.NutritionPlanUpdate, db: Session = Depends(get_db)):
+
+    # Existance check of the nutrition plan prior to update
     db_nutrition_plan = cruds.get_nutrition_plan_by_id(
         db, nutrition_plan_id=nutrition_plan_id)
     if not db_nutrition_plan:
@@ -45,6 +58,8 @@ def update_nutrition_plan_by_id(nutrition_plan_id: str, new_nutrition_plan: sche
 
 @router.delete("/api/v1/nutrition_plan/{nutrition_plan_id}", tags=["Nutrition Plans"])
 def delete_nutrition_plan_by_id(nutrition_plan_id: str, db: Session = Depends(get_db)):
+
+    # Existance check of the nutrition plan, prior to delete
     db_nutrition_plan = cruds.get_nutrition_plan_by_id(
         db, nutrition_plan_id=nutrition_plan_id)
     if not db_nutrition_plan:
