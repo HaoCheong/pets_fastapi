@@ -1,0 +1,41 @@
+services:
+
+  db:
+    container_name: ${PETS_CONTAINER_NAME}
+    image: ${PETS_IMAGE_NAME}
+    hostname: ${PETS_POSTGRES_DB_HOST}
+    ports:
+      - ${PETS_POSTGRES_DB_PORT}:5432
+    environment:
+      - POSTGRES_USER=${PETS_POSTGRES_DB_USER}
+      - POSTGRES_PASSWORD=${PETS_POSTGRES_DB_PASS}
+      - POSTGRES_DB=${PETS_POSTGRES_DB_NAME}
+      - TZ=${PETS_TIMEZONE}
+    volumes:
+      - ${PETS_SQL_DUMP_FILE_PATH}:/docker-entrypoint-initdb.d/init.sql 
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+
+  backend:
+    container_name: ${BACKEND_CONTAINER_NAME}
+    image: ${BACKEND_IMAGE_NAME}
+    build: ${BACKEND_APP_PATH}
+    ports:
+      - ${BACKEND_PORT}:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - PETS_POSTGRES_DB_USER=${PETS_POSTGRES_DB_USER}
+      - PETS_POSTGRES_DB_PASS=${PETS_POSTGRES_DB_PASS}
+      - PETS_POSTGRES_DB_NAME=${PETS_POSTGRES_DB_NAME}
+      - PETS_POSTGRES_DB_HOST=${PETS_POSTGRES_DB_HOST}
+      - PETS_POSTGRES_DB_PORT=${PETS_POSTGRES_DB_PORT}
+      - TZ=${PETS_TIMEZONE}
+    volumes:
+      - ${BACKEND_APP_PATH}/app:/app
