@@ -1,23 +1,18 @@
-from sqlalchemy import Column, Integer, String
+''' Owner Models
+
+Declarative Base: Used for initialising base fields all models will use
+
+Notes:
+- Optional Fields that are either optionally included in the input or optionally NULL on ther return
+
+Relationship:
+- Pet: One Owner to Many Pets
+'''
+
+from sqlalchemy import String
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from app.database.database import Base
 
-# Owner Table
-
-
-# class Owner(Base):
-#     ''' Owner model '''
-#     __tablename__ = "pet_owner"
-
-#     # Owner Fields
-#     id = Column(Integer, primary_key=True, index=True)
-#     name = Column(String, unique=True)
-#     email = Column(String)
-#     password = Column(String)
-#     home_address = Column(String)
-
-#     # Pet relation (One-to-Many)
-#     pets = relationship("Pet", back_populates="owner")
 
 class Owner(Base):
     ''' Owner model '''

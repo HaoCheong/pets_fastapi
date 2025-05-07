@@ -1,9 +1,7 @@
-"""main.py (5)
+"""main.py
 
 Where the endpoints are instantiated and functions are called
-
-- All the data validation are checked here
-- Error raising done on this level
+- The router are called from the endpoint functions 
 
 """
 

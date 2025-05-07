@@ -36,6 +36,8 @@ def get_trainer_by_id(trainer_id: str, db: Session = Depends(get_db)):
 
 @router.patch("/api/v1/trainer/{trainer_id}", response_model=schemas.TrainerReadNR, tags=["Trainers"])
 def update_trainer_by_id(trainer_id: str, new_trainer: schemas.TrainerUpdate, db: Session = Depends(get_db)):
+
+    # Existance check for trainer prior to update
     db_trainer = cruds.get_trainer_by_id(db, trainer_id=trainer_id)
     if not db_trainer:
         raise HTTPException(status_code=400, detail="Trainer does not exist")
@@ -45,6 +47,8 @@ def update_trainer_by_id(trainer_id: str, new_trainer: schemas.TrainerUpdate, db
 
 @router.delete("/api/v1/trainer/{trainer_id}", tags=["Trainers"])
 def delete_trainer_by_id(trainer_id: str, db: Session = Depends(get_db)):
+
+    # Existance check for trainer prior to delete
     db_trainer = cruds.get_trainer_by_id(db, trainer_id=trainer_id)
     if not db_trainer:
         raise HTTPException(status_code=400, detail="Trainer does not exist")

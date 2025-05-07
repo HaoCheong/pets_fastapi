@@ -1,3 +1,15 @@
+''' Nutrition Plan CRUDs
+
+Contains all the base functionailities for reading and writing nutrition plan data into the database
+5 base functionality:
+- Create
+- Read All instance
+- Read an instance given an ID
+- Update an instance given an ID
+- Delete an instance given an ID
+
+'''
+
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
 
@@ -7,6 +19,7 @@ import app.schemas.nutrition_plan_schemas as schemas
 
 def create_nutrition_plan(db: Session, nutrition_plan: schemas.NutritionPlanCreate):
     ''' Creating an new nutrition plan '''
+
     db_nutrition_plan = model.NutritionPlan(
         name=nutrition_plan.name,
         description=nutrition_plan.description,
@@ -22,16 +35,19 @@ def create_nutrition_plan(db: Session, nutrition_plan: schemas.NutritionPlanCrea
 
 def get_all_nutrition_plans(db: Session, skip: int = 0, limit: int = 100):
     ''' Get every instance of nutrition plan, using offset pagination '''
+
     return db.query(model.NutritionPlan).offset(skip).limit(limit).all()
 
 
 def get_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
     ''' Get specific instance of nutrition plan based on provided nutrition plan ID '''
+
     return db.query(model.NutritionPlan).filter(model.NutritionPlan.id == nutrition_plan_id).first()
 
 
 def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: str, new_nutrition_plan: schemas.NutritionPlanUpdate):
     ''' Update specific fields of specified instance of nutrition plan on provided nutrition plan ID '''
+
     db_nutrition_plan = db.query(model.NutritionPlan).filter(
         model.NutritionPlan.id == nutrition_plan_id).first()
 
@@ -52,6 +68,7 @@ def update_nutrition_plan_by_id(db: Session, nutrition_plan_id: str, new_nutriti
 
 def delete_nutrition_plan_by_id(db: Session, nutrition_plan_id: str):
     ''' Delete specified instance of nutrition plan on provided nutrition plan ID '''
+
     db_nutrition_plan = db.query(model.NutritionPlan).filter(
         model.NutritionPlan.id == nutrition_plan_id).first()
 

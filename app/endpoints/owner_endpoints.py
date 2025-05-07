@@ -1,3 +1,12 @@
+''' Owner Endpoints
+
+Contains all the function that subsequently call the owner CRUD functions (see CRUD files)
+Split was done because it allowed for simplified data validation and db calling.
+- Endpoints: Takes in and validates input correctness
+- CRUD: Focused on the logic of formatting and manipulating data, under the assumption that the provided data was correct
+
+'''
+
 from typing import List
 
 from app.helpers import get_db
@@ -32,6 +41,8 @@ def get_owner_by_id(owner_id: int, db: Session = Depends(get_db)):
 
 @router.patch("/api/v1/owner/{owner_id}", response_model=schemas.OwnerReadNR, tags=["Owners"])
 def update_owner_by_id(owner_id: int, new_owner: schemas.OwnerUpdate, db: Session = Depends(get_db)):
+
+    # Existance check of the owner, prior to update
     db_owner = cruds.get_owner_by_id(db, id=owner_id)
     if not db_owner:
         raise HTTPException(status_code=400, detail="Owner does not exist")
@@ -41,6 +52,8 @@ def update_owner_by_id(owner_id: int, new_owner: schemas.OwnerUpdate, db: Sessio
 
 @router.delete("/api/v1/owner/{owner_id}", tags=["Owners"])
 def delete_owner_by_id(owner_id: int, db: Session = Depends(get_db)):
+
+    # Existance check of the owner, prior to update
     db_owner = cruds.get_owner_by_id(db, id=owner_id)
     if not db_owner:
         raise HTTPException(status_code=400, detail="Owner does not exist")

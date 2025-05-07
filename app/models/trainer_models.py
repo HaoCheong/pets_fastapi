@@ -1,3 +1,14 @@
+''' Trainer Models
+
+Declarative Base: Used for initialising base fields all models will use
+
+Notes:
+- Optional Fields that are either optionally included in the input or optionally NULL on ther return
+
+Relationship:
+- Pets: Many Trainers to Many Pets
+'''
+
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from app.database.database import Base

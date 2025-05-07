@@ -1,3 +1,12 @@
+''' Pet Assignment Operations
+
+Contains all the functionality to assign pets to various other tables based on relation
+Each relation has the following functionalities:
+- Assigning Pets to X given both IDs
+- Unassigning Pets from X given ID(s)
+
+'''
+
 from sqlalchemy.orm import Session
 
 import app.models.pet_models as pet_models

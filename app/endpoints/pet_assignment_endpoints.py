@@ -1,3 +1,12 @@
+''' Pet Assignment Endpoints
+
+Contains all the function that subsequently call the pet assignment operations (see pet_assignment file)
+Split was done because it allowed for simplified data validation and db calling.
+- Endpoints: Takes in and validates input correctness
+- CRUD: Focused on the logic of formatting and manipulating data, under the assumption that the provided data was correct
+
+'''
+
 import app.cruds.pet_assignment_cruds as pet_assignment_cruds
 import app.cruds.nutrition_plan_cruds as nutrition_plan_cruds
 import app.cruds.pet_cruds as pet_cruds
@@ -17,6 +26,8 @@ router = APIRouter()
 
 @router.post("/api/v1/assignToOwner/{pet_id}/{owner_id}", tags=["Item Assignments"])
 def assign_pet_to_owner(pet_id: int, owner_id: int, db: Session = Depends(get_db)):
+
+    # Existance checks for both owner and pet
     db_owner = owner_cruds.get_owner_by_id(db, id=owner_id)
     db_pet = pet_cruds.get_pet_by_id(db, id=pet_id)
 
@@ -38,6 +49,7 @@ def unassign_pet_from_owner(pet_id: int, owner_id: int, db: Session = Depends(ge
     db_owner = owner_cruds.get_owner_by_id(db, id=owner_id)
     db_pet = pet_cruds.get_pet_by_id(db, id=pet_id)
 
+    # Existance checks for both owner and pet
     if not db_owner:
         raise HTTPException(status_code=400, detail="Owner does not exist")
 
@@ -55,6 +67,8 @@ def unassign_pet_from_owner(pet_id: int, owner_id: int, db: Session = Depends(ge
 
 @router.post("/api/v1/assignToTrainer/{pet_id}/{trainer_id}", tags=["Item Assignments"])
 def assign_pet_to_trainer(pet_id: int, trainer_id: str, db: Session = Depends(get_db)):
+
+    # Existance checks for both trainer and pet
     db_trainer = trainer_cruds.get_trainer_by_id(db, trainer_id=trainer_id)
     db_pet = pet_cruds.get_pet_by_id(db, id=pet_id)
 
@@ -77,6 +91,8 @@ def assign_pet_to_trainer(pet_id: int, trainer_id: str, db: Session = Depends(ge
 
 @router.post("/api/v1/unassignFromTrainer/{pet_id}/{trainer_id}", tags=["Item Assignments"])
 def unassign_pet_from_trainer(pet_id: int, trainer_id: str, db: Session = Depends(get_db)):
+
+    # Existance checks for both trainer and pet
     db_trainer = trainer_cruds.get_trainer_by_id(db, trainer_id=trainer_id)
     db_pet = pet_cruds.get_pet_by_id(db, id=pet_id)
 
@@ -95,6 +111,8 @@ def unassign_pet_from_trainer(pet_id: int, trainer_id: str, db: Session = Depend
 
 @router.post("/api/v1/assignToNutritionPlan/{pet_id}/{nutrition_plan_id}", tags=["Item Assignments"])
 def assign_pet_to_nutrition_plan(pet_id: int, nutrition_plan_id: int, db: Session = Depends(get_db)):
+
+    # Existance checks for both nutrition plan and pet
     db_pet = pet_cruds.get_pet_by_id(db, id=pet_id)
     db_nutrition_plan = nutrition_plan_cruds.get_nutrition_plan_by_id(
         db, nutrition_plan_id=nutrition_plan_id)
@@ -119,6 +137,8 @@ def assign_pet_to_nutrition_plan(pet_id: int, nutrition_plan_id: int, db: Sessio
 
 @router.post("/api/v1/unassignFromNutritionPlan/{pet_id}", tags=["Item Assignments"])
 def unassign_pet_from_nutrition_plan(pet_id: int, db: Session = Depends(get_db)):
+
+    # Existance checks for both nutrition plan and pet
     db_pet = pet_cruds.get_pet_by_id(db, id=pet_id)
 
     if not db_pet:

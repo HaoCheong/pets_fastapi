@@ -1,3 +1,9 @@
+'''Metadata
+
+Primarily documentation information for the auto generated swagger provided by FastAPI
+
+'''
+
 # The tags for the FastAPI OpenAPI auto documenter
 tags_metadata = [
     {
