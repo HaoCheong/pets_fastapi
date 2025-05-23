@@ -14,9 +14,6 @@ Notes:
 - Imports of the shared models and the model rebuild is to avoid circular import
 '''
 
-from app.schemas.nutrition_plan_schemas import NutritionPlanReadNR
-from app.schemas.trainer_schemas import TrainerReadNR
-from app.schemas.owner_schemas import OwnerReadNR
 from typing import List, Union, Optional, TYPE_CHECKING
 from pydantic import BaseModel, ConfigDict
 
@@ -57,5 +54,7 @@ class PetUpdate(PetBase):
     ''' Pet update schema '''
     name: Optional[str] = None
 
-
+from app.schemas.nutrition_plan_schemas import NutritionPlanReadNR
+from app.schemas.trainer_schemas import TrainerReadNR
+from app.schemas.owner_schemas import OwnerReadNR
 PetReadWR.model_rebuild()

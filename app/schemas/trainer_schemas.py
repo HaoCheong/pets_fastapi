@@ -14,7 +14,7 @@ Notes:
 - Imports of the shared models and the model rebuild is to avoid circular import
 '''
 
-from app.schemas.pet_schemas import PetReadNR
+
 from typing import List, Optional, TYPE_CHECKING
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
@@ -58,5 +58,5 @@ class TrainerUpdate(TrainerBase):
     phone_no: Optional[str] = None
     email: Optional[str] = None
 
-
+from app.schemas.pet_schemas import PetReadNR
 TrainerReadWR.model_rebuild()

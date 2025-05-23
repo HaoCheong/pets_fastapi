@@ -14,7 +14,6 @@ Notes:
 - Imports of the shared models and the model rebuild is to avoid circular import
 '''
 
-from app.schemas.pet_schemas import PetReadNR
 from typing import List, Optional, TYPE_CHECKING
 from pydantic import BaseModel, ConfigDict
 
@@ -55,5 +54,5 @@ class OwnerUpdate(OwnerBase):
     email: Optional[str] = None
     home_address: Optional[str] = None
 
-
+from app.schemas.pet_schemas import PetReadNR
 OwnerReadWR.model_rebuild()

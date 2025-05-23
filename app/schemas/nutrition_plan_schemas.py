@@ -15,7 +15,7 @@ Notes:
 '''
 
 
-from app.schemas.pet_schemas import PetReadNR
+
 from typing import Union, Optional, TYPE_CHECKING
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
@@ -64,5 +64,5 @@ class NutritionPlanUpdate(NutritionPlanBase):
     description: Optional[str] = None
     meal: Optional[MealBase] = None
 
-
+from app.schemas.pet_schemas import PetReadNR
 NutritionPlanReadWR.model_rebuild()
