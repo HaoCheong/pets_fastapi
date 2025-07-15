@@ -5,20 +5,20 @@ Where the endpoints are instantiated and functions are called
 
 """
 
+import time
+
 from fastapi import FastAPI, Request
-
-import app.database.database as database
-import app.metadata as metadata
-
-from app.database.database import engine
 from fastapi.middleware.cors import CORSMiddleware
 
-import app.endpoints.owner_endpoints as owner_endpoints
-import app.endpoints.trainer_endpoints as trainer_endpoints
-import app.endpoints.pet_endpoints as pet_endpoints
-import app.endpoints.pet_assignment_endpoints as pet_assignment_endpoints
+import app.database.database as database
 import app.endpoints.nutrition_plan_endpoints as nutrition_plan_endpoints
-import time
+import app.endpoints.operation_endpoints as operation_endpoints
+import app.endpoints.owner_endpoints as owner_endpoints
+import app.endpoints.pet_assignment_endpoints as pet_assignment_endpoints
+import app.endpoints.pet_endpoints as pet_endpoints
+import app.endpoints.trainer_endpoints as trainer_endpoints
+import app.metadata as metadata
+from app.database.database import engine
 
 database.Base.metadata.create_all(bind=engine)
 
@@ -55,3 +55,4 @@ app.include_router(trainer_endpoints.router)
 app.include_router(pet_endpoints.router)
 app.include_router(pet_assignment_endpoints.router)
 app.include_router(nutrition_plan_endpoints.router)
+app.include_router(operation_endpoints.router)

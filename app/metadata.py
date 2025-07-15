@@ -25,6 +25,10 @@ tags_metadata = [
     {
         "name": "Item Assignments",
         "description": "Operations with that assign pets to trainers, owners, or nutrition plans",
+    },
+    {
+        "name": "Operations",
+        "description": "Operations that are not specific to any one table"
     }
 ]
 
